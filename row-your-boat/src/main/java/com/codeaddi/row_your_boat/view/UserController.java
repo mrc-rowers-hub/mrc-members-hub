@@ -29,4 +29,10 @@ public class UserController {
     redirectView.setUrl("http://localhost:8080/");
     return redirectView;
   }
+
+  @GetMapping("/my-availability")
+  public String myAvailability() {
+    return "my-availability"; // This refers to the my-my-availability.html template
+  }
+
 }
