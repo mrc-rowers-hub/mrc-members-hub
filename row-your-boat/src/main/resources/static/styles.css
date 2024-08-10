@@ -1,0 +1,72 @@
+/* General body styles */
+body {
+    font-family: Arial, sans-serif;
+    font-size: 25px; /* Reduced base font size for non-mobile */
+}
+
+/* Header container styles */
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+}
+
+/* Header image styles */
+.header-container img {
+    margin-left: 10px;
+}
+
+/* Footer styles */
+footer {
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-top: 1px solid #ccc;
+}
+
+/* Session box styles */
+.session-box {
+    border: 1px solid #ddd;
+    padding: 20px; /* Adjusted padding */
+    margin: 20px 0; /* Adjusted margin */
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+/* General container styles */
+.conditions-container {
+    display: grid;
+    gap: 20px; /* Space between items */
+}
+
+/* Media query for smaller screens */
+@media (max-width: 600px) {
+    body {
+        font-size: 50px; /* Larger font size for mobile */
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-size: 2em; /* Adjust header sizes */
+    }
+
+    p, a {
+        font-size: 1.6em; /* Adjust paragraph and link sizes */
+    }
+
+    .conditions-container {
+        grid-template-columns: repeat(2, 1fr); /* Two columns on mobile */
+    }
+}
+
+/* Media query for larger screens */
+@media (min-width: 601px) {
+    .conditions-container {
+        grid-template-columns: repeat(3, 1fr); /* Three columns on desktop */
+    }
+}
