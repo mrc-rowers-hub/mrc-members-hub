@@ -21,48 +21,6 @@ body {
     margin-left: 10px;
 }
 
-/* Calendar styles */
-.calendar {
-    margin-top: 20px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-/* Calendar header styles */
-.calendar-header {
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-/* Day list styles */
-.day-list {
-    list-style-type: none;
-    padding: 0;
-}
-
-/* Day item styles */
-.day-item {
-    margin-bottom: 5px;
-}
-
-/* Day link styles */
-.day-link {
-    text-decoration: none;
-    color: #333;
-    display: inline-block;
-    padding: 5px 10px;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    margin-right: 10px;
-}
-
-/* Day link hover effect */
-.day-link:hover {
-    background-color: #e0e0e0;
-}
-
 /* Footer styles */
 footer {
     text-align: center;
