@@ -47,6 +47,33 @@
     transform: rotate(180deg); /* Rotate arrow to point right */
 }
 
+/* Sidebar unordered list styles */
+.sidebar ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0;
+    margin: 0; /* Ensure no extra margin */
+}
+
+/* Sidebar list item styles */
+.sidebar ul li {
+    margin: 10px 0;
+}
+
+/* Sidebar link styles */
+.sidebar ul li a {
+    text-decoration: none;
+    color: #333;
+    display: block; /* Ensure the link takes up the full width of its container */
+    padding: 10px; /* Add padding for better click area */
+    border-radius: 3px; /* Optional: Rounded corners for links */
+}
+
+/* Sidebar link hover effect */
+.sidebar ul li a:hover {
+    text-decoration: underline;
+    background-color: #ddd; /* Optional: Background change on hover */
+}
+
 /* Content area styles */
 .content {
     margin-left: 250px; /* Margin to accommodate sidebar */
