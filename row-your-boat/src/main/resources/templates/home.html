@@ -10,10 +10,31 @@
         <h1>Welcome to MRC Condition Checker</h1>
     </div>
 </header>
-<main>
-    <p>Welcome, <span th:text="${username}"></span>!</p>
-    <!-- Add more content for the home page here -->
-</main>
+<div class="main-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <nav>
+            <ul>
+                <li><a th:href="@{/home}">Home</a></li>
+                <li><a th:href="@{/my-availability}">My Availability</a></li>
+                <li><a th:href="@{/my-skills}">My Skills</a></li>
+                <li><a th:href="@{/my-race-availability}">My Race Availability</a></li>
+                <hr>
+                <li><a th:href="@{/upcoming-sessions}">Upcoming Sessions</a></li>
+                <li><a th:href="@{/make-new-sessions}">Make New Sessions</a></li>
+                <li><a th:href="@{/availability}">Availability</a></li>
+                <li><a th:href="@{/rowers}">Rowers</a></li>
+                <li><a th:href="@{/boats-blades}">Boats & Blades</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content">
+        <p>Welcome, <span th:text="${username}"></span>!</p>
+        <!-- Add more content for the home page here -->
+    </main>
+</div>
 <footer>
     <p>Data provided by <strong>OpenWeatherMap</strong></p>
     <p>Logic/weather rules, & website, provided by Mersey Rowing Club</p>
