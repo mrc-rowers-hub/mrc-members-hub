@@ -23,12 +23,10 @@ public class UserController {
     return "home";
   }
 
-    @GetMapping("/weather")
-    public RedirectView redirectToOtherService() {
-        RedirectView redirectView = new RedirectView();
-        redirectView.setUrl("http://localhost:8080/");
-        return redirectView;
-    }
-
-
+  @GetMapping("/weather")
+  public RedirectView redirectToOtherService() {
+    RedirectView redirectView = new RedirectView();
+    redirectView.setUrl("http://localhost:8080/");
+    return redirectView;
+  }
 }
