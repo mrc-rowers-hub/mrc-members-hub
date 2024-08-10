@@ -84,6 +84,10 @@
 				</executions>
 				<configuration>
 					<mainClass>com.codeaddi.row_your_boat.RowYourBoatApplication</mainClass>
+					<arguments>
+						<argument>--port</argument>
+						<argument>8082</argument>
+					</arguments>
 				</configuration>
 			</plugin>
 
