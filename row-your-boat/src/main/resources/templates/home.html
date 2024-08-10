@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+<header>
+    <div class="header-container">
+        <h1>Welcome to MRC Condition Checker</h1>
+    </div>
+</header>
+<main>
+    <p>Welcome, <span th:text="${username}"></span>!</p>
+    <!-- Add more content for the home page here -->
+</main>
+<footer>
+    <p>Data provided by <strong>OpenWeatherMap</strong></p>
+    <p>Logic/weather rules, & website, provided by Mersey Rowing Club</p>
+</footer>
+</body>
+</html>

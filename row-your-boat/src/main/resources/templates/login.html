@@ -12,7 +12,19 @@
     </div>
 </header>
 <main>
-  
+    <!-- Login Form -->
+    <div class="login-container">
+        <h2>Login</h2>
+        <form th:action="@{/home}" method="post">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <br>
+            <button type="submit">Login</button>
+        </form>
+    </div>
 </main>
 <footer>
     <p>Data provided by <strong>OpenWeatherMap</strong></p>
