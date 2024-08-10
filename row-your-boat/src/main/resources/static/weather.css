@@ -1,0 +1,16 @@
+/* Styles specific to the weather section */
+.weather-section {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #eef;
+    border-radius: 5px;
+}
+
+.weather-section h4 {
+    margin-top: 0;
+}
+
+.weather-section p {
+    margin: 5px 0;
+}

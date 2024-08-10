@@ -1,0 +1,22 @@
+/* Styles specific to boats and blades */
+.boats-permitted {
+    background-color: #d4edda;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.boats-cancelled {
+    background-color: #f8d7da;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.average-boats-box {
+    background-color: #cce5ff;
+    font-weight: bold;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
