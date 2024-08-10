@@ -12,8 +12,8 @@
     </div>
 </header>
 
-<!-- Include the sidebar -->
-<div th:replace="sections/sidebar :: sidebarFragment"></div>
+<!-- Include the sidebar using the updated syntax -->
+<div th:replace="~{sections/sidebar :: sidebarFragment}"></div>
 
 <main class="content" id="content">
     <p>Welcome, <span th:text="${username}"></span>!</p>
@@ -26,10 +26,18 @@
 </footer>
 
 <script>
-    document.getElementById("sidebarToggle").addEventListener("click", function() {
-        document.getElementById("sidebar").classList.toggle("collapsed");
-        document.getElementById("content").classList.toggle("collapsed");
-        this.classList.toggle("collapsed");
+    document.addEventListener("DOMContentLoaded", function() {
+        var sidebarToggle = document.getElementById("sidebarToggle");
+        var sidebar = document.getElementById("sidebar");
+        var content = document.getElementById("content");
+
+        if (sidebarToggle && sidebar && content) {
+            sidebarToggle.addEventListener("click", function() {
+                sidebar.classList.toggle("collapsed");
+                content.classList.toggle("collapsed");
+                this.classList.toggle("collapsed");
+            });
+        }
     });
 </script>
 </body>

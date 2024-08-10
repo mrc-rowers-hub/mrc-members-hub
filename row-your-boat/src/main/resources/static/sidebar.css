@@ -1,6 +1,6 @@
-/* Sidebar specific styles */
+/* Sidebar styles */
 .sidebar {
-    width: 250px;
+    width: 250px; /* Set the width of the sidebar */
     background-color: #f4f4f4;
     padding: 15px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
@@ -8,27 +8,53 @@
     position: fixed;
     top: 0;
     left: 0;
+    transition: transform 0.3s ease-in-out; /* Smooth transition */
+}
+
+/* Sidebar when collapsed */
+.sidebar.collapsed {
+    transform: translateX(-250px); /* Move it out of view */
+}
+
+/* Toggle button styles */
+.sidebar-toggle {
+    position: fixed;
+    top: 15px;
+    left: 250px; /* Positioning next to the sidebar */
+    cursor: pointer;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    z-index: 1000;
+    transition: left 0.3s ease-in-out;
+}
+
+/* Arrow styles */
+.arrow {
+    font-size: 20px;
+    display: inline-block;
     transition: transform 0.3s ease-in-out;
 }
 
-.sidebar.collapsed {
-    transform: translateX(-250px);
+/* Toggle button when sidebar is collapsed */
+.sidebar-toggle.collapsed {
+    left: 10px; /* Positioning when sidebar is collapsed */
 }
 
-.sidebar ul {
-    list-style-type: none;
-    padding: 0;
+/* Rotate arrow for expanded state */
+.sidebar-toggle.collapsed .arrow {
+    transform: rotate(180deg); /* Rotate arrow to point right */
 }
 
-.sidebar ul li {
-    margin: 10px 0;
+/* Content area styles */
+.content {
+    margin-left: 250px; /* Margin to accommodate sidebar */
+    padding: 20px;
+    transition: margin-left 0.3s ease-in-out;
 }
 
-.sidebar ul li a {
-    text-decoration: none;
-    color: #333;
-}
-
-.sidebar ul li a:hover {
-    text-decoration: underline;
+/* Content area when sidebar is collapsed */
+.content.collapsed {
+    margin-left: 20px;
 }
