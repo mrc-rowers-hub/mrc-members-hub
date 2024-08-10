@@ -8,6 +8,12 @@ body {
 .header-container {
     display: flex;
     align-items: center;
+    justify-content: center;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
 }
 
 /* Header image styles */

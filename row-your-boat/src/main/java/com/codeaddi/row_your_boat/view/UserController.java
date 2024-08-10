@@ -22,10 +22,4 @@ public class UserController {
         return "home";
     }
 
-    @PostMapping("/my-availability")
-    public String myAvailability(@RequestParam("username") String username, Model model) {
-        model.addAttribute("username", username);
-        return "myAvailability";
-    }
-
 }
