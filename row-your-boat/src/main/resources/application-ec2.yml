@@ -1,0 +1,3 @@
+services:
+  weather:
+    baseUrl: http://13.43.87.233:8080/
