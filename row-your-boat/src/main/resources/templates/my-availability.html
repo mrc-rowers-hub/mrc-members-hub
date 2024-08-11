@@ -3,8 +3,7 @@
 <head>
     <title>My Availability</title>
     <link rel="stylesheet" th:href="@{/styles.css}">
-    <link rel="stylesheet" th:href="@{/sidebar.css}"> <!-- Sidebar styles -->
-</head>
+    <link rel="stylesheet" th:href="@{/sidebar.css}"> </head>
 <body>
 <header>
     <div class="header-container">
@@ -15,13 +14,11 @@
     </div>
 </header>
 
-<!-- Include the sidebar using the updated syntax -->
 <div th:replace="~{sections/sidebar :: sidebarFragment}"></div>
 
 <main class="content" id="content">
-    <h2>My Availability</h2>
-    <p>Here you can manage your availability.</p>
-    <!-- Add more content for the My Availability page here -->
+    <h2>My Availability (Next 3 Weeks)</h2>
+    <div id="calendar"></div> <p>Here you can manage your availability.</p>
 </main>
 
 <footer>
@@ -42,6 +39,55 @@
                 this.classList.toggle("collapsed");
             });
         }
+
+        // Function to create the calendar table
+        function createCalendar() {
+            var today = new Date();
+            var calendar = document.getElementById("calendar");
+            calendar.innerHTML = ""; // Clear any existing content
+
+            // Create table element
+            var table = document.createElement("table");
+            table.classList.add("calendar");
+
+            // Create table header row for weekdays
+            var headerRow = document.createElement("tr");
+            headerRow.classList.add("calendar-header");
+            ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].forEach(function(day) {
+                var cell = document.createElement("th");
+                cell.textContent = day;
+                headerRow.appendChild(cell);
+            });
+            table.appendChild(headerRow);
+
+            // Calculate the start date for the calendar (this Monday)
+            var startDay = new Date(today);
+            startDay.setDate(today.getDate() - today.getDay() + 1); // Adjust for Monday
+
+            // Loop through the next 21 days (3 weeks)
+            for (var i = 0; i < 3; i++) { // Only iterate 3 times for 3 weeks
+                // Create a new table row for each week
+                var row = document.createElement("tr");
+                for (var j = 0; j < 7; j++) {
+                    var cell = document.createElement("td");
+                    var date = new Date(startDay.getTime());
+                    date.setDate(date.getDate() + (i * 7 + j));
+
+                    // Highlight today's date
+                    if (date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear()) {
+                        cell.classList.add("today");
+                    }
+
+                    cell.textContent = date.getDate();
+                    row.appendChild(cell);
+                }
+                table.appendChild(row);
+            }
+
+            calendar.appendChild(table);
+        }
+
+        createCalendar(); // Call the function to generate the calendar
     });
 </script>
 </body>
