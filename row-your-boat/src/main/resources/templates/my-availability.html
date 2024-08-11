@@ -50,10 +50,10 @@
             var table = document.createElement("table");
             table.classList.add("calendar");
 
-            // Create table header row for weekdays
+            // Create table header row for weekdays and AM/PM
             var headerRow = document.createElement("tr");
             headerRow.classList.add("calendar-header");
-            ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].forEach(function(day) {
+            ["Mon AM", "Mon PM", "Tue AM", "Tue PM", "Wed AM", "Wed PM", "Thu AM", "Thu PM", "Fri AM", "Fri PM", "Sat AM", "Sat PM", "Sun AM", "Sun PM"].forEach(function(day) {
                 var cell = document.createElement("th");
                 cell.textContent = day;
                 headerRow.appendChild(cell);
@@ -64,21 +64,23 @@
             var startDay = new Date(today);
             startDay.setDate(today.getDate() - today.getDay() + 1); // Adjust for Monday
 
-            // Loop through the next 21 days (3 weeks)
-            for (var i = 0; i < 3; i++) { // Only iterate 3 times for 3 weeks
+            // Loop through the next 3 weeks
+            for (var i = 0; i < 3; i++) {
                 // Create a new table row for each week
                 var row = document.createElement("tr");
-                for (var j = 0; j < 7; j++) {
+                for (var j = 0; j < 14; j++) { // Iterate through all 14 columns
                     var cell = document.createElement("td");
+
                     var date = new Date(startDay.getTime());
-                    date.setDate(date.getDate() + (i * 7 + j));
+                    date.setDate(date.getDate() + Math.floor(j / 2) + (i * 7)); // Adjust date calculation
 
                     // Highlight today's date
                     if (date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear()) {
                         cell.classList.add("today");
                     }
 
-                    cell.textContent = date.getDate();
+                    cell.textContent = (j % 2 === 0) ? date.getDate() : ""; // Display date in AM column
+
                     row.appendChild(cell);
                 }
                 table.appendChild(row);
