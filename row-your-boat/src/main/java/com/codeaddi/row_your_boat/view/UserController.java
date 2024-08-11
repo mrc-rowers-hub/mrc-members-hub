@@ -38,5 +38,4 @@ public class UserController {
   public String myAvailability() {
     return "my-availability"; // This refers to the my-my-availability.html template
   }
-
 }
