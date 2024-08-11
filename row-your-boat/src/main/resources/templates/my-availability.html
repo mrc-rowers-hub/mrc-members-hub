@@ -79,7 +79,13 @@
                         cell.classList.add("today");
                     }
 
+                    // Create a checkbox
+                    var checkbox = document.createElement("input");
+                    checkbox.type = "checkbox";
+                    checkbox.id = "checkbox_" + i + "_" + j; // Unique ID
+
                     cell.textContent = (j % 2 === 0) ? date.getDate() : ""; // Display date in AM column
+                    cell.appendChild(checkbox);
 
                     row.appendChild(cell);
                 }
