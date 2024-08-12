@@ -1,4 +1,4 @@
-# Row your boat
+# Members hub
 
 🛠️ WIP
 
