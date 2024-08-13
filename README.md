@@ -12,6 +12,7 @@ You need to set the following environment variable:
 Running locally:
 - in IntelliJ, get the .envfile plugin
 - add your env variables to this 
+- connects to services scheduler-service, and condition-checker - so needs them running too for full e2e 
 
 
 - Running on 8082, to connect with services on 8081 and 8080
