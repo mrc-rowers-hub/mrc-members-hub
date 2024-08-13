@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class SchedulerClient {
 
-  private String endpoint = "standard_sessions/"; // update the name of this
+  private String sessionsPath = "standard_sessions/";
 
   @Value("${services.scheduler-sevice.baseUrl}")
   private String schedulerServiceBaseUrl;
@@ -21,7 +21,7 @@ public class SchedulerClient {
   RestTemplate restTemplate = new RestTemplate();
 
   public List<RowingSessions> getAllSessions() {
-    String url = String.format(schedulerServiceBaseUrl + endpoint + "get_all_sessions");
+    String url = String.format(schedulerServiceBaseUrl + sessionsPath + "get_all_sessions");
     try {
       RowingSessions[] sessionsArray = restTemplate.getForObject(url, RowingSessions[].class);
       log.info("Successfully retrieved and mapped response from scheduler service");
