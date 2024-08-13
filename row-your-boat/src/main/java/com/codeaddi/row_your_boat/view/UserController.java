@@ -36,6 +36,11 @@ public class UserController {
 
   @GetMapping("/my-availability")
   public String myAvailability() {
-    return "my-availability"; // This refers to the my-my-availability.html template
+    return "my-availability";
+  }
+
+  @GetMapping("/standard-sessions")
+  public String standardSessions() {
+    return "standard-sessions";
   }
 }
