@@ -3,28 +3,23 @@ package com.codeaddi.row_your_boat.model.sessions;
 import com.codeaddi.row_your_boat.model.RowerLevel;
 import com.codeaddi.row_your_boat.model.SessionType;
 import com.codeaddi.row_your_boat.model.Squad;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.LocalTime;
-import lombok.*;
-import lombok.extern.jackson.Jacksonized;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+import java.util.List;
 
 @Builder
-@Value
-@AllArgsConstructor
-@Jacksonized
+@EqualsAndHashCode
+@ToString
 public class RowingSessions {
+    private String day;
 
-  private Long id;
+    private String startTime;
 
-  private String day;
+    private String endTime;
 
-  private String startTime;
-
-  private String endTime;
-
-  private Squad squad;
-
-  private RowerLevel level;
-
-  private SessionType sessionType;
+    private List<Squad> squads;
+    private List<RowerLevel> levels;
+    private SessionType sessionType;
 }

@@ -2,6 +2,7 @@ package com.codeaddi.row_your_boat.controller.sessions;
 
 import com.codeaddi.row_your_boat.model.SessionType;
 import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
+import lombok.Getter;
 
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ public class RowingSessionGrouper {
                 .collect(Collectors.groupingBy(session -> new RowingSessionKey(session))); // Corrected line
     }
 
+    @Getter
     static class RowingSessionKey {
         private final String day;
         private final String startTime;

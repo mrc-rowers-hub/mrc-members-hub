@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RowingSessionGrouperTests {
     @Test
-    public void testGroupSessions() {
+    public void groupSessions_withMatchingSessions_groupsThem() {
 
         Map<RowingSessionGrouper.RowingSessionKey, List<RowingSession>> actualGroupedSessions = RowingSessionGrouper.groupSessions(TestData.sessions);
 
