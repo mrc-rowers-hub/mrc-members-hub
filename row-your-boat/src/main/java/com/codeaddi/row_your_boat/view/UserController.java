@@ -1,7 +1,7 @@
 package com.codeaddi.row_your_boat.view;
 
-import com.codeaddi.row_your_boat.controller.http.schedulerService.SchedulerClient;
-import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
+import com.codeaddi.row_your_boat.controller.sessions.http.SchedulerClient;
+import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,8 +47,7 @@ public class UserController {
 
   @GetMapping("/standard-sessions")
   public String standardSessions(Model model) {
-    List<RowingSessions> rowingSessions = schedulerClient.getAllSessions();
-    System.out.println(rowingSessions.toString());
+    List<RowingSession> rowingSessions = schedulerClient.getAllSessions();
     model.addAttribute("sessions", rowingSessions);
 
     return "standard-sessions";

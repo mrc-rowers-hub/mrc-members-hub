@@ -1,7 +1,7 @@
-package com.codeaddi.row_your_boat.controller.http.schedulerService;
+package com.codeaddi.row_your_boat.controller.sessions.http;
 
-import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
-import java.util.Arrays;
+import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
+
 import java.util.List;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -24,11 +24,11 @@ public class SchedulerClient {
   RestTemplate restTemplate = new RestTemplate();
   ObjectMapper objectMapper = new ObjectMapper(); // Create an ObjectMapper instance
 
-  public List<RowingSessions> getAllSessions() {
+  public List<RowingSession> getAllSessions() {
     String url = String.format(schedulerServiceBaseUrl + sessionsPath + "get_all_sessions");
     try {
       String response = restTemplate.getForObject(url, String.class); // Get JSON as String
-      List<RowingSessions> sessions = objectMapper.readValue(response, new TypeReference<List<RowingSessions>>() {});
+      List<RowingSession> sessions = objectMapper.readValue(response, new TypeReference<List<RowingSession>>() {});
       log.info("Successfully retrieved and mapped response from scheduler service");
       return sessions;
     } catch (RestClientResponseException e) {
