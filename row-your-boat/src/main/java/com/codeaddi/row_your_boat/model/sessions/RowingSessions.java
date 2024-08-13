@@ -6,11 +6,13 @@ import com.codeaddi.row_your_boat.model.Squad;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lombok.Value;
 
 import java.util.List;
 
 @Builder
 @EqualsAndHashCode
+@Value
 @ToString
 public class RowingSessions {
     private String day;

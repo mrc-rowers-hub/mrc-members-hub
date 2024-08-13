@@ -21,13 +21,21 @@ public class SessionsService {
             List<RowerLevel> rowerLevels = new ArrayList<>();
 
             for(RowingSession rowingSession : sessionsWithSameTimes.get(key) ){
-                squads.add(rowingSession.getSquad());
-                rowerLevels.add(rowingSession.getLevel());
+                if(!squads.contains(rowingSession.getSquad())){
+                    squads.add(rowingSession.getSquad());
+
+                }
+                if(!rowerLevels.contains(rowingSession.getLevel())){
+                    rowerLevels.add(rowingSession.getLevel());
+
+                }
             }
 
            rowingSessionsToReturn.add(RowingSessions.builder().day(key.getDay()).sessionType(key.getSessionType()).startTime(key.getStartTime()).endTime(key.getEndTime()).squads(squads).levels(rowerLevels).build());
         }
         return rowingSessionsToReturn;
     }
+
+//    Todo - order the sessions Monday -> Friday now
 
 }
