@@ -42,14 +42,10 @@
         <thead>
         <tr>
             <th class="header-column">Attribute</th>
-            <th th:each="rowingSession, iterStat : ${sessions}" th:text="${iterStat.index + 1}">Session 1</th>
+            <th th:each="rowingSession, iterStat : ${sessions}" th:text="'Session ' + ${iterStat.index + 1}">Session 1</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>ID</td>
-            <td th:each="rowingSession : ${sessions}" th:text="${rowingSession.id}"></td>
-        </tr>
         <tr>
             <td>Day</td>
             <td th:each="rowingSession : ${sessions}" th:text="${rowingSession.day}"></td>
