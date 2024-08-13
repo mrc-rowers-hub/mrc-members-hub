@@ -14,21 +14,17 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 public class RowingSessions {
 
-  @JsonProperty("session_id")
   private Long id;
 
   private String day;
 
-  @JsonProperty("start_time")
-  private LocalTime startTime;
+  private String startTime;
 
-  @JsonProperty("end_time")
-  private LocalTime endTime;
+  private String endTime;
 
   private Squad squad;
 
   private RowerLevel level;
 
-  @JsonProperty("session_type")
   private SessionType sessionType;
 }
