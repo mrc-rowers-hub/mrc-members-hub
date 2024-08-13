@@ -14,7 +14,7 @@ import java.time.LocalTime;
 @Value
 @AllArgsConstructor
 @Jacksonized
-public class Session {
+public class RowingSessions {
 
   @JsonProperty("session_id")
   private Long id;

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Home</title>
+    <title>Standard Sessions</title>
     <link rel="stylesheet" th:href="@{/styles.css}">
     <link rel="stylesheet" th:href="@{/sidebar.css}"> <!-- Sidebar styles -->
 </head>
@@ -15,16 +15,37 @@
     </div>
 </header>
 
-
-<!-- Include the sidebar using the updated syntax -->
 <div th:replace="~{sections/sidebar :: sidebarFragment}"></div>
 
 <main class="content" id="content">
     <h2>Standard Sessions</h2>
     <p> View & edit the standard, recurring sessions</p>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Day</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Squad</th>
+            <th>Level</th>
+            <th>Session Type</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="rowingSession : ${sessions}">
+            <td th:text="${rowingSession.id}"></td>
+            <td th:text="${rowingSession.day}"></td>
+            <td th:text="${rowingSession.startTime}"></td>
+            <td th:text="${rowingSession.endTime}"></td>
+            <td th:text="${rowingSession.squad}"></td>
+            <td th:text="${rowingSession.level}"></td>
+            <td th:text="${rowingSession.sessionType}"></td>
+        </tr>
+        </tbody>
+    </table>
 </main>
-
-
 
 <footer>
     <p>Data provided by <strong>OpenWeatherMap</strong></p>
