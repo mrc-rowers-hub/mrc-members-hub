@@ -5,7 +5,6 @@
     <link rel="stylesheet" th:href="@{/styles.css}">
     <link rel="stylesheet" th:href="@{/sidebar.css}">
     <style>
-
         table {
             border-collapse: collapse;
             width: 100%;
@@ -43,6 +42,16 @@
             font-size: 16px;
             cursor: pointer;
         }
+
+        .edit-form {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .edit-form input {
+            width: calc(100% - 20px);
+            margin: 5px 0;
+        }
     </style>
 </head>
 <body>
@@ -55,7 +64,13 @@
     </div>
 </header>
 
-<div th:replace="~{sections/sidebar :: sidebarFragment}"></div>
+<!--Todo remove the 'toggle sidebar' text, and just have an arrow... -->
+
+<div id="sidebarToggle" class="sidebar-toggle">Toggle Sidebar</div>
+<div id="sidebar" class="sidebar">
+    <!-- Sidebar content -->
+    <div th:replace="~{sections/sidebar :: sidebarFragment}"></div>
+</div>
 
 <main class="content" id="content">
     <h2>All Sessions</h2>
@@ -70,10 +85,11 @@
             <th>Squad</th>
             <th>Level</th>
             <th>Session Type</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="rowingSession : ${sessions}">
+        <tr th:each="rowingSession : ${sessions}" data-id="${rowingSession.id}">
             <td th:text="${rowingSession.id}"></td>
             <td th:text="${rowingSession.day}"></td>
             <td th:text="${rowingSession.startTime}"></td>
@@ -81,9 +97,31 @@
             <td th:text="${rowingSession.squad}"></td>
             <td th:text="${rowingSession.level}"></td>
             <td th:text="${rowingSession.sessionType}"></td>
+            <td><button class="edit-btn">Edit</button></td>
         </tr>
         </tbody>
     </table>
+
+    <div class="edit-form" id="editForm">
+        <h3>Edit Session</h3>
+        <form id="editSessionForm">
+            <input type="hidden" id="editSessionId">
+            <label for="editDay">Day</label>
+            <input type="text" id="editDay">
+            <label for="editStartTime">Start Time</label>
+            <input type="time" id="editStartTime">
+            <label for="editEndTime">End Time</label>
+            <input type="time" id="editEndTime">
+            <label for="editSquad">Squad</label>
+            <input type="text" id="editSquad">
+            <label for="editLevel">Level</label>
+            <input type="text" id="editLevel">
+            <label for="editSessionType">Session Type</label>
+            <input type="text" id="editSessionType">
+            <button type="button" id="saveEdit">Save</button>
+            <button type="button" id="cancelEdit">Cancel</button>
+        </form>
+    </div>
 </main>
 
 <footer>
@@ -93,6 +131,12 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
+        var editBtns = document.querySelectorAll(".edit-btn");
+        var editForm = document.getElementById("editForm");
+        var saveEditBtn = document.getElementById("saveEdit");
+        var cancelEditBtn = document.getElementById("cancelEdit");
+
+        // Sidebar toggle functionality
         var sidebarToggle = document.getElementById("sidebarToggle");
         var sidebar = document.getElementById("sidebar");
         var content = document.getElementById("content");
@@ -104,6 +148,71 @@
                 this.classList.toggle("collapsed");
             });
         }
+
+        // Edit functionality
+        editBtns.forEach(function(btn) {
+            btn.addEventListener("click", function() {
+                var row = this.closest("tr");
+                var id = row.getAttribute("data-id");
+                var day = row.children[1].innerText;
+                var startTime = row.children[2].innerText;
+                var endTime = row.children[3].innerText;
+                var squad = row.children[4].innerText;
+                var level = row.children[5].innerText;
+                var sessionType = row.children[6].innerText;
+
+                document.getElementById("editSessionId").value = id;
+                document.getElementById("editDay").value = day;
+                document.getElementById("editStartTime").value = startTime;
+                document.getElementById("editEndTime").value = endTime;
+                document.getElementById("editSquad").value = squad;
+                document.getElementById("editLevel").value = level;
+                document.getElementById("editSessionType").value = sessionType;
+
+                editForm.style.display = "block";
+            });
+        });
+
+        cancelEditBtn.addEventListener("click", function() {
+            editForm.style.display = "none";
+        });
+
+        saveEditBtn.addEventListener("click", function() {
+            var id = document.getElementById("editSessionId").value;
+            var day = document.getElementById("editDay").value;
+            var startTime = document.getElementById("editStartTime").value;
+            var endTime = document.getElementById("editEndTime").value;
+            var squad = document.getElementById("editSquad").value;
+            var level = document.getElementById("editLevel").value;
+            var sessionType = document.getElementById("editSessionType").value;
+
+            // Send AJAX request to update the session
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/update-rowing-session", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.status === "SUCCESS") {
+                        var row = document.querySelector(`tr[data-id='${id}']`);
+                        row.children[1].innerText = day;
+                        row.children[2].innerText = startTime;
+                        row.children[3].innerText = endTime;
+                        row.children[4].innerText = squad;
+                        row.children[5].innerText = level;
+                        row.children[6].innerText = sessionType;
+
+                        editForm.style.display = "none";
+                    } else {
+                        alert("Failed to update session.");
+                    }
+                } else {
+                    alert("Error while updating session.");
+                }
+            };
+
+            xhr.send(`id=${id}&day=${day}&startTime=${startTime}&endTime=${endTime}&squad=${squad}&level=${level}&sessionType=${sessionType}`);
+        });
     });
 </script>
 </body>
