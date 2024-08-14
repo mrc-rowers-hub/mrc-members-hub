@@ -3,6 +3,7 @@ package com.codeaddi.row_your_boat;
 import com.codeaddi.row_your_boat.model.RowerLevel;
 import com.codeaddi.row_your_boat.model.SessionType;
 import com.codeaddi.row_your_boat.model.Squad;
+import com.codeaddi.row_your_boat.model.Weekday;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
 import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
 import java.util.Arrays;
@@ -52,7 +53,7 @@ public class TestData {
 
   public static RowingSessions session1And2 =
       RowingSessions.builder()
-          .day("MONDAY")
+          .day(Weekday.MONDAY)
           .startTime("18:00:00")
           .endTime("20:00:00")
           .sessionType(SessionType.WATER)
@@ -62,7 +63,7 @@ public class TestData {
 
   public static RowingSessions session3s =
       RowingSessions.builder()
-          .day("MONDAY")
+          .day(Weekday.MONDAY)
           .startTime("18:00:00")
           .endTime("20:00:00")
           .sessionType(SessionType.ERG)
