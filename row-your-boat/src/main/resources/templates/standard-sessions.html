@@ -78,7 +78,11 @@
     <!-- Form Container -->
     <div class="form-container" id="sessionForm">
         <h3>Add New Rowing Session</h3>
-        <form id="rowingSessionForm">
+        <form id="rowingSessionForm" action="/internal/add-rowing-session" method="post">
+
+            <!-- Hidden input to store the maxId -->
+            <input type="hidden" id="maxId" name="maxId" th:value="${maxId}">
+
             <label for="day">Day:</label>
             <select id="day" name="day">
                 <option value="MONDAY">Monday</option>
@@ -121,6 +125,7 @@
             <button type="submit">Submit</button>
         </form>
     </div>
+
 
     <th:block th:each="entry : ${sessions}">
         <h3>Squad: [[${entry.key}]]</h3>
