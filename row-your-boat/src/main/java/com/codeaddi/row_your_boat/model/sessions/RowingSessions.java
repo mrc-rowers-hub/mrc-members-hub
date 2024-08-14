@@ -4,6 +4,8 @@ import com.codeaddi.row_your_boat.model.RowerLevel;
 import com.codeaddi.row_your_boat.model.SessionType;
 import com.codeaddi.row_your_boat.model.Squad;
 import java.util.List;
+
+import com.codeaddi.row_your_boat.model.Weekday;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -14,7 +16,7 @@ import lombok.Value;
 @Value
 @ToString
 public class RowingSessions {
-  private String day;
+  private Weekday day;
 
   private String startTime;
 

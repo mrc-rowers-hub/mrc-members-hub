@@ -2,6 +2,7 @@ package com.codeaddi.row_your_boat.controller.sessions;
 
 import com.codeaddi.row_your_boat.model.RowerLevel;
 import com.codeaddi.row_your_boat.model.Squad;
+import com.codeaddi.row_your_boat.model.Weekday;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
 import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class SessionsService {
 
       rowingSessionsToReturn.add(
           RowingSessions.builder()
-              .day(key.getDay())
+              .day(Weekday.fromString((key.getDay())))
               .sessionType(key.getSessionType())
               .startTime(key.getStartTime())
               .endTime(key.getEndTime())
