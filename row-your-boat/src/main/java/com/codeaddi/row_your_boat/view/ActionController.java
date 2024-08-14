@@ -4,6 +4,7 @@ import com.codeaddi.row_your_boat.controller.sessions.http.SchedulerClient;
 import com.codeaddi.row_your_boat.model.RowerLevel;
 import com.codeaddi.row_your_boat.model.SessionType;
 import com.codeaddi.row_your_boat.model.Squad;
+import com.codeaddi.row_your_boat.model.http.StandardResponse;
 import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +37,15 @@ public class ActionController {
 log.info("Request to add new session received");
 
         RowingSession newSession = RowingSession.builder().id(maxId + 1).day(day).startTime(startTime).endTime(endTime).squad(Squad.valueOf(squad)).level(RowerLevel.valueOf(level)).sessionType(SessionType.valueOf(sessionType)).build();
-        schedulerClient.updateSession(newSession);
+        StandardResponse response = schedulerClient.updateSession(newSession);
 
-        redirectAttributes.addFlashAttribute("successMessage", "New session added successfully!");
+        if(response.getStatus().toString().contains("SUCCESS")){
+            redirectAttributes.addFlashAttribute("successMessage", response.getMessage());
+
+        } else{
+            redirectAttributes.addFlashAttribute("errorMessage", "New session added successfully!");
+
+        }
 
         return "redirect:/standard-sessions";
     }
