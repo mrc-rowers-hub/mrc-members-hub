@@ -14,7 +14,7 @@ public class RowingSessionGrouper {
   public static Map<RowingSessionKey, List<RowingSession>> groupSessions(
       List<RowingSession> sessions) {
     return sessions.stream()
-        .collect(Collectors.groupingBy(session -> new RowingSessionKey(session))); // Corrected line
+        .collect(Collectors.groupingBy(session -> new RowingSessionKey(session)));
   }
 
   @Getter

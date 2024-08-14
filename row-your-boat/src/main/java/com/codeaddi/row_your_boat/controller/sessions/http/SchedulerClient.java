@@ -20,12 +20,12 @@ public class SchedulerClient {
   private String schedulerServiceBaseUrl;
 
   RestTemplate restTemplate = new RestTemplate();
-  ObjectMapper objectMapper = new ObjectMapper(); // Create an ObjectMapper instance
+  ObjectMapper objectMapper = new ObjectMapper();
 
   public List<RowingSession> getAllSessions() {
     String url = String.format(schedulerServiceBaseUrl + sessionsPath + "get_all_sessions");
     try {
-      String response = restTemplate.getForObject(url, String.class); // Get JSON as String
+      String response = restTemplate.getForObject(url, String.class);
       List<RowingSession> sessions =
           objectMapper.readValue(response, new TypeReference<List<RowingSession>>() {});
       log.info("Successfully retrieved and mapped response from scheduler service");

@@ -46,6 +46,4 @@ public class SessionsService {
     return rowingSessions.stream().collect(Collectors.groupingBy(RowingSessions::getSquads));
   }
 
-  //    Todo - order the sessions Monday -> Friday now
-
 }
