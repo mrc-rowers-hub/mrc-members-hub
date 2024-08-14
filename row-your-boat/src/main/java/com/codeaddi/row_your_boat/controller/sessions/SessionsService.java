@@ -1,7 +1,6 @@
 package com.codeaddi.row_your_boat.controller.sessions;
 
 import com.codeaddi.row_your_boat.model.RowerLevel;
-import com.codeaddi.row_your_boat.model.SessionType;
 import com.codeaddi.row_your_boat.model.Squad;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
 import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
@@ -13,7 +12,6 @@ import java.util.stream.Collectors;
 
 public class SessionsService {
 
-    // Todo, RowingSessions should only have Squad, not a list of
     public static List<RowingSessions> mapRowingSessionToSessions(List<RowingSession> rowingSessionList){
         Map<RowingSessionGrouper.RowingSessionKey, List<RowingSession>> sessionsWithSameTimes = RowingSessionGrouper.groupSessions(rowingSessionList);
         List<RowingSessions> rowingSessionsToReturn = new ArrayList<>();
@@ -34,9 +32,9 @@ public class SessionsService {
         return rowingSessionsToReturn;
     }
 
-//    public static Map<Squad, List<RowingSession>> getRowingSessionsPerSquad(List<RowingSessions> rowingSessions){
-//        rowingSessions.stream().collect(Collectors.groupingBy(RowingSessions::getSquads));
-//    }
+    public static Map<Squad, List<RowingSessions>> getRowingSessionsPerSquad(List<RowingSessions> rowingSessions){
+        return rowingSessions.stream().collect(Collectors.groupingBy(RowingSessions::getSquads));
+    }
 
 //    Todo - order the sessions Monday -> Friday now
 
