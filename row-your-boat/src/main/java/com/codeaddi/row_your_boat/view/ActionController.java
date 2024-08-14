@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Controller
@@ -30,11 +31,14 @@ public class ActionController {
                                    @RequestParam String squad,
                                    @RequestParam String level,
                                    @RequestParam String sessionType,
-                                   @RequestParam Long maxId) {
+                                   @RequestParam Long maxId,
+                                   RedirectAttributes redirectAttributes) {
 log.info("Request to add new session received");
 
         RowingSession newSession = RowingSession.builder().id(maxId + 1).day(day).startTime(startTime).endTime(endTime).squad(Squad.valueOf(squad)).level(RowerLevel.valueOf(level)).sessionType(SessionType.valueOf(sessionType)).build();
         schedulerClient.updateSession(newSession);
+
+        redirectAttributes.addFlashAttribute("successMessage", "New session added successfully!");
 
         return "redirect:/standard-sessions";
     }

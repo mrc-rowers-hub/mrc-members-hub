@@ -5,6 +5,13 @@
     <link rel="stylesheet" th:href="@{/styles.css}">
     <link rel="stylesheet" th:href="@{/sidebar.css}">
     <style>
+        .alert {
+            padding: 15px;
+            background-color: #4CAF50; /* Green background */
+            color: white; /* White text */
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
         table {
             border-collapse: collapse;
             width: 100%;
@@ -68,6 +75,10 @@
 
 <main class="content" id="content">
     <h2>Standard Sessions</h2>
+
+    <div th:if="${successMessage}" class="alert alert-success">
+        <p th:text="${successMessage}"></p>
+    </div>
 
     <!-- Button container -->
     <div class="button-container">
