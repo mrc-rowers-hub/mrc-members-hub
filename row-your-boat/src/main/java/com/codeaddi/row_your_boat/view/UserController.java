@@ -52,6 +52,10 @@ public class UserController {
     Map<Squad, List<RowingSessions>> sessions = viewService.getAllStandardSessionsToDisplay();
     model.addAttribute("sessions", sessions);
 
+    Long maxId = viewService.getMaxId();
+
+    model.addAttribute("maxId", maxId);
+
     return "standard-sessions";
   }
 }

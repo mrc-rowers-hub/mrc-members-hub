@@ -22,6 +22,8 @@ public class RowingSessions {
   private String endTime;
 
   private Squad squads;
+
   private List<RowerLevel> levels;
+
   private SessionType sessionType;
 }

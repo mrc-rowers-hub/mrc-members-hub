@@ -3,24 +3,75 @@
 <head>
     <title>Standard Sessions</title>
     <link rel="stylesheet" th:href="@{/styles.css}">
-    <link rel="stylesheet" th:href="@{/sidebar.css}"> <style>
-    table {
-        border-collapse: collapse;
-        width: 100%;
-        margin-bottom: 20px;
-    }
-    th, td {
-        border: 1px solid #ddd;
-        padding: 8px;
-    }
-    th {
-        text-align: left;
-    }
-    .header-column {
-        text-align: center;
-        font-weight: bold;
-    }
-</style>
+    <link rel="stylesheet" th:href="@{/sidebar.css}">
+    <style>
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            color: #fff; /* Text color for better contrast */
+            font-size: 16px;
+        }
+
+        .alert-success {
+            background-color: #d4edda; /* Light green background */
+            border: 1px solid #c3e6cb; /* Slightly darker green border */
+            color: #155724; /* Dark green text */
+        }
+
+        .alert-error {
+            background-color: #f8d7da; /* Light red background */
+            border: 1px solid #f5c6cb; /* Slightly darker red border */
+            color: #721c24; /* Dark red text */
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            text-align: left;
+        }
+        .header-column {
+            text-align: center;
+            font-weight: bold;
+        }
+        .button-container {
+            margin: 20px 0;
+            text-align: right;
+        }
+        .button-container button {
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .form-container {
+            display: none; /* Initially hidden */
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .form-container label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        .form-container select, .form-container input[type="text"], .form-container input[type="time"] {
+            padding: 8px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .form-container button {
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -36,7 +87,75 @@
 
 <main class="content" id="content">
     <h2>Standard Sessions</h2>
-    <p> View & edit the standard, recurring sessions</p>
+
+    <div th:if="${successMessage}" class="alert alert-success">
+        <p th:text="${successMessage}"></p>
+    </div>
+
+    <div th:if="${errorMessage}" class="alert alert-error">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
+    <!-- Button container -->
+    <div class="button-container">
+        <p>View & edit the standard, recurring sessions</p>
+        <button id="addNewSessionButton">Add New Session</button>
+    </div>
+
+    <!-- Form Container -->
+    <div class="form-container" id="sessionForm">
+        <h3>Add New Rowing Session</h3>
+        <form id="rowingSessionForm" action="/internal/add-rowing-session" method="post">
+
+            <!-- Hidden input to store the maxId -->
+            <input type="hidden" id="maxId" name="maxId" th:value="${maxId}">
+
+            <label for="day">Day:</label>
+            <select id="day" name="day" required>
+                <option value="">Select a day</option>
+                <option value="MONDAY">Monday</option>
+                <option value="TUESDAY">Tuesday</option>
+                <option value="WEDNESDAY">Wednesday</option>
+                <option value="THURSDAY">Thursday</option>
+                <option value="FRIDAY">Friday</option>
+                <option value="SATURDAY">Saturday</option>
+                <option value="SUNDAY">Sunday</option>
+            </select>
+
+            <label for="startTime">Start Time:</label>
+            <input type="time" id="startTime" name="startTime" required>
+
+            <label for="endTime">End Time:</label>
+            <input type="time" id="endTime" name="endTime" required>
+
+            <label for="squad">Squad:</label>
+            <select id="squad" name="squad" required>
+                <option value="">Select a squad</option>
+                <option value="WOMENS">Womens</option>
+                <option value="MENS">Mens</option>
+                <option value="DEVELOPMENT">Development</option>
+            </select>
+
+            <label for="level">Level:</label>
+            <select id="level" name="level" required>
+                <option value="">Select a level</option>
+                <option value="DEVELOPMENT">Development</option>
+                <option value="NOVICE">Novice</option>
+                <option value="INTERMEDIATE">Intermediate</option>
+                <option value="SENIOR">Senior</option>
+            </select>
+
+            <label for="sessionType">Session Type:</label>
+            <select id="sessionType" name="sessionType" required>
+                <option value="">Select a session type</option>
+                <option value="WATER">Water</option>
+                <option value="ERG">Erg</option>
+                <option value="OTHER">Other</option>
+            </select>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
 
     <th:block th:each="entry : ${sessions}">
         <h3>Squad: [[${entry.key}]]</h3>
@@ -85,6 +204,8 @@
         var sidebarToggle = document.getElementById("sidebarToggle");
         var sidebar = document.getElementById("sidebar");
         var content = document.getElementById("content");
+        var addNewSessionButton = document.getElementById("addNewSessionButton");
+        var sessionForm = document.getElementById("sessionForm");
 
         if (sidebarToggle && sidebar && content) {
             sidebarToggle.addEventListener("click", function() {
@@ -93,6 +214,11 @@
                 this.classList.toggle("collapsed");
             });
         }
+
+        // Show form when button is clicked
+        addNewSessionButton.addEventListener("click", function() {
+            sessionForm.style.display = sessionForm.style.display === "none" || sessionForm.style.display === "" ? "block" : "none";
+        });
     });
 </script>
 </body>
