@@ -45,5 +45,4 @@ public class SessionsService {
       List<RowingSessions> rowingSessions) {
     return rowingSessions.stream().collect(Collectors.groupingBy(RowingSessions::getSquads));
   }
-
 }

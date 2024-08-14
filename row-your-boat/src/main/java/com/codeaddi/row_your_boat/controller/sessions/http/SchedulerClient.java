@@ -6,8 +6,6 @@ import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -59,13 +57,15 @@ public class SchedulerClient {
       HttpEntity<String> requestEntity = new HttpEntity<>(requestJson, headers);
 
       // Make the PUT request and receive the response as StandardResponse
-      ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.PUT, requestEntity, String.class);
+      ResponseEntity<String> responseEntity =
+          restTemplate.exchange(url, HttpMethod.PUT, requestEntity, String.class);
 
       // Convert the response body to StandardResponse
       String responseBody = responseEntity.getBody();
-      StandardResponse standardResponse = objectMapper.readValue(responseBody, StandardResponse.class);
+      StandardResponse standardResponse =
+          objectMapper.readValue(responseBody, StandardResponse.class);
 
-      if(responseEntity.getStatusCode().is2xxSuccessful()) {
+      if (responseEntity.getStatusCode().is2xxSuccessful()) {
         log.info("Successfully updated session. Response: {}", standardResponse);
       }
 
@@ -76,5 +76,4 @@ public class SchedulerClient {
       return StandardResponse.builder().status(Status.ERROR).message("Unexpected error").build();
     }
   }
-
 }

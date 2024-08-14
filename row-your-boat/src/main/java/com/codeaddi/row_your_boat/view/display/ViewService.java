@@ -35,12 +35,12 @@ public class ViewService {
     return standardSessions;
   }
 
-  public Long getMaxId(){
+  public Long getMaxId() {
     List<RowingSession> rowingSessions = schedulerClient.getAllSessions();
 
     return rowingSessions.stream()
-            .max(Comparator.comparingLong(RowingSession::getId))
-            .map(RowingSession::getId)
-            .orElse(0L);
+        .max(Comparator.comparingLong(RowingSession::getId))
+        .map(RowingSession::getId)
+        .orElse(0L);
   }
 }
