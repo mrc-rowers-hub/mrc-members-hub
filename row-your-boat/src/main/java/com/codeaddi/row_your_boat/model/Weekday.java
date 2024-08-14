@@ -20,13 +20,12 @@ public enum Weekday {
     this.dayNumber = dayNumber;
   }
 
-  public static Weekday fromString(String string){
-    try{
+  public static Weekday fromString(String string) {
+    try {
       return Weekday.valueOf(string.toUpperCase());
-    } catch(IllegalArgumentException e){
+    } catch (IllegalArgumentException e) {
       log.error("No weekday found for: {}", string);
       throw e;
-
     }
   }
 }
