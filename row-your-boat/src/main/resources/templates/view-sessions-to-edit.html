@@ -10,13 +10,16 @@
             width: 100%;
             margin-bottom: 20px;
         }
+
         th, td {
             border: 1px solid #ddd;
             padding: 8px;
         }
+
         th {
             text-align: left;
         }
+
         .header-column {
             text-align: center;
             font-weight: bold;
@@ -32,11 +35,13 @@
             display: block;
             margin-bottom: 10px;
         }
+
         .form-container select, .form-container input[type="text"], .form-container input[type="time"] {
             padding: 8px;
             width: 100%;
             margin-bottom: 10px;
         }
+
         .form-container button {
             padding: 10px 15px;
             font-size: 16px;
@@ -97,7 +102,9 @@
             <td th:text="${rowingSession.squad}"></td>
             <td th:text="${rowingSession.level}"></td>
             <td th:text="${rowingSession.sessionType}"></td>
-            <td><button class="edit-btn">Edit</button></td>
+            <td>
+                <button class="edit-btn">Edit</button>
+            </td>
         </tr>
         </tbody>
     </table>
@@ -106,18 +113,45 @@
         <h3>Edit Session</h3>
         <form id="editSessionForm">
             <input type="hidden" id="editSessionId">
-            <label for="editDay">Day</label>
-            <input type="text" id="editDay">
-            <label for="editStartTime">Start Time</label>
-            <input type="time" id="editStartTime">
-            <label for="editEndTime">End Time</label>
-            <input type="time" id="editEndTime">
-            <label for="editSquad">Squad</label>
-            <input type="text" id="editSquad">
-            <label for="editLevel">Level</label>
-            <input type="text" id="editLevel">
-            <label for="editSessionType">Session Type</label>
-            <input type="text" id="editSessionType">
+            <label for="editDay">Day:</label>
+            <select id="editDay" name="day" required>
+                <option value="MONDAY">Monday</option>
+                <option value="TUESDAY">Tuesday</option>
+                <option value="WEDNESDAY">Wednesday</option>
+                <option value="THURSDAY">Thursday</option>
+                <option value="FRIDAY">Friday</option>
+                <option value="SATURDAY">Saturday</option>
+                <option value="SUNDAY">Sunday</option>
+            </select>
+
+            <label for="editStartTime">Start Time:</label>
+            <input type="time" id="editStartTime" name="startTime" required>
+
+            <label for="editEndTime">End Time:</label>
+            <input type="time" id="editEndTime" name="endTime" required>
+
+            <label for="editSquad">Squad:</label>
+            <select id="editSquad" name="squad" required>
+                <option value="WOMENS">Womens</option>
+                <option value="MENS">Mens</option>
+                <option value="DEVELOPMENT">Development</option>
+            </select>
+
+            <label for="editLevel">Level:</label>
+            <select id="editLevel" name="level" required>
+                <option value="DEVELOPMENT">Development</option>
+                <option value="NOVICE">Novice</option>
+                <option value="INTERMEDIATE">Intermediate</option>
+                <option value="SENIOR">Senior</option>
+            </select>
+
+            <label for="editSessionType">Session Type:</label>
+            <select id="editSessionType" name="sessionType" required>
+                <option value="WATER">Water</option>
+                <option value="ERG">Erg</option>
+                <option value="OTHER">Other</option>
+            </select>
+
             <button type="button" id="saveEdit">Save</button>
             <button type="button" id="cancelEdit">Cancel</button>
         </form>
@@ -130,7 +164,7 @@
 </footer>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         var editBtns = document.querySelectorAll(".edit-btn");
         var editForm = document.getElementById("editForm");
         var saveEditBtn = document.getElementById("saveEdit");
@@ -142,7 +176,7 @@
         var content = document.getElementById("content");
 
         if (sidebarToggle && sidebar && content) {
-            sidebarToggle.addEventListener("click", function() {
+            sidebarToggle.addEventListener("click", function () {
                 sidebar.classList.toggle("collapsed");
                 content.classList.toggle("collapsed");
                 this.classList.toggle("collapsed");
@@ -150,8 +184,8 @@
         }
 
         // Edit functionality
-        editBtns.forEach(function(btn) {
-            btn.addEventListener("click", function() {
+        editBtns.forEach(function (btn) {
+            btn.addEventListener("click", function () {
                 var row = this.closest("tr");
                 var id = row.getAttribute("data-id");
                 var day = row.children[1].innerText;
@@ -173,11 +207,11 @@
             });
         });
 
-        cancelEditBtn.addEventListener("click", function() {
+        cancelEditBtn.addEventListener("click", function () {
             editForm.style.display = "none";
         });
 
-        saveEditBtn.addEventListener("click", function() {
+        saveEditBtn.addEventListener("click", function () {
             var id = document.getElementById("editSessionId").value;
             var day = document.getElementById("editDay").value;
             var startTime = document.getElementById("editStartTime").value;
@@ -190,7 +224,7 @@
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "/update-rowing-session", true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onload = function() {
+            xhr.onload = function () {
                 if (xhr.status === 200) {
                     var response = JSON.parse(xhr.responseText);
                     if (response.status === "SUCCESS") {
