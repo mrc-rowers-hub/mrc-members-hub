@@ -45,8 +45,6 @@ footer {
     gap: 20px; /* Space between items */
 }
 
-
-
 /* Media query for smaller screens */
 @media (max-width: 600px) {
     body {

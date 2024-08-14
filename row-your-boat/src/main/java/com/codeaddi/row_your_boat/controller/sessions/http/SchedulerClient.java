@@ -46,21 +46,16 @@ public class SchedulerClient {
     String url = String.format(schedulerServiceBaseUrl + sessionsPath + "update_session");
 
     try {
-      // Convert the RowingSession object to JSON
       String requestJson = objectMapper.writeValueAsString(session);
 
-      // Set up headers
       HttpHeaders headers = new HttpHeaders();
       headers.setContentType(MediaType.APPLICATION_JSON);
 
-      // Create the request entity
       HttpEntity<String> requestEntity = new HttpEntity<>(requestJson, headers);
 
-      // Make the PUT request and receive the response as StandardResponse
       ResponseEntity<String> responseEntity =
           restTemplate.exchange(url, HttpMethod.PUT, requestEntity, String.class);
 
-      // Convert the response body to StandardResponse
       String responseBody = responseEntity.getBody();
       StandardResponse standardResponse =
           objectMapper.readValue(responseBody, StandardResponse.class);
