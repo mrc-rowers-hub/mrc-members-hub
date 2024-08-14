@@ -2,6 +2,7 @@ package com.codeaddi.row_your_boat.view;
 
 import com.codeaddi.row_your_boat.model.Squad;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
+import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
 import com.codeaddi.row_your_boat.view.display.ViewService;
 import java.util.List;
 import java.util.Map;
@@ -57,5 +58,14 @@ public class UserController {
     model.addAttribute("maxId", maxId);
 
     return "standard-sessions";
+  }
+
+  @GetMapping("/view-sessions-to-edit")
+  public String viewSessions(Model model) {
+    List<RowingSession> sessions = viewService.getAllSessions();
+
+    model.addAttribute("sessions", sessions);
+
+    return "view-sessions-to-edit";
   }
 }

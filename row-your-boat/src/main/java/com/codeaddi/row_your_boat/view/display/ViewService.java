@@ -16,6 +16,10 @@ public class ViewService {
 
   @Autowired private SchedulerClient schedulerClient;
 
+  public List<RowingSession> getAllSessions(){
+    return schedulerClient.getAllSessions();
+  }
+
   public Map<Squad, List<RowingSessions>> getAllStandardSessionsToDisplay() {
     List<RowingSession> rowingSessions = schedulerClient.getAllSessions();
     List<RowingSessions> groupedSessions =
