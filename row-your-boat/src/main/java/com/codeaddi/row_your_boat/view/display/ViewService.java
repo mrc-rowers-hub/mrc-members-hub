@@ -23,7 +23,15 @@ public class ViewService {
         SessionsService.mapRowingSessionToSessions(rowingSessions);
     Map<Squad, List<RowingSessions>> standardSessions = SessionsService.getRowingSessionsPerSquad(groupedSessions);
 
-    standardSessions.forEach((key, value) -> value.sort(Comparator.comparing(rowingSession -> rowingSession.getDay().ordinal())));
+    // sort by time
+    standardSessions.forEach((key, value) -> value.sort(
+            Comparator.comparing(RowingSessions::getStartTime)
+    ));
+
+    //sort into day order
+    standardSessions.forEach((key, value) -> value.sort(
+            Comparator.comparing(rowingSession -> rowingSession.getDay().ordinal())
+    ));
 
     return standardSessions;
 
