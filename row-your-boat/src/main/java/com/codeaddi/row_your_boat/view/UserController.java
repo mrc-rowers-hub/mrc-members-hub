@@ -2,11 +2,9 @@ package com.codeaddi.row_your_boat.view;
 
 import com.codeaddi.row_your_boat.model.Squad;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
-
+import com.codeaddi.row_your_boat.view.display.ViewService;
 import java.util.List;
 import java.util.Map;
-
-import com.codeaddi.row_your_boat.view.display.ViewService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,8 +19,7 @@ import org.springframework.web.servlet.view.RedirectView;
 @Slf4j
 public class UserController {
 
-  @Autowired
-  ViewService viewService;
+  @Autowired ViewService viewService;
 
   @Value("${services.weather.baseUrl}")
   private String weatherServiceBaseUrl;

@@ -1,11 +1,9 @@
 package com.codeaddi.row_your_boat.controller.sessions.http;
 
 import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
-
-import java.util.List;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -28,7 +26,8 @@ public class SchedulerClient {
     String url = String.format(schedulerServiceBaseUrl + sessionsPath + "get_all_sessions");
     try {
       String response = restTemplate.getForObject(url, String.class); // Get JSON as String
-      List<RowingSession> sessions = objectMapper.readValue(response, new TypeReference<List<RowingSession>>() {});
+      List<RowingSession> sessions =
+          objectMapper.readValue(response, new TypeReference<List<RowingSession>>() {});
       log.info("Successfully retrieved and mapped response from scheduler service");
       return sessions;
     } catch (RestClientResponseException e) {
