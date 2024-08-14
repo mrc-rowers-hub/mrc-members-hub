@@ -1,10 +1,12 @@
 package com.codeaddi.row_your_boat.view;
 
-import com.codeaddi.row_your_boat.controller.sessions.SessionsService;
-import com.codeaddi.row_your_boat.controller.sessions.http.SchedulerClient;
+import com.codeaddi.row_your_boat.model.Squad;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
-import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
+
 import java.util.List;
+import java.util.Map;
+
+import com.codeaddi.row_your_boat.view.display.ViewService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +21,8 @@ import org.springframework.web.servlet.view.RedirectView;
 @Slf4j
 public class UserController {
 
-  @Autowired SchedulerClient schedulerClient;
+  @Autowired
+  ViewService viewService;
 
   @Value("${services.weather.baseUrl}")
   private String weatherServiceBaseUrl;
@@ -49,9 +52,8 @@ public class UserController {
 
   @GetMapping("/standard-sessions")
   public String standardSessions(Model model) {
-    List<RowingSession> rowingSessions = schedulerClient.getAllSessions();
-    List<RowingSessions> groupedSessions = SessionsService.mapRowingSessionToSessions(rowingSessions);
-    model.addAttribute("sessions", groupedSessions);
+    Map<Squad, List<RowingSessions>> sessions = viewService.getAllStandardSessionsToDisplay();
+    model.addAttribute("sessions", sessions);
 
     return "standard-sessions";
   }

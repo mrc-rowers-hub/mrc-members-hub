@@ -3,24 +3,24 @@
 <head>
     <title>Standard Sessions</title>
     <link rel="stylesheet" th:href="@{/styles.css}">
-    <link rel="stylesheet" th:href="@{/sidebar.css}"> <!-- Sidebar styles -->
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-        th {
-            text-align: left;
-        }
-        .header-column {
-            text-align: center;
-            font-weight: bold;
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{/sidebar.css}"> <style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+    th {
+        text-align: left;
+    }
+    .header-column {
+        text-align: center;
+        font-weight: bold;
+    }
+</style>
 </head>
 <body>
 <header>
@@ -38,40 +38,45 @@
     <h2>Standard Sessions</h2>
     <p> View & edit the standard, recurring sessions</p>
 
-    <table>
-        <thead>
-        <tr>
-            <th class="header-column">Attribute</th>
-            <th th:each="rowingSession, iterStat : ${sessions}" th:text="'Session ' + ${iterStat.index + 1}">Session 1</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>Day</td>
-            <td th:each="rowingSession : ${sessions}" th:text="${rowingSession.day}"></td>
-        </tr>
-        <tr>
-            <td>Start Time</td>
-            <td th:each="rowingSession : ${sessions}" th:text="${rowingSession.startTime}"></td>
-        </tr>
-        <tr>
-            <td>End Time</td>
-            <td th:each="rowingSession : ${sessions}" th:text="${rowingSession.endTime}"></td>
-        </tr>
-        <tr>
-            <td>Squad</td>
-            <td th:each="rowingSession : ${sessions}" th:text="${rowingSession.squads}"></td>
-        </tr>
-        <tr>
-            <td>Level</td>
-            <td th:each="rowingSession : ${sessions}" th:text="${rowingSession.levels}"></td>
-        </tr>
-        <tr>
-            <td>Session Type</td>
-            <td th:each="rowingSession : ${sessions}" th:text="${rowingSession.sessionType}"></td>
-        </tr>
-        </tbody>
-    </table>
+    <th:block th:each="entry : ${sessions}">
+        <h3>Squad: [[${entry.key}]]</h3>
+        <table>
+            <thead>
+            <tr>
+                <th class="header-column">Attribute</th>
+                <th th:each="rowingSession, iterStat : ${entry.value}" th:text="'Session ' + ${iterStat.index + 1}">
+                    Session 1
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Day</td>
+                <td th:each="rowingSession : ${entry.value}" th:text="${rowingSession.day}"></td>
+            </tr>
+            <tr>
+                <td>Start Time</td>
+                <td th:each="rowingSession : ${entry.value}" th:text="${rowingSession.startTime}"></td>
+            </tr>
+            <tr>
+                <td>End Time</td>
+                <td th:each="rowingSession : ${entry.value}" th:text="${rowingSession.endTime}"></td>
+            </tr>
+            <tr>
+                <td>Squad</td>
+                <td th:text="''"></td>
+            </tr>
+            <tr>
+                <td>Level</td>
+                <td th:each="rowingSession : ${entry.value}" th:text="${rowingSession.levels}"></td>
+            </tr>
+            <tr>
+                <td>Session Type</td>
+                <td th:each="rowingSession : ${entry.value}" th:text="${rowingSession.sessionType}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </th:block>
 </main>
 
 <footer>
