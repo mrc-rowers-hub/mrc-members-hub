@@ -1,7 +1,8 @@
-package com.codeaddi.row_your_boat.controller.http.schedulerService;
+package com.codeaddi.row_your_boat.controller.sessions.http;
 
-import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
-import java.util.Arrays;
+import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,22 +20,22 @@ public class SchedulerClient {
   private String schedulerServiceBaseUrl;
 
   RestTemplate restTemplate = new RestTemplate();
+  ObjectMapper objectMapper = new ObjectMapper();
 
-  public List<RowingSessions> getAllSessions() {
+  public List<RowingSession> getAllSessions() {
     String url = String.format(schedulerServiceBaseUrl + sessionsPath + "get_all_sessions");
     try {
-      RowingSessions[] sessionsArray = restTemplate.getForObject(url, RowingSessions[].class);
+      String response = restTemplate.getForObject(url, String.class);
+      List<RowingSession> sessions =
+          objectMapper.readValue(response, new TypeReference<List<RowingSession>>() {});
       log.info("Successfully retrieved and mapped response from scheduler service");
-      return Arrays.asList(sessionsArray);
+      return sessions;
     } catch (RestClientResponseException e) {
       log.error("Scheduler service gave an unexpected response: {}", e.getStatusCode());
       return List.of();
-    } catch (NullPointerException e) {
-      log.error("Scheduler service returned no data");
-      return List.of();
     } catch (Exception e) {
       log.error("Unexpected error: " + e.getMessage());
-      throw e;
+      return List.of();
     }
   }
 }

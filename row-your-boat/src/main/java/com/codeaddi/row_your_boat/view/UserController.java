@@ -1,8 +1,10 @@
 package com.codeaddi.row_your_boat.view;
 
-import com.codeaddi.row_your_boat.controller.http.schedulerService.SchedulerClient;
+import com.codeaddi.row_your_boat.model.Squad;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
+import com.codeaddi.row_your_boat.view.display.ViewService;
 import java.util.List;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +19,7 @@ import org.springframework.web.servlet.view.RedirectView;
 @Slf4j
 public class UserController {
 
-  @Autowired SchedulerClient schedulerClient;
+  @Autowired ViewService viewService;
 
   @Value("${services.weather.baseUrl}")
   private String weatherServiceBaseUrl;
@@ -47,9 +49,8 @@ public class UserController {
 
   @GetMapping("/standard-sessions")
   public String standardSessions(Model model) {
-    List<RowingSessions> rowingSessions = schedulerClient.getAllSessions();
-    System.out.println(rowingSessions.toString());
-    model.addAttribute("sessions", rowingSessions);
+    Map<Squad, List<RowingSessions>> sessions = viewService.getAllStandardSessionsToDisplay();
+    model.addAttribute("sessions", sessions);
 
     return "standard-sessions";
   }
