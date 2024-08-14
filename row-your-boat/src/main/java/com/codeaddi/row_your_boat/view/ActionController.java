@@ -57,19 +57,17 @@ public class ActionController {
   }
 
   @PostMapping("/update-rowing-session")
-  @ResponseBody
-  public StandardResponse updateRowingSession(
+  public String updateRowingSession(
           @RequestParam String id,
           @RequestParam String day,
           @RequestParam String startTime,
           @RequestParam String endTime,
           @RequestParam String squad,
           @RequestParam String level,
-          @RequestParam String sessionType) {
-    log.info("Request to update session received");
-    log.info("ID: {}", id);
+          @RequestParam String sessionType,
+          RedirectAttributes redirectAttributes) {
+    log.info("Request to update session with id {} received", id);
 
-    // Create and populate the RowingSession object
     RowingSession updatedSession = RowingSession.builder()
             .id(Long.valueOf(id))
             .day(day)
@@ -80,10 +78,15 @@ public class ActionController {
             .sessionType(SessionType.valueOf(sessionType))
             .build();
 
-    // Assume updateSession() is a method to save the updated session
     StandardResponse response = schedulerClient.updateSession(updatedSession);
 
-    // Return the response as JSON
-    return response;
+    if (response.getStatus().toString().contains("SUCCESS")) {
+      redirectAttributes.addFlashAttribute("successMessage", response.getMessage());
+
+    } else {
+      redirectAttributes.addFlashAttribute("errorMessage", "New session added successfully!");
+    }
+
+    return "redirect:/view-sessions-to-edit";
   }
 }

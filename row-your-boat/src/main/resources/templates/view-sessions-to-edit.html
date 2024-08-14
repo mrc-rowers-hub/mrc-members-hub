@@ -5,6 +5,25 @@
     <link rel="stylesheet" th:href="@{/styles.css}">
     <link rel="stylesheet" th:href="@{/sidebar.css}">
     <style>
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            color: #fff; /* Text color for better contrast */
+            font-size: 16px;
+        }
+
+        .alert-success {
+            background-color: #d4edda; /* Light green background */
+            border: 1px solid #c3e6cb; /* Slightly darker green border */
+            color: #155724; /* Dark green text */
+        }
+
+        .alert-error {
+            background-color: #f8d7da; /* Light red background */
+            border: 1px solid #f5c6cb; /* Slightly darker red border */
+            color: #721c24; /* Dark red text */
+        }
         table {
             border-collapse: collapse;
             width: 100%;
@@ -80,6 +99,14 @@
 <main class="content" id="content">
     <h2>All Sessions</h2>
 
+    <div th:if="${successMessage}" class="alert alert-success">
+        <p th:text="${successMessage}"></p>
+    </div>
+
+    <div th:if="${errorMessage}" class="alert alert-error">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
     <table class="table">
         <thead>
         <tr>
@@ -112,7 +139,7 @@
     <div class="edit-form" id="editForm">
         <h3>Edit Session</h3>
         <form id="editSessionForm" action="/internal/update-rowing-session" method="post">
-            <label for="editSessionId">Session ID (Confirm):</label>
+            <label for="editSessionId">Confirm the ID of the row you wish to update:</label>
             <input type="text" id="editSessionId" name="id" required>
 
             <label for="editDay">Day:</label>
