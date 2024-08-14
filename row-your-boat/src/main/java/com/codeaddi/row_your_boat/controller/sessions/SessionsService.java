@@ -9,32 +9,34 @@ import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class SessionsService {
 
+    // Todo, RowingSessions should only have Squad, not a list of
     public static List<RowingSessions> mapRowingSessionToSessions(List<RowingSession> rowingSessionList){
         Map<RowingSessionGrouper.RowingSessionKey, List<RowingSession>> sessionsWithSameTimes = RowingSessionGrouper.groupSessions(rowingSessionList);
         List<RowingSessions> rowingSessionsToReturn = new ArrayList<>();
 
         for (RowingSessionGrouper.RowingSessionKey key : sessionsWithSameTimes.keySet()) {
-            List<Squad> squads = new ArrayList<>();
             List<RowerLevel> rowerLevels = new ArrayList<>();
 
             for(RowingSession rowingSession : sessionsWithSameTimes.get(key) ){
-                if(!squads.contains(rowingSession.getSquad())){
-                    squads.add(rowingSession.getSquad());
 
-                }
                 if(!rowerLevels.contains(rowingSession.getLevel())){
                     rowerLevels.add(rowingSession.getLevel());
 
                 }
             }
 
-           rowingSessionsToReturn.add(RowingSessions.builder().day(key.getDay()).sessionType(key.getSessionType()).startTime(key.getStartTime()).endTime(key.getEndTime()).squads(squads).levels(rowerLevels).build());
+           rowingSessionsToReturn.add(RowingSessions.builder().day(key.getDay()).sessionType(key.getSessionType()).startTime(key.getStartTime()).endTime(key.getEndTime()).squads(key.getSquad()).levels(rowerLevels).build());
         }
         return rowingSessionsToReturn;
     }
+
+//    public static Map<Squad, List<RowingSession>> getRowingSessionsPerSquad(List<RowingSessions> rowingSessions){
+//        rowingSessions.stream().collect(Collectors.groupingBy(RowingSessions::getSquads));
+//    }
 
 //    Todo - order the sessions Monday -> Friday now
 

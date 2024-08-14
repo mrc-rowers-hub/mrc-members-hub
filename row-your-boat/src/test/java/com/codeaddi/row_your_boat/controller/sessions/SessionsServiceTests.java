@@ -17,12 +17,13 @@ public class SessionsServiceTests {
     public void mapRowingSessionToSessions_withMultipleSessions_groupsSessionsByTime() {
 
         List<RowingSessions> actualRowingSessions = SessionsService.mapRowingSessionToSessions(TestData.sessions);
+        List<RowingSessions> expectedRowingSessions = TestData.groupedSessions;
 
         for(RowingSessions rowingSessions : actualRowingSessions){
             System.out.println(rowingSessions.toString());
         }
 
-        assertEquals(TestData.groupedSessions.size(), actualRowingSessions.size());
+        assertEquals(expectedRowingSessions.size(), actualRowingSessions.size());
 
 //        Todo complete the assertions to check fields
 

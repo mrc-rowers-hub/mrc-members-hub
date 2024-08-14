@@ -52,14 +52,14 @@ public class TestData {
             .endTime("20:00:00")
             .sessionType(SessionType.WATER)
             .levels(List.of(RowerLevel.NOVICE, RowerLevel.INTERMEDIATE))
-            .squads(List.of(Squad.WOMENS)).build();
+            .squads(Squad.WOMENS).build();
 
     public static RowingSessions session3s = RowingSessions.builder().day("MONDAY")
             .startTime("18:00:00")
             .endTime("20:00:00")
             .sessionType(SessionType.ERG)
             .levels(List.of(RowerLevel.DEVELOPMENT))
-            .squads(List.of(Squad.DEVELOPMENT)).build();
+            .squads(Squad.DEVELOPMENT).build();
 
     public static List<RowingSession> sessions = Arrays.asList(session1, session2, session3);
     public static List<RowingSession> sameSessionsMenWomen = Arrays.asList(session2, session4);
