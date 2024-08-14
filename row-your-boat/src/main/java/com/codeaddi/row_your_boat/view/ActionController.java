@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -53,5 +54,36 @@ public class ActionController {
     }
 
     return "redirect:/standard-sessions";
+  }
+
+  @PostMapping("/update-rowing-session")
+  @ResponseBody
+  public StandardResponse updateRowingSession(
+          @RequestParam String id,
+          @RequestParam String day,
+          @RequestParam String startTime,
+          @RequestParam String endTime,
+          @RequestParam String squad,
+          @RequestParam String level,
+          @RequestParam String sessionType) {
+    log.info("Request to update session received");
+    log.info("ID: {}", id);
+
+    // Create and populate the RowingSession object
+    RowingSession updatedSession = RowingSession.builder()
+            .id(Long.valueOf(id))
+            .day(day)
+            .startTime(startTime)
+            .endTime(endTime)
+            .squad(Squad.valueOf(squad))
+            .level(RowerLevel.valueOf(level))
+            .sessionType(SessionType.valueOf(sessionType))
+            .build();
+
+    // Assume updateSession() is a method to save the updated session
+    StandardResponse response = schedulerClient.updateSession(updatedSession);
+
+    // Return the response as JSON
+    return response;
   }
 }
