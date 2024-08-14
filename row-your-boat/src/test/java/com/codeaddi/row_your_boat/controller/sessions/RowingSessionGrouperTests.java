@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static com.codeaddi.row_your_boat.TestData.session4;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -32,6 +33,27 @@ public class RowingSessionGrouperTests {
 
         List<RowingSession> actualGroupedSession3 = actualGroupedSessions.get(expectedRowingSessionKeyFor3);
         assertTrue(actualGroupedSession3.contains(TestData.session3));
+
+    }
+
+    @Test
+    public void groupSessions_sameSessionDifferentSquads_NotGrouped() {
+
+        Map<RowingSessionGrouper.RowingSessionKey, List<RowingSession>> actualGroupedSessions = RowingSessionGrouper.groupSessions(TestData.sameSessionsMenWomen);
+
+        RowingSessionGrouper.RowingSessionKey expectedRowingSessionKeyFor2 = new RowingSessionGrouper.RowingSessionKey(TestData.session2);
+
+        RowingSessionGrouper.RowingSessionKey expectedRowingSessionKeyFor4 = new RowingSessionGrouper.RowingSessionKey(session4);
+
+        assertEquals(2, actualGroupedSessions.size());
+        actualGroupedSessions.containsKey(expectedRowingSessionKeyFor2);
+        actualGroupedSessions.containsKey(expectedRowingSessionKeyFor4);
+
+        List<RowingSession> actualGroupedSession1And2 = actualGroupedSessions.get(expectedRowingSessionKeyFor2);
+        assertTrue(actualGroupedSession1And2.contains(TestData.session2));
+
+        List<RowingSession> actualGroupedSession3 = actualGroupedSessions.get(expectedRowingSessionKeyFor4);
+        assertTrue(actualGroupedSession3.contains(session4));
 
     }
 }

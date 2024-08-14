@@ -1,6 +1,7 @@
 package com.codeaddi.row_your_boat.controller.sessions;
 
 import com.codeaddi.row_your_boat.model.SessionType;
+import com.codeaddi.row_your_boat.model.Squad;
 import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
 import lombok.Getter;
 
@@ -22,12 +23,15 @@ public class RowingSessionGrouper {
         private final String startTime;
         private final String endTime;
         private final SessionType sessionType;
+        private final Squad squad;
+
 
         public RowingSessionKey(RowingSession session) {
             this.day = session.getDay();
             this.startTime = session.getStartTime();
             this.endTime = session.getEndTime();
             this.sessionType = session.getSessionType();
+            this.squad = session.getSquad();
         }
 
         @Override
@@ -38,12 +42,13 @@ public class RowingSessionGrouper {
             return Objects.equals(day, that.day) &&
                     Objects.equals(startTime, that.startTime) &&
                     Objects.equals(endTime, that.endTime) &&
+                    squad == that.squad &&
                     sessionType == that.sessionType;
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(day, startTime, endTime, sessionType);
+            return Objects.hash(day, startTime, endTime, sessionType, squad);
         }
     }
 }
