@@ -16,7 +16,7 @@ public class ViewService {
 
   @Autowired private SchedulerClient schedulerClient;
 
-  public List<RowingSession> getAllSessions(){
+  public List<RowingSession> getAllSessions() {
     return schedulerClient.getAllSessions();
   }
 

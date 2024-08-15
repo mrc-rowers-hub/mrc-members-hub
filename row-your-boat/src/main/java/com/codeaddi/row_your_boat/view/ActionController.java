@@ -13,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -59,17 +58,18 @@ public class ActionController {
 
   @PostMapping("/update-rowing-session")
   public String updateRowingSession(
-          @RequestParam String id,
-          @RequestParam String day,
-          @RequestParam String startTime,
-          @RequestParam String endTime,
-          @RequestParam String squad,
-          @RequestParam String level,
-          @RequestParam String sessionType,
-          RedirectAttributes redirectAttributes) {
+      @RequestParam String id,
+      @RequestParam String day,
+      @RequestParam String startTime,
+      @RequestParam String endTime,
+      @RequestParam String squad,
+      @RequestParam String level,
+      @RequestParam String sessionType,
+      RedirectAttributes redirectAttributes) {
     log.info("Request to update session with id {} received", id);
 
-    RowingSession updatedSession = RowingSession.builder()
+    RowingSession updatedSession =
+        RowingSession.builder()
             .id(Long.valueOf(id))
             .day(day)
             .startTime(startTime)
@@ -93,14 +93,15 @@ public class ActionController {
 
   @PostMapping("/delete-session")
   public ResponseEntity<String> updateRowingSession(
-          @RequestParam String id,RedirectAttributes redirectAttributes) {
+      @RequestParam String id, RedirectAttributes redirectAttributes) {
     log.info("Request to delete session with id {} received", id);
 
     StandardResponse response = schedulerClient.deleteSession(Long.valueOf(id));
 
     if (response.getStatus().toString().contains("SUCCESS")) {
-return ResponseEntity.ok(response.getMessage());
+      return ResponseEntity.ok(response.getMessage());
     } else {
-      return ResponseEntity.badRequest().body(response.getMessage());}
+      return ResponseEntity.badRequest().body(response.getMessage());
+    }
   }
 }

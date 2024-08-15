@@ -24,6 +24,7 @@
             border: 1px solid #f5c6cb; /* Slightly darker red border */
             color: #721c24; /* Dark red text */
         }
+
         table {
             border-collapse: collapse;
             width: 100%;
@@ -247,7 +248,7 @@
         deleteBtns.forEach(function (btn) {
             btn.addEventListener("click", function () {
                 var userInput = prompt(`Please enter the ID to confirm deletion`);
-                    deleteSession(userInput);
+                deleteSession(userInput);
 
             });
         });
@@ -271,7 +272,8 @@
                     console.error("Error deleting session:", error);
                     alert(`An error occurred while deleting session ${userInput}: ${error.message} `);
                 });
-        }    });
+        }
+    });
 
 </script>
 </body>

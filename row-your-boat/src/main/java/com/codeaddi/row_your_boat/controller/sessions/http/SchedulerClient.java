@@ -73,14 +73,18 @@ public class SchedulerClient {
   }
 
   public StandardResponse deleteSession(Long sessionId) {
-    String url = String.format(schedulerServiceBaseUrl + sessionsPath + "delete_session?sessionId=%d", sessionId);
+    String url =
+        String.format(
+            schedulerServiceBaseUrl + sessionsPath + "delete_session?sessionId=%d", sessionId);
     log.info("CAlling {} ", url);
 
     try {
-      ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.DELETE, null, String.class);
+      ResponseEntity<String> responseEntity =
+          restTemplate.exchange(url, HttpMethod.DELETE, null, String.class);
 
       String responseBody = responseEntity.getBody();
-      StandardResponse standardResponse = objectMapper.readValue(responseBody, StandardResponse.class);
+      StandardResponse standardResponse =
+          objectMapper.readValue(responseBody, StandardResponse.class);
 
       if (responseEntity.getStatusCode().is2xxSuccessful()) {
         log.info("Successfully deleted session. Response: {}", standardResponse.getMessage());
@@ -90,19 +94,16 @@ public class SchedulerClient {
 
     } catch (Exception e) {
 
-      if(e.getMessage().contains("Session not found")){
+      if (e.getMessage().contains("Session not found")) {
         log.error("Session not found");
 
         return StandardResponse.builder()
-                .status(Status.ERROR)
-                .message("Session not found, nothing to delete")
-                .build();
+            .status(Status.ERROR)
+            .message("Session not found, nothing to delete")
+            .build();
       } else {
         log.error("Unexpected error: " + e.getMessage(), e);
-        return StandardResponse.builder()
-                .status(Status.ERROR)
-                .message("Unexpected error")
-                .build();
+        return StandardResponse.builder().status(Status.ERROR).message("Unexpected error").build();
       }
     }
   }
