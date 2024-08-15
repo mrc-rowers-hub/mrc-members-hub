@@ -16,9 +16,8 @@ import org.springframework.web.client.RestClientResponseException;
 public class SchedulerClient extends HttpClient {
 
   public List<RowingSession> getAllSessions() {
-    String url = String.format(schedulerServiceBaseUrl + sessionsPath + "get_all_sessions");
     try {
-      String response = restTemplate.getForObject(url, String.class);
+      String response = restTemplate.getForObject(getUrl("get_all_sessions"), String.class);
       List<RowingSession> sessions =
           objectMapper.readValue(response, new TypeReference<List<RowingSession>>() {});
       log.info("Successfully retrieved all sessions from scheduler service");
