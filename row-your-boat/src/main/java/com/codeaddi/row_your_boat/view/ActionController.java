@@ -57,15 +57,14 @@ public class ActionController {
   }
 
   @PostMapping("/update-rowing-session")
-  public String updateRowingSession(
+  public ResponseEntity<String> updateRowingSession(
       @RequestParam String id,
       @RequestParam String day,
       @RequestParam String startTime,
       @RequestParam String endTime,
       @RequestParam String squad,
       @RequestParam String level,
-      @RequestParam String sessionType,
-      RedirectAttributes redirectAttributes) {
+      @RequestParam String sessionType) {
     log.info("Request to update session with id {} received", id);
 
     RowingSession updatedSession =
@@ -82,13 +81,10 @@ public class ActionController {
     StandardResponse response = schedulerClient.updateSession(updatedSession);
 
     if (response.getStatus().toString().contains("SUCCESS")) {
-      redirectAttributes.addFlashAttribute("successMessage", response.getMessage());
-
+      return ResponseEntity.ok(response.getMessage());
     } else {
-      redirectAttributes.addFlashAttribute("errorMessage", response.getMessage());
+      return ResponseEntity.badRequest().body(response.getMessage());
     }
-
-    return "redirect:/view-sessions-to-edit";
   }
 
   @PostMapping("/delete-session")

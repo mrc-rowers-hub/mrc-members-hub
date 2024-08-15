@@ -57,6 +57,16 @@
             width: calc(100% - 20px);
             margin: 5px 0;
         }
+
+        .message {
+            display: none;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
@@ -70,7 +80,6 @@
 </header>
 
 <div th:replace="~{sections/sidebar :: sidebarFragment}"></div>
-
 
 <main class="content" id="content">
     <h2>All Sessions</h2>
@@ -107,7 +116,7 @@
 
     <div class="edit-form" id="editForm">
         <h3>Edit Session</h3>
-        <form id="editSessionForm" action="/internal/update-rowing-session" method="post">
+        <form id="editSessionForm">
             <label for="editSessionId">Confirm the ID of the row you wish to update:</label>
             <input type="text" id="editSessionId" name="id" required>
 
@@ -154,6 +163,8 @@
             <button type="button" id="cancelEdit">Cancel</button>
         </form>
     </div>
+
+    <div class="message" id="message">Thanks for editing! Please refresh the page.</div>
 </main>
 
 <div class="modal" id="deleteConfirmationModal">
@@ -167,9 +178,11 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var editBtns = document.querySelectorAll(".edit-btn");
-        var deleteBtns = document.querySelectorAll(".delete-btn"); // Select all delete buttons
+        var deleteBtns = document.querySelectorAll(".delete-btn");
         var editForm = document.getElementById("editForm");
         var cancelEditBtn = document.getElementById("cancelEdit");
+        var editSessionForm = document.getElementById("editSessionForm");
+        var messageDiv = document.getElementById("message");
 
         // Sidebar toggle functionality
         var sidebarToggle = document.getElementById("sidebarToggle");
@@ -212,6 +225,29 @@
             editForm.style.display = "none";
         });
 
+        // Submit the edit form via AJAX
+        editSessionForm.addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            var formData = new FormData(editSessionForm);
+
+            fetch('/internal/update-rowing-session', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    return response.text(); // Expecting a plain text response
+                })
+                .then(message => {
+                    editForm.style.display = "none"; // Hide the edit form after submission
+                    messageDiv.style.display = "block"; // Show the thanks message
+                })
+                .catch(error => {
+                    console.error('Error updating session:', error);
+                    alert('An error occurred while updating the session: ' + error.message);
+                });
+        });
+
         deleteBtns.forEach(function (btn) {
             btn.addEventListener("click", function () {
                 var userInput = prompt(`Please enter the ID to confirm deletion`);
@@ -241,7 +277,6 @@
                 });
         }
     });
-
 </script>
 </body>
 </html>
