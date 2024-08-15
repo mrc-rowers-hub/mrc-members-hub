@@ -6,6 +6,17 @@
     <link rel="stylesheet" th:href="@{/sidebar.css}"> <!-- Sidebar styles -->
 
     <style>
+
+        .water-session {
+            background-color: #3fb4d7 !important;
+            color: black;
+        }
+
+        .erg-session {
+            background-color: #f7f7ae !important;
+            color: black;
+        }
+
         body {
             font-family: Arial, sans-serif;
         }
@@ -114,7 +125,11 @@
             </tr>
             <tr>
                 <td>Session Type</td>
-                <td th:each="availabilityGroup : ${squadEntry.value}" th:class="session-column" th:text="${availabilityGroup.getSessionType()}"></td>
+                <td th:each="availabilityGroup : ${squadEntry.value}"
+                    th:class="session-column" th:text="${availabilityGroup.getSessionType()}"
+                    th:classappend="${#strings.equalsIgnoreCase(availabilityGroup.getSessionType, 'WATER')} ? 'water-session' :
+                        (${#strings.equalsIgnoreCase(availabilityGroup.getSessionType, 'ERG')} ? 'erg-session' : '')"
+                ></td>
             </tr>
 
             </tbody>
