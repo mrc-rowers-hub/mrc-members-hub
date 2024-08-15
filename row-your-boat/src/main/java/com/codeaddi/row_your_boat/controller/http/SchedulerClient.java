@@ -1,34 +1,25 @@
-package com.codeaddi.row_your_boat.controller.sessions.http;
+package com.codeaddi.row_your_boat.controller.http;
 
 import com.codeaddi.row_your_boat.model.http.StandardResponse;
+import com.codeaddi.row_your_boat.model.http.enums.Resource;
 import com.codeaddi.row_your_boat.model.http.enums.Status;
 import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientResponseException;
-import org.springframework.web.client.RestTemplate;
 
 @Component
 @Slf4j
-public class SchedulerClient {
-
-  private String sessionsPath = "standard_sessions/";
-
-  @Value("${services.scheduler-sevice.baseUrl}")
-  private String schedulerServiceBaseUrl;
-
-  RestTemplate restTemplate = new RestTemplate();
-  ObjectMapper objectMapper = new ObjectMapper();
+public class SchedulerClient extends HttpClient {
 
   public List<RowingSession> getAllSessions() {
-    String url = String.format(schedulerServiceBaseUrl + sessionsPath + "get_all_sessions");
     try {
-      String response = restTemplate.getForObject(url, String.class);
+      String response =
+          restTemplate.getForObject(
+              getUrl("get_all_sessions", Resource.STANDARD_SESSIONS), String.class);
       List<RowingSession> sessions =
           objectMapper.readValue(response, new TypeReference<List<RowingSession>>() {});
       log.info("Successfully retrieved all sessions from scheduler service");
@@ -43,8 +34,7 @@ public class SchedulerClient {
   }
 
   public StandardResponse updateSession(RowingSession session) {
-    String url = String.format(schedulerServiceBaseUrl + sessionsPath + "update_session");
-
+    String url = getUrl("update_session", Resource.STANDARD_SESSIONS);
     try {
       String requestJson = objectMapper.writeValueAsString(session);
 
@@ -74,8 +64,7 @@ public class SchedulerClient {
 
   public StandardResponse deleteSession(Long sessionId) {
     String url =
-        String.format(
-            schedulerServiceBaseUrl + sessionsPath + "delete_session?sessionId=%d", sessionId);
+        getUrl(String.format("delete_session?sessionId=%d", sessionId), Resource.STANDARD_SESSIONS);
 
     try {
       ResponseEntity<String> responseEntity =

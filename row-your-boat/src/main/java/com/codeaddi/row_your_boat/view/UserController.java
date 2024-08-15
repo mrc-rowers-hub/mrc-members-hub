@@ -1,6 +1,7 @@
 package com.codeaddi.row_your_boat.view;
 
 import com.codeaddi.row_your_boat.model.Squad;
+import com.codeaddi.row_your_boat.model.availability.AvailabilityGroup;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
 import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
 import com.codeaddi.row_your_boat.view.display.ViewService;
@@ -44,7 +45,11 @@ public class UserController {
   }
 
   @GetMapping("/my-availability")
-  public String myAvailability() {
+  public String myAvailability(Model model) {
+    Map<Squad, List<AvailabilityGroup>> availabilitySessions =
+        viewService.getAvailabilitySessions();
+
+    model.addAttribute("availabilitySessions", availabilitySessions);
     return "my-availability";
   }
 
