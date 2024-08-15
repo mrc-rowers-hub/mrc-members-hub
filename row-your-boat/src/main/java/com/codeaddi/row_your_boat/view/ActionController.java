@@ -8,6 +8,7 @@ import com.codeaddi.row_your_boat.model.http.StandardResponse;
 import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,9 +50,54 @@ public class ActionController {
       redirectAttributes.addFlashAttribute("successMessage", response.getMessage());
 
     } else {
-      redirectAttributes.addFlashAttribute("errorMessage", "New session added successfully!");
+      redirectAttributes.addFlashAttribute("errorMessage", response.getMessage());
     }
 
     return "redirect:/standard-sessions";
+  }
+
+  @PostMapping("/update-rowing-session")
+  public ResponseEntity<String> updateRowingSession(
+      @RequestParam String id,
+      @RequestParam String day,
+      @RequestParam String startTime,
+      @RequestParam String endTime,
+      @RequestParam String squad,
+      @RequestParam String level,
+      @RequestParam String sessionType) {
+    log.info("Request to update session with id {} received", id);
+
+    RowingSession updatedSession =
+        RowingSession.builder()
+            .id(Long.valueOf(id))
+            .day(day)
+            .startTime(startTime)
+            .endTime(endTime)
+            .squad(Squad.valueOf(squad))
+            .level(RowerLevel.valueOf(level))
+            .sessionType(SessionType.valueOf(sessionType))
+            .build();
+
+    StandardResponse response = schedulerClient.updateSession(updatedSession);
+
+    if (response.getStatus().toString().contains("SUCCESS")) {
+      return ResponseEntity.ok(response.getMessage());
+    } else {
+      return ResponseEntity.badRequest().body(response.getMessage());
+    }
+  }
+
+  @PostMapping("/delete-session")
+  public ResponseEntity<String> updateRowingSession(
+      @RequestParam String id, RedirectAttributes redirectAttributes) {
+    log.info("Request to delete session with id {} received", id);
+
+    StandardResponse response = schedulerClient.deleteSession(Long.valueOf(id));
+
+    if (response.getStatus().toString().contains("SUCCESS")) {
+      return ResponseEntity.ok(response.getMessage());
+    } else {
+      return ResponseEntity.badRequest().body(response.getMessage());
+    }
   }
 }

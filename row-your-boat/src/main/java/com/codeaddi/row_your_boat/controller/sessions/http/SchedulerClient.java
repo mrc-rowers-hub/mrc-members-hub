@@ -31,7 +31,7 @@ public class SchedulerClient {
       String response = restTemplate.getForObject(url, String.class);
       List<RowingSession> sessions =
           objectMapper.readValue(response, new TypeReference<List<RowingSession>>() {});
-      log.info("Successfully retrieved and mapped response from scheduler service");
+      log.info("Successfully retrieved all sessions from scheduler service");
       return sessions;
     } catch (RestClientResponseException e) {
       log.error("Scheduler service gave an unexpected response: {}", e.getStatusCode());
@@ -69,6 +69,41 @@ public class SchedulerClient {
     } catch (Exception e) {
       log.error("Unexpected error: " + e.getMessage(), e);
       return StandardResponse.builder().status(Status.ERROR).message("Unexpected error").build();
+    }
+  }
+
+  public StandardResponse deleteSession(Long sessionId) {
+    String url =
+        String.format(
+            schedulerServiceBaseUrl + sessionsPath + "delete_session?sessionId=%d", sessionId);
+
+    try {
+      ResponseEntity<String> responseEntity =
+          restTemplate.exchange(url, HttpMethod.DELETE, null, String.class);
+
+      String responseBody = responseEntity.getBody();
+      StandardResponse standardResponse =
+          objectMapper.readValue(responseBody, StandardResponse.class);
+
+      if (responseEntity.getStatusCode().is2xxSuccessful()) {
+        log.info("Successfully deleted session. Response: {}", standardResponse.getMessage());
+      }
+
+      return standardResponse;
+
+    } catch (Exception e) {
+
+      if (e.getMessage().contains("Session not found")) {
+        log.error("Session not found");
+
+        return StandardResponse.builder()
+            .status(Status.ERROR)
+            .message("Session not found, nothing to delete")
+            .build();
+      } else {
+        log.error("Unexpected error: " + e.getMessage(), e);
+        return StandardResponse.builder().status(Status.ERROR).message("Unexpected error").build();
+      }
     }
   }
 }
