@@ -50,7 +50,7 @@ public class ActionController {
       redirectAttributes.addFlashAttribute("successMessage", response.getMessage());
 
     } else {
-      redirectAttributes.addFlashAttribute("errorMessage", "New session added successfully!");
+      redirectAttributes.addFlashAttribute("errorMessage", response.getMessage());
     }
 
     return "redirect:/standard-sessions";

@@ -31,7 +31,7 @@ public class SchedulerClient {
       String response = restTemplate.getForObject(url, String.class);
       List<RowingSession> sessions =
           objectMapper.readValue(response, new TypeReference<List<RowingSession>>() {});
-      log.info("Successfully retrieved and mapped response from scheduler service");
+      log.info("Successfully retrieved all sessions from scheduler service");
       return sessions;
     } catch (RestClientResponseException e) {
       log.error("Scheduler service gave an unexpected response: {}", e.getStatusCode());
@@ -73,18 +73,17 @@ public class SchedulerClient {
   }
 
   public StandardResponse deleteSession(Long sessionId) {
-    String url = String.format(schedulerServiceBaseUrl + sessionsPath + "/delete_session?id=%d", sessionId);
+    String url = String.format(schedulerServiceBaseUrl + sessionsPath + "delete_session?sessionId=%d", sessionId);
+    log.info("CAlling {} ", url);
 
     try {
-      // Make DELETE request
       ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.DELETE, null, String.class);
 
-      // Parse the response body
       String responseBody = responseEntity.getBody();
       StandardResponse standardResponse = objectMapper.readValue(responseBody, StandardResponse.class);
 
       if (responseEntity.getStatusCode().is2xxSuccessful()) {
-        log.info("Successfully deleted session. Response: {}", standardResponse);
+        log.info("Successfully deleted session. Response: {}", standardResponse.getMessage());
       }
 
       return standardResponse;
