@@ -1,6 +1,7 @@
 package com.codeaddi.row_your_boat.controller.http;
 
 import com.codeaddi.row_your_boat.model.http.StandardResponse;
+import com.codeaddi.row_your_boat.model.http.enums.Resource;
 import com.codeaddi.row_your_boat.model.http.enums.Status;
 import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -17,7 +18,7 @@ public class SchedulerClient extends HttpClient {
 
   public List<RowingSession> getAllSessions() {
     try {
-      String response = restTemplate.getForObject(getUrl("get_all_sessions"), String.class);
+      String response = restTemplate.getForObject(getUrl("get_all_sessions", Resource.STANDARD_SESSIONS), String.class);
       List<RowingSession> sessions =
           objectMapper.readValue(response, new TypeReference<List<RowingSession>>() {});
       log.info("Successfully retrieved all sessions from scheduler service");
@@ -32,8 +33,7 @@ public class SchedulerClient extends HttpClient {
   }
 
   public StandardResponse updateSession(RowingSession session) {
-    String url = String.format(schedulerServiceBaseUrl + sessionsPath + "update_session");
-
+    String url =     getUrl("update_session", Resource.STANDARD_SESSIONS);
     try {
       String requestJson = objectMapper.writeValueAsString(session);
 
@@ -62,9 +62,7 @@ public class SchedulerClient extends HttpClient {
   }
 
   public StandardResponse deleteSession(Long sessionId) {
-    String url =
-        String.format(
-            schedulerServiceBaseUrl + sessionsPath + "delete_session?sessionId=%d", sessionId);
+    String url =     getUrl(String.format("delete_session?sessionId=%d",sessionId), Resource.STANDARD_SESSIONS);
 
     try {
       ResponseEntity<String> responseEntity =
