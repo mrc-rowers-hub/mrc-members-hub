@@ -128,7 +128,7 @@
                 <td th:each="availabilityGroup : ${squadEntry.value}"
                     th:class="session-column" th:text="${availabilityGroup.getSessionType()}"
                     th:classappend="${#strings.equalsIgnoreCase(availabilityGroup.getSessionType, 'WATER')} ? 'water-session' :
-                        (${#strings.equalsIgnoreCase(availabilityGroup.getSessionType, 'ERG')} ? 'erg-session' : '')"
+                        (${#strings.equalsIgnoreCase(availabilityGroup.getSessionType, 'ERG')} ? 'erg-session' : 'erg-session')"
                 ></td>
             </tr>
 
