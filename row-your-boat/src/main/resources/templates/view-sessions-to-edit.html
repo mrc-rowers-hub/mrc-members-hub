@@ -248,35 +248,26 @@
         // Delete functionality
         deleteBtns.forEach(function (btn) {
             btn.addEventListener("click", function () {
-                var row = this.closest("tr");
-                var id = row.getAttribute("data-id");
-
                 // Prompt for confirmation
-                var userInput = prompt(`Please enter the ID to confirm deletion of session with ID: ${id}`);
-                    deleteSession(userInput, row);
+                var userInput = prompt(`Please enter the ID to confirm deletion`);
+                    deleteSession(userInput);
 
             });
         });
-        // Todo - stop the delete function removing/editing bits on the frontned
 
-        function deleteSession(userInput, row) {
+        function deleteSession(userInput) {
             fetch(`/internal/delete-session?id=${userInput}`, {
                 method: "POST",
             })
                 .then(response => {
                     if (response.ok) {
-                        // Remove the deleted row from the table
-                        row.remove();
-                        // Show success message with sessionId
-                        alert(`Session ${userInput} deleted successfully!`);
+                        alert(`Session ${userInput} deleted successfully! Please refresh the page`);
                     } else {
-                        // Show error message with sessionId
                         alert(`Failed to delete session ${userInput}.`);
                     }
                 })
                 .catch(error => {
                     console.error("Error deleting session:", error);
-                    // Show generic error message with sessionId
                     alert(`An error occurred while deleting session ${userInput}. Please try again later.`);
                 });
         }
