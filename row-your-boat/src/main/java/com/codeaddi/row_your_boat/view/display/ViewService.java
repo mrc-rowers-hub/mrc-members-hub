@@ -62,6 +62,12 @@ public class ViewService {
     List<UpcomingAvailabilityDTO> upcomingSessions = availabilityClient.getAllSessions();
     Map<UpcomingSessionsGrouper.UpcomingSessionKey, List<UpcomingAvailabilityDTO>> upcomingSessionKeyListMap =
             UpcomingSessionsGrouper.groupSessions(upcomingSessions);
-    return AvailabilityService.mapAvailabilityGroupsToSquads(upcomingSessionKeyListMap);
+    Map<Squad, List<AvailabilityGroup>> toReturn = AvailabilityService.mapAvailabilityGroupsToSquads(upcomingSessionKeyListMap);
+
+    toReturn.forEach(
+            (key, value) -> value.sort(Comparator.comparing(AvailabilityGroup::getDate)
+    ));
+    return toReturn;
+
   }
 }
