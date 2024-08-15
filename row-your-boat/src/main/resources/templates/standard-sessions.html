@@ -10,6 +10,11 @@
             color: black; /* White text */
         }
 
+        .erg-session {
+            background-color: #f7f7ae; /* Blue background */
+            color: black; /* White text */
+        }
+
         .edit-sessions-button {
             display: inline-block;
             padding: 10px 15px;
@@ -214,7 +219,8 @@
             <tr>
                 <td>Session Type</td>
                 <td th:each="rowingSession : ${entry.value}"
-                    th:classappend="${#strings.equalsIgnoreCase(rowingSession.sessionType, 'WATER')} ? 'water-session' : ''"
+                    th:classappend="${#strings.equalsIgnoreCase(rowingSession.sessionType, 'WATER')} ? 'water-session' :
+                        (${#strings.equalsIgnoreCase(rowingSession.sessionType, 'ERG')} ? 'erg-session' : '')"
                     th:text="${rowingSession.sessionType}">
                 </td>
             </tr>
