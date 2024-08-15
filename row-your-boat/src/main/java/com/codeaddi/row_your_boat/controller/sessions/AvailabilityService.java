@@ -1,6 +1,7 @@
 package com.codeaddi.row_your_boat.controller.sessions;
 
 import com.codeaddi.row_your_boat.model.RowerLevel;
+import com.codeaddi.row_your_boat.model.Squad;
 import com.codeaddi.row_your_boat.model.availability.AvailabilityGroup;
 import com.codeaddi.row_your_boat.model.http.UpcomingAvailabilityDTO;
 
@@ -33,4 +34,9 @@ public class AvailabilityService {
 
         return availabilityGroups;
     }
+
+    public static Map<Squad, List<AvailabilityGroup>> mapAvailabilityGroupsToSquads(Map<UpcomingSessionsGrouper.UpcomingSessionKey, List<UpcomingAvailabilityDTO>> upcomingSessionKeyListMap){
+        List<AvailabilityGroup> availabilityGroups = mapToUpcomingAvailabilityGroups(upcomingSessionKeyListMap);
+        return availabilityGroups.stream()
+                .collect(Collectors.groupingBy(ag -> ag.getUpcomingSessionKey().getSquad()));    }
 }

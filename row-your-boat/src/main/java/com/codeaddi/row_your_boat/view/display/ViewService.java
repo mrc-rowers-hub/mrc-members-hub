@@ -58,9 +58,9 @@ public class ViewService {
         .orElse(0L);
   }
 
-  public List<AvailabilityGroup> getAvailabilitySessions(){
+  public Map<Squad, List<AvailabilityGroup>> getAvailabilitySessions(){
     List<UpcomingAvailabilityDTO> upcomingSessions = availabilityClient.getAllSessions();
     Map<UpcomingSessionsGrouper.UpcomingSessionKey, List<UpcomingAvailabilityDTO>> upcomingSessionKeyListMap =UpcomingSessionsGrouper.groupSessions(upcomingSessions);
-    return AvailabilityService.mapToUpcomingAvailabilityGroups(upcomingSessionKeyListMap);
+    return AvailabilityService.mapAvailabilityGroupsToSquads(upcomingSessionKeyListMap);
   }
 }
