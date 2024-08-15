@@ -5,26 +5,6 @@
     <link rel="stylesheet" th:href="@{/styles.css}">
     <link rel="stylesheet" th:href="@{/sidebar.css}">
     <style>
-        .alert {
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            color: #fff; /* Text color for better contrast */
-            font-size: 16px;
-        }
-
-        .alert-success {
-            background-color: #d4edda; /* Light green background */
-            border: 1px solid #c3e6cb; /* Slightly darker green border */
-            color: #155724; /* Dark green text */
-        }
-
-        .alert-error {
-            background-color: #f8d7da; /* Light red background */
-            border: 1px solid #f5c6cb; /* Slightly darker red border */
-            color: #721c24; /* Dark red text */
-        }
-
         table {
             border-collapse: collapse;
             width: 100%;
@@ -89,24 +69,11 @@
     </div>
 </header>
 
-<!--Todo remove the 'toggle sidebar' text, and just have an arrow... -->
+<div th:replace="~{sections/sidebar :: sidebarFragment}"></div>
 
-<div id="sidebarToggle" class="sidebar-toggle">Toggle Sidebar</div>
-<div id="sidebar" class="sidebar">
-    <!-- Sidebar content -->
-    <div th:replace="~{sections/sidebar :: sidebarFragment}"></div>
-</div>
 
 <main class="content" id="content">
     <h2>All Sessions</h2>
-
-    <div th:if="${successMessage}" class="alert alert-success">
-        <p th:text="${successMessage}"></p>
-    </div>
-
-    <div th:if="${errorMessage}" class="alert alert-error">
-        <p th:text="${errorMessage}"></p>
-    </div>
 
     <table class="table">
         <thead>
@@ -210,7 +177,7 @@
         var content = document.getElementById("content");
 
         if (sidebarToggle && sidebar && content) {
-            sidebarToggle.addEventListener("click", function () {
+            sidebarToggle.addEventListener("click", function() {
                 sidebar.classList.toggle("collapsed");
                 content.classList.toggle("collapsed");
                 this.classList.toggle("collapsed");

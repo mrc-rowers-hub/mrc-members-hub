@@ -76,7 +76,6 @@ public class SchedulerClient {
     String url =
         String.format(
             schedulerServiceBaseUrl + sessionsPath + "delete_session?sessionId=%d", sessionId);
-    log.info("CAlling {} ", url);
 
     try {
       ResponseEntity<String> responseEntity =
