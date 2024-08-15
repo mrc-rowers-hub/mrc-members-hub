@@ -228,7 +228,6 @@
                 var level = row.children[5].innerText;
                 var sessionType = row.children[6].innerText;
 
-                // Populate form with existing data
                 document.getElementById("editSessionId").value = id;
                 document.getElementById("editDay").value = day;
                 document.getElementById("editStartTime").value = startTime;
@@ -245,10 +244,8 @@
             editForm.style.display = "none";
         });
 
-        // Delete functionality
         deleteBtns.forEach(function (btn) {
             btn.addEventListener("click", function () {
-                // Prompt for confirmation
                 var userInput = prompt(`Please enter the ID to confirm deletion`);
                     deleteSession(userInput);
 
@@ -260,18 +257,21 @@
                 method: "POST",
             })
                 .then(response => {
-                    if (response.ok) {
-                        alert(`Session ${userInput} deleted successfully! Please refresh the page`);
-                    } else {
-                        alert(`Failed to delete session ${userInput}.`);
+                    if (!response.ok) {
+                        return response.text().then(message => {
+                            throw new Error(message);
+                        });
                     }
+                    return response.text();
+                })
+                .then(message => {
+                    alert(message + " - please refresh the page");
                 })
                 .catch(error => {
                     console.error("Error deleting session:", error);
-                    alert(`An error occurred while deleting session ${userInput}. Please try again later.`);
+                    alert(`An error occurred while deleting session ${userInput}: ${error.message} `);
                 });
-        }
-    });
+        }    });
 
 </script>
 </body>

@@ -8,6 +8,7 @@ import com.codeaddi.row_your_boat.model.http.StandardResponse;
 import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -84,27 +85,22 @@ public class ActionController {
       redirectAttributes.addFlashAttribute("successMessage", response.getMessage());
 
     } else {
-      redirectAttributes.addFlashAttribute("errorMessage", "New session added successfully!");
+      redirectAttributes.addFlashAttribute("errorMessage", response.getMessage());
     }
 
     return "redirect:/view-sessions-to-edit";
   }
 
   @PostMapping("/delete-session")
-  public String updateRowingSession(
-          @RequestParam String id) {
+  public ResponseEntity<String> updateRowingSession(
+          @RequestParam String id,RedirectAttributes redirectAttributes) {
     log.info("Request to delete session with id {} received", id);
 
+    StandardResponse response = schedulerClient.deleteSession(Long.valueOf(id));
 
-//    StandardResponse response = schedulerClient.updateSession(updatedSession);
-//
-//    if (response.getStatus().toString().contains("SUCCESS")) {
-//      redirectAttributes.addFlashAttribute("successMessage", response.getMessage());
-//
-//    } else {
-//      redirectAttributes.addFlashAttribute("errorMessage", "New session added successfully!");
-//    }
-
-    return "redirect:/view-sessions-to-edit";
+    if (response.getStatus().toString().contains("SUCCESS")) {
+return ResponseEntity.ok(response.getMessage());
+    } else {
+      return ResponseEntity.badRequest().body(response.getMessage());}
   }
 }

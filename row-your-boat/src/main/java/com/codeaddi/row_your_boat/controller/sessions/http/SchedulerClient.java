@@ -89,11 +89,21 @@ public class SchedulerClient {
       return standardResponse;
 
     } catch (Exception e) {
-      log.error("Unexpected error: " + e.getMessage(), e);
-      return StandardResponse.builder()
-              .status(Status.ERROR)
-              .message("Unexpected error")
-              .build();
+
+      if(e.getMessage().contains("Session not found")){
+        log.error("Session not found");
+
+        return StandardResponse.builder()
+                .status(Status.ERROR)
+                .message("Session not found, nothing to delete")
+                .build();
+      } else {
+        log.error("Unexpected error: " + e.getMessage(), e);
+        return StandardResponse.builder()
+                .status(Status.ERROR)
+                .message("Unexpected error")
+                .build();
+      }
     }
   }
 }
