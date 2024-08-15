@@ -17,7 +17,11 @@ public class ViewService {
   @Autowired private SchedulerClient schedulerClient;
 
   public List<RowingSession> getAllSessions() {
-    return schedulerClient.getAllSessions();
+    List<RowingSession> sessionsToReturn = schedulerClient.getAllSessions();
+
+    sessionsToReturn.sort(Comparator.comparing(RowingSession::getStartTime));
+
+    return sessionsToReturn;
   }
 
   public Map<Squad, List<RowingSessions>> getAllStandardSessionsToDisplay() {
