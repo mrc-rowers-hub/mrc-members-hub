@@ -1,29 +1,19 @@
-package com.codeaddi.row_your_boat.controller.sessions.http;
+package com.codeaddi.row_your_boat.controller.http;
 
 import com.codeaddi.row_your_boat.model.http.StandardResponse;
 import com.codeaddi.row_your_boat.model.http.enums.Status;
 import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientResponseException;
-import org.springframework.web.client.RestTemplate;
 
 @Component
 @Slf4j
-public class SchedulerClient {
-
-  private String sessionsPath = "standard_sessions/";
-
-  @Value("${services.scheduler-sevice.baseUrl}")
-  private String schedulerServiceBaseUrl;
-
-  RestTemplate restTemplate = new RestTemplate();
-  ObjectMapper objectMapper = new ObjectMapper();
+public class SchedulerClient extends HttpClient {
 
   public List<RowingSession> getAllSessions() {
     String url = String.format(schedulerServiceBaseUrl + sessionsPath + "get_all_sessions");

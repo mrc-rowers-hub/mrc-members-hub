@@ -1,7 +1,7 @@
 package com.codeaddi.row_your_boat.view.display;
 
 import com.codeaddi.row_your_boat.controller.sessions.SessionsService;
-import com.codeaddi.row_your_boat.controller.sessions.http.SchedulerClient;
+import com.codeaddi.row_your_boat.controller.http.SchedulerClient;
 import com.codeaddi.row_your_boat.model.Squad;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
 import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
