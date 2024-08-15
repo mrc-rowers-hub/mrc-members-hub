@@ -11,13 +11,13 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class HttpClient {
 
-    @Value("${services.scheduler-sevice.baseUrl}")
-    protected String schedulerServiceBaseUrl;
+  @Value("${services.scheduler-sevice.baseUrl}")
+  protected String schedulerServiceBaseUrl;
 
-    protected RestTemplate restTemplate = new RestTemplate();
-    protected ObjectMapper objectMapper = new ObjectMapper();
+  protected RestTemplate restTemplate = new RestTemplate();
+  protected ObjectMapper objectMapper = new ObjectMapper();
 
-    protected String getUrl(String endpoint, Resource resource){
-        return String.format(schedulerServiceBaseUrl + resource.getEndpoint() + endpoint);
-    }
+  protected String getUrl(String endpoint, Resource resource) {
+    return String.format(schedulerServiceBaseUrl + resource.getEndpoint() + endpoint);
+  }
 }

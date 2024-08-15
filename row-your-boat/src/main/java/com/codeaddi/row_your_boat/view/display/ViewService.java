@@ -1,9 +1,9 @@
 package com.codeaddi.row_your_boat.view.display;
 
 import com.codeaddi.row_your_boat.controller.http.AvailabilityClient;
+import com.codeaddi.row_your_boat.controller.http.SchedulerClient;
 import com.codeaddi.row_your_boat.controller.sessions.AvailabilityService;
 import com.codeaddi.row_your_boat.controller.sessions.SessionsService;
-import com.codeaddi.row_your_boat.controller.http.SchedulerClient;
 import com.codeaddi.row_your_boat.controller.sessions.UpcomingSessionsGrouper;
 import com.codeaddi.row_your_boat.model.Squad;
 import com.codeaddi.row_your_boat.model.availability.AvailabilityGroup;
@@ -58,16 +58,14 @@ public class ViewService {
         .orElse(0L);
   }
 
-  public Map<Squad, List<AvailabilityGroup>> getAvailabilitySessions(){
+  public Map<Squad, List<AvailabilityGroup>> getAvailabilitySessions() {
     List<UpcomingAvailabilityDTO> upcomingSessions = availabilityClient.getAllSessions();
-    Map<UpcomingSessionsGrouper.UpcomingSessionKey, List<UpcomingAvailabilityDTO>> upcomingSessionKeyListMap =
-            UpcomingSessionsGrouper.groupSessions(upcomingSessions);
-    Map<Squad, List<AvailabilityGroup>> toReturn = AvailabilityService.mapAvailabilityGroupsToSquads(upcomingSessionKeyListMap);
+    Map<UpcomingSessionsGrouper.UpcomingSessionKey, List<UpcomingAvailabilityDTO>>
+        upcomingSessionKeyListMap = UpcomingSessionsGrouper.groupSessions(upcomingSessions);
+    Map<Squad, List<AvailabilityGroup>> toReturn =
+        AvailabilityService.mapAvailabilityGroupsToSquads(upcomingSessionKeyListMap);
 
-    toReturn.forEach(
-            (key, value) -> value.sort(Comparator.comparing(AvailabilityGroup::getDate)
-    ));
+    toReturn.forEach((key, value) -> value.sort(Comparator.comparing(AvailabilityGroup::getDate)));
     return toReturn;
-
   }
 }

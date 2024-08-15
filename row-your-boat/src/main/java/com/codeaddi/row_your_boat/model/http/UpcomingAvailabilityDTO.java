@@ -9,31 +9,27 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
-import java.time.LocalTime;
-import java.util.Date;
-
 @Builder
 @Value
 @AllArgsConstructor
 @Jacksonized
 public class UpcomingAvailabilityDTO {
 
-    @JsonProperty("upcoming_session_id")
-    private Long upcomingSessionId;
+  @JsonProperty("upcoming_session_id")
+  private Long upcomingSessionId;
 
-    private String date;
+  private String date;
 
-    @JsonProperty("start_time")
-    private String startTime;
+  @JsonProperty("start_time")
+  private String startTime;
 
-    @JsonProperty("end_time")
-    private String endTime;
+  @JsonProperty("end_time")
+  private String endTime;
 
-    private Squad squad;
+  private Squad squad;
 
-    private RowerLevel level;
+  private RowerLevel level;
 
-    @JsonProperty("session_type")
-    private SessionType sessionType;
-
+  @JsonProperty("session_type")
+  private SessionType sessionType;
 }

@@ -46,12 +46,12 @@ public class UserController {
 
   @GetMapping("/my-availability")
   public String myAvailability(Model model) {
-    Map<Squad, List<AvailabilityGroup>> availabilitySessions = viewService.getAvailabilitySessions();
+    Map<Squad, List<AvailabilityGroup>> availabilitySessions =
+        viewService.getAvailabilitySessions();
 
     model.addAttribute("availabilitySessions", availabilitySessions);
     return "my-availability";
   }
-
 
   @GetMapping("/standard-sessions")
   public String standardSessions(Model model) {
@@ -73,6 +73,4 @@ public class UserController {
 
     return "view-sessions-to-edit";
   }
-
-
 }
