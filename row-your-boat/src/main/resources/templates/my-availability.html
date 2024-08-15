@@ -59,17 +59,14 @@
             border-bottom: 1px solid #ccc;
         }
 
-        tbody td:last-child {
-            border-right: none;
-        }
-
         .session-column {
-            border: 2px solid #007bff;
+            border: 1px solid #ccc;
             border-radius: 5px;
             padding: 5px;
             background-color: #e9f4ff;
         }
     </style>
+
 </head>
 <body>
 <header>
@@ -100,6 +97,10 @@
             </thead>
             <tbody>
             <tr>
+                <td>Day</td>
+                <td th:each="availabilityGroup : ${squadEntry.value}" th:class="session-column" th:text="${availabilityGroup.getDayOfTheWeek()}"></td>
+            </tr>
+            <tr>
                 <td>Start Time</td>
                 <td th:each="availabilityGroup : ${squadEntry.value}" th:class="session-column" th:text="${availabilityGroup.getStartTime()}"></td>
             </tr>
@@ -112,9 +113,10 @@
                 <td th:each="availabilityGroup : ${squadEntry.value}" th:class="session-column" th:text="${availabilityGroup.getLevels()}"></td>
             </tr>
             <tr>
-                <td>Day</td>
-                <td th:each="availabilityGroup : ${squadEntry.value}" th:class="session-column" th:text="${availabilityGroup.getDayOfTheWeek()}"></td>
+                <td>Session Type</td>
+                <td th:each="availabilityGroup : ${squadEntry.value}" th:class="session-column" th:text="${availabilityGroup.getSessionType()}"></td>
             </tr>
+
             </tbody>
         </table>
     </div>
