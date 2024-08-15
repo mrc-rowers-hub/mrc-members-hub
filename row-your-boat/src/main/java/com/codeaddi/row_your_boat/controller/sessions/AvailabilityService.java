@@ -23,7 +23,7 @@ public class AvailabilityService {
             List<RowerLevel> rowerLevels = upcomingSessionKeyListMap.get(upcomingSessionKey)
                     .stream()
                     .map(UpcomingAvailabilityDTO::getLevel)
-                    .toList();
+                    .distinct().toList();
 
             List<Long> upcomingSessionIds = upcomingSessionKeyListMap.get(upcomingSessionKey)
                     .stream()
