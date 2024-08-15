@@ -57,16 +57,6 @@
             width: calc(100% - 20px);
             margin: 5px 0;
         }
-
-        .message {
-            display: none;
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            text-align: center;
-            font-size: 18px;
-        }
     </style>
 </head>
 <body>
@@ -225,7 +215,6 @@
             editForm.style.display = "none";
         });
 
-        // Submit the edit form via AJAX
         editSessionForm.addEventListener("submit", function(event) {
             event.preventDefault(); // Prevent the default form submission
 
@@ -236,11 +225,16 @@
                 body: formData
             })
                 .then(response => {
-                    return response.text(); // Expecting a plain text response
+                    if (!response.ok) {
+                        return response.text().then(message => {
+                            throw new Error(message);
+                        });
+                    }
+                    return response.text();
                 })
                 .then(message => {
                     editForm.style.display = "none"; // Hide the edit form after submission
-                    messageDiv.style.display = "block"; // Show the thanks message
+                    alert(message + " - please refresh the page");
                 })
                 .catch(error => {
                     console.error('Error updating session:', error);
