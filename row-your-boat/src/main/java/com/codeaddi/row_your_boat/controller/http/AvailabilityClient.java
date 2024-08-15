@@ -1,6 +1,8 @@
 package com.codeaddi.row_your_boat.controller.http;
 
 import com.codeaddi.row_your_boat.model.http.StandardResponse;
+import com.codeaddi.row_your_boat.model.http.UpcomingAvailabilityDTO;
+import com.codeaddi.row_your_boat.model.http.enums.Resource;
 import com.codeaddi.row_your_boat.model.http.enums.Status;
 import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -16,23 +18,14 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class AvailabilityClient {
+public class AvailabilityClient extends HttpClient {
 
-  private String sessionsPath = "session_availability/";
-
-  @Value("${services.scheduler-sevice.baseUrl}")
-  private String schedulerServiceBaseUrl;
-
-  RestTemplate restTemplate = new RestTemplate();
-  ObjectMapper objectMapper = new ObjectMapper();
-
-  public List<RowingSession> getAllSessions() {
-    String url = String.format(schedulerServiceBaseUrl + sessionsPath + "get_all_sessions");
+  public List<UpcomingAvailabilityDTO> getAllSessions() {
     try {
-      String response = restTemplate.getForObject(url, String.class);
-      List<RowingSession> sessions =
-          objectMapper.readValue(response, new TypeReference<List<RowingSession>>() {});
-      log.info("Successfully retrieved all sessions from scheduler service");
+      String response = restTemplate.getForObject(getUrl("get_all_upcoming_sessions", Resource.SESSION_AVAILABILITY), String.class);
+      List<UpcomingAvailabilityDTO> sessions =
+              objectMapper.readValue(response, new TypeReference<List<UpcomingAvailabilityDTO>>() {});
+      log.info("Successfully retrieved all upcoming sessions");
       return sessions;
     } catch (RestClientResponseException e) {
       log.error("Scheduler service gave an unexpected response: {}", e.getStatusCode());
@@ -43,68 +36,4 @@ public class AvailabilityClient {
     }
   }
 
-  public StandardResponse updateSession(RowingSession session) {
-    String url = String.format(schedulerServiceBaseUrl + sessionsPath + "update_session");
-
-    try {
-      String requestJson = objectMapper.writeValueAsString(session);
-
-      HttpHeaders headers = new HttpHeaders();
-      headers.setContentType(MediaType.APPLICATION_JSON);
-
-      HttpEntity<String> requestEntity = new HttpEntity<>(requestJson, headers);
-
-      ResponseEntity<String> responseEntity =
-          restTemplate.exchange(url, HttpMethod.PUT, requestEntity, String.class);
-
-      String responseBody = responseEntity.getBody();
-      StandardResponse standardResponse =
-          objectMapper.readValue(responseBody, StandardResponse.class);
-
-      if (responseEntity.getStatusCode().is2xxSuccessful()) {
-        log.info("Successfully updated session. Response: {}", standardResponse);
-      }
-
-      return standardResponse;
-
-    } catch (Exception e) {
-      log.error("Unexpected error: " + e.getMessage(), e);
-      return StandardResponse.builder().status(Status.ERROR).message("Unexpected error").build();
-    }
-  }
-
-  public StandardResponse deleteSession(Long sessionId) {
-    String url =
-        String.format(
-            schedulerServiceBaseUrl + sessionsPath + "delete_session?sessionId=%d", sessionId);
-
-    try {
-      ResponseEntity<String> responseEntity =
-          restTemplate.exchange(url, HttpMethod.DELETE, null, String.class);
-
-      String responseBody = responseEntity.getBody();
-      StandardResponse standardResponse =
-          objectMapper.readValue(responseBody, StandardResponse.class);
-
-      if (responseEntity.getStatusCode().is2xxSuccessful()) {
-        log.info("Successfully deleted session. Response: {}", standardResponse.getMessage());
-      }
-
-      return standardResponse;
-
-    } catch (Exception e) {
-
-      if (e.getMessage().contains("Session not found")) {
-        log.error("Session not found");
-
-        return StandardResponse.builder()
-            .status(Status.ERROR)
-            .message("Session not found, nothing to delete")
-            .build();
-      } else {
-        log.error("Unexpected error: " + e.getMessage(), e);
-        return StandardResponse.builder().status(Status.ERROR).message("Unexpected error").build();
-      }
-    }
-  }
 }

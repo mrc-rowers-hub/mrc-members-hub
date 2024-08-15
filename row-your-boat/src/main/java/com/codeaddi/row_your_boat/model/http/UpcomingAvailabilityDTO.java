@@ -21,13 +21,13 @@ public class UpcomingAvailabilityDTO {
     @JsonProperty("upcoming_session_id")
     private Long upcomingSessionId;
 
-    private Date date;
+    private String date;
 
     @JsonProperty("start_time")
-    private LocalTime startTime;
+    private String startTime;
 
     @JsonProperty("end_time")
-    private LocalTime endTime;
+    private String endTime;
 
     private Squad squad;
 

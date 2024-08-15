@@ -93,7 +93,7 @@ public class TestData {
           .endTime(LocalTime.of(11, 0).toString())
           .squad(Squad.MENS)
           .level(RowerLevel.INTERMEDIATE)
-          .sessionType(SessionType.ERG)
+          .sessionType(SessionType.WATER)
           .build();
   public static UpcomingAvailabilityDTO upcomingSession3 = UpcomingAvailabilityDTO.builder()
           .upcomingSessionId(3L)
