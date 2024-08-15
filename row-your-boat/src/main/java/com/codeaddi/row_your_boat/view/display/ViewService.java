@@ -60,7 +60,8 @@ public class ViewService {
 
   public Map<Squad, List<AvailabilityGroup>> getAvailabilitySessions(){
     List<UpcomingAvailabilityDTO> upcomingSessions = availabilityClient.getAllSessions();
-    Map<UpcomingSessionsGrouper.UpcomingSessionKey, List<UpcomingAvailabilityDTO>> upcomingSessionKeyListMap =UpcomingSessionsGrouper.groupSessions(upcomingSessions);
+    Map<UpcomingSessionsGrouper.UpcomingSessionKey, List<UpcomingAvailabilityDTO>> upcomingSessionKeyListMap =
+            UpcomingSessionsGrouper.groupSessions(upcomingSessions);
     return AvailabilityService.mapAvailabilityGroupsToSquads(upcomingSessionKeyListMap);
   }
 }

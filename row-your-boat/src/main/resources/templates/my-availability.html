@@ -22,26 +22,29 @@
 <main class="content" id="content">
     <h2>My Availability (Next 4 Weeks)</h2>
 
-
-    <table class="availability-table">
-<!--        <thead>-->
-<!--        <tr>-->
-<!--            <th th:text="'Date'">Date</th>-->
-<!--            <th th:text="'Levels'">Levels</th> -->
-<!--            <th th:text="'Upcoming Session IDs'">Upcoming Session IDs</th>-->
-<!--        </tr>-->
-<!--        </thead>-->
-        <tbody>
-        <tr th:each="availabilityGroup : ${availabilityGroups}">
-            <td th:text="${availabilityGroup.upcomingSessionKey.date}"></td> <td th:text="${availabilityGroup.upcomingSessionKey.startTime}"></td>
-            <td th:text="${availabilityGroup.upcomingSessionKey.endTime}"></td>
-            <td th:text="${availabilityGroup.levels}"></td>
-        </tr>
-        </tbody>
-    </table>
-
-
+    <div th:each="squadEntry : ${availabilitySessions}">
+        <h3>[[ ${squadEntry.key.name} ]] - Availability</h3>
+        <table class="availability-table">
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Levels</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="availabilityGroup : ${squadEntry.value}">
+                <td th:text="${availabilityGroup.getDate()}"></td>
+                <td th:text="${availabilityGroup.getStartTime()}"></td>
+                <td th:text="${availabilityGroup.getEndTime()}"></td>
+                <td th:text="${availabilityGroup.getLevels()}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </main>
+
 
 
 
