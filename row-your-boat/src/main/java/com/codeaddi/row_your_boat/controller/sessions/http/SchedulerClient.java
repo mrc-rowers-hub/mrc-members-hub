@@ -71,4 +71,30 @@ public class SchedulerClient {
       return StandardResponse.builder().status(Status.ERROR).message("Unexpected error").build();
     }
   }
+
+  public StandardResponse deleteSession(Long sessionId) {
+    String url = String.format(schedulerServiceBaseUrl + sessionsPath + "/delete_session?id=%d", sessionId);
+
+    try {
+      // Make DELETE request
+      ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.DELETE, null, String.class);
+
+      // Parse the response body
+      String responseBody = responseEntity.getBody();
+      StandardResponse standardResponse = objectMapper.readValue(responseBody, StandardResponse.class);
+
+      if (responseEntity.getStatusCode().is2xxSuccessful()) {
+        log.info("Successfully deleted session. Response: {}", standardResponse);
+      }
+
+      return standardResponse;
+
+    } catch (Exception e) {
+      log.error("Unexpected error: " + e.getMessage(), e);
+      return StandardResponse.builder()
+              .status(Status.ERROR)
+              .message("Unexpected error")
+              .build();
+    }
+  }
 }

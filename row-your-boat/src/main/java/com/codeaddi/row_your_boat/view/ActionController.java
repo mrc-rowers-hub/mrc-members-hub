@@ -89,4 +89,22 @@ public class ActionController {
 
     return "redirect:/view-sessions-to-edit";
   }
+
+  @PostMapping("/delete-session")
+  public String updateRowingSession(
+          @RequestParam String id) {
+    log.info("Request to delete session with id {} received", id);
+
+
+//    StandardResponse response = schedulerClient.updateSession(updatedSession);
+//
+//    if (response.getStatus().toString().contains("SUCCESS")) {
+//      redirectAttributes.addFlashAttribute("successMessage", response.getMessage());
+//
+//    } else {
+//      redirectAttributes.addFlashAttribute("errorMessage", "New session added successfully!");
+//    }
+
+    return "redirect:/view-sessions-to-edit";
+  }
 }
