@@ -48,19 +48,6 @@ public class UserController {
   public String myAvailability(Model model) {
     Map<Squad, List<AvailabilityGroup>> availabilitySessions = viewService.getAvailabilitySessions();
 
-// the below shows that there is data
-    for (Map.Entry<Squad, List<AvailabilityGroup>> entry : availabilitySessions.entrySet()) {
-      Squad squad = entry.getKey();
-      List<AvailabilityGroup> availabilityGroups = entry.getValue();
-
-      // Process squad and availabilityGroups
-      log.info(String.valueOf(squad));
-      for (AvailabilityGroup availabilityGroup : availabilityGroups) {
-        log.info(availabilityGroup.getUpcomingSessionIds().toString());
-//        System.out.println("  Availability Group: " + availabilityGroup);
-      }
-    }
-
     model.addAttribute("availabilitySessions", availabilitySessions);
     return "my-availability";
   }

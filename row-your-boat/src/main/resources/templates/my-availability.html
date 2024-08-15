@@ -28,25 +28,32 @@
         <table>
             <thead>
             <tr>
-                <th>Date</th>
-                <th>Start Time</th>
-                <th>End Time</th>
-                <th>Levels</th>
-                <th>Day</th>
+                <th>Detail</th>
+                <th th:each="availabilityGroup : ${squadEntry.value}" th:text="${availabilityGroup.getDate()}"></th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="availabilityGroup : ${squadEntry.value}">
-                <td th:text="${availabilityGroup.getDayOfTheWeek()}"></td>
-                <td th:text="${availabilityGroup.getDate()}"></td>
-                <td th:text="${availabilityGroup.getStartTime()}"></td>
-                <td th:text="${availabilityGroup.getEndTime()}"></td>
-                <td th:text="${availabilityGroup.getLevels()}"></td>
+            <tr>
+                <td>Start Time</td>
+                <td th:each="availabilityGroup : ${squadEntry.value}" th:text="${availabilityGroup.getStartTime()}"></td>
+            </tr>
+            <tr>
+                <td>End Time</td>
+                <td th:each="availabilityGroup : ${squadEntry.value}" th:text="${availabilityGroup.getEndTime()}"></td>
+            </tr>
+            <tr>
+                <td>Levels</td>
+                <td th:each="availabilityGroup : ${squadEntry.value}" th:text="${availabilityGroup.getLevels()}"></td>
+            </tr>
+            <tr>
+                <td>Day</td>
+                <td th:each="availabilityGroup : ${squadEntry.value}" th:text="${availabilityGroup.getDayOfTheWeek()}"></td>
             </tr>
             </tbody>
         </table>
     </div>
 </main>
+
 
 
 
