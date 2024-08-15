@@ -5,6 +5,10 @@
     <link rel="stylesheet" th:href="@{/styles.css}">
     <link rel="stylesheet" th:href="@{/sidebar.css}">
     <style>
+        .water-session {
+            background-color: #3fb4d7; /* Blue background */
+            color: black; /* White text */
+        }
 
         .edit-sessions-button {
             display: inline-block;
@@ -209,7 +213,10 @@
             </tr>
             <tr>
                 <td>Session Type</td>
-                <td th:each="rowingSession : ${entry.value}" th:text="${rowingSession.sessionType}"></td>
+                <td th:each="rowingSession : ${entry.value}"
+                    th:classappend="${#strings.equalsIgnoreCase(rowingSession.sessionType, 'WATER')} ? 'water-session' : ''"
+                    th:text="${rowingSession.sessionType}">
+                </td>
             </tr>
             </tbody>
         </table>
