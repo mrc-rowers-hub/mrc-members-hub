@@ -16,6 +16,7 @@ import java.util.List;
 @Getter
 public class AvailabilityGroup {
 
+    private String dayOfTheWeek;
     private  String date;
     private  String startTime;
     private  String endTime;

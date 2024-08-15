@@ -6,6 +6,8 @@ import com.codeaddi.row_your_boat.model.availability.AvailabilityGroup;
 import com.codeaddi.row_your_boat.model.http.UpcomingAvailabilityDTO;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +33,7 @@ public class AvailabilityService {
                     .toList();
 
             AvailabilityGroup availabilityGroup = AvailabilityGroup.builder()
-                    .date(upcomingSessionKey.getDate())
+                    .date(upcomingSessionKey.getDate()).dayOfTheWeek(getDayOfTheWeek(upcomingSessionKey.getDate()))
                     .startTime(upcomingSessionKey.getStartTime())
                     .endTime(upcomingSessionKey.getEndTime())
                     .sessionType(upcomingSessionKey.getSessionType())
@@ -54,4 +56,12 @@ public class AvailabilityService {
             return availabilityGroups.stream()
                     .collect(Collectors.groupingBy(AvailabilityGroup::getSquad));
         }
+
+    private static String getDayOfTheWeek(String dateAsString){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date;
+        date = LocalDate.parse(dateAsString,                 formatter);
+        return date.getDayOfWeek().toString();
+
+    }
 }

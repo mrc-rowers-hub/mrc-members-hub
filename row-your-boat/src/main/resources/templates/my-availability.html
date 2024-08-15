@@ -24,17 +24,20 @@
 
     <div th:each="squadEntry : ${availabilitySessions}">
         <h3>[[ ${squadEntry.key.name} ]] - Availability</h3>
-        <table class="availability-table">
+
+        <table>
             <thead>
             <tr>
                 <th>Date</th>
                 <th>Start Time</th>
                 <th>End Time</th>
                 <th>Levels</th>
+                <th>Day</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="availabilityGroup : ${squadEntry.value}">
+                <td th:text="${availabilityGroup.getDayOfTheWeek()}"></td>
                 <td th:text="${availabilityGroup.getDate()}"></td>
                 <td th:text="${availabilityGroup.getStartTime()}"></td>
                 <td th:text="${availabilityGroup.getEndTime()}"></td>
