@@ -49,6 +49,10 @@ public class UserController {
     Map<Squad, List<UpcomingAvailabilityDTO>> availabilitySessions =
         viewService.getAvailabilitySessions();
 
+    for(UpcomingAvailabilityDTO upcomingAvailabilityDTO : availabilitySessions.get(Squad.WOMENS)){
+      log.info("ID {}", upcomingAvailabilityDTO.getUpcomingSessionId());
+    }
+
     model.addAttribute("availabilitySessions", availabilitySessions);
     return "my-availability";
   }

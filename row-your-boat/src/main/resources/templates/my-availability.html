@@ -103,7 +103,7 @@
     </div>
 
     <div th:each="squadEntry : ${availabilitySessions}">
-        <h3>[[ ${squadEntry.key.name} ]] - Availability</h3>
+        <h3>[[ ${squadEntry.key.name} ]]</h3>
 
         <table>
             <thead>
@@ -119,7 +119,9 @@
             </tr>
             <tr>
                 <td>Upcoming Sessions</td>
-                <td th:each="upcomingAvailabilityDTO : ${squadEntry.value}" th:class="session-column" th:text="${upcomingAvailabilityDTO.getUpcomingSessionId}"></td>
+                <td th:each="upcomingAvailabilityDTO : ${squadEntry.value}" th:class="session-column"
+                    th:text="${upcomingAvailabilityDTO.getUpcomingSessionId()}"
+                    th:data-session-id="${upcomingAvailabilityDTO.getUpcomingSessionId()}"></td>
             </tr>
             <tr>
                 <td>Start Time</td>
@@ -139,10 +141,9 @@
                     th:class="session-column"
                     th:text="${upcomingAvailabilityDTO.sessionType}"
                     th:classappend="${#strings.equalsIgnoreCase(upcomingAvailabilityDTO.sessionType.name(), 'WATER')} ? 'water-session' :
-                        (${#strings.equalsIgnoreCase(upcomingAvailabilityDTO.sessionType.name(), 'ERG')} ? 'erg-session' : '')"
-                ></td>
+                        (${#strings.equalsIgnoreCase(upcomingAvailabilityDTO.sessionType.name(), 'ERG')} ? 'erg-session' : '')">
+                </td>
             </tr>
-
             <tr>
                 <td>Available</td>
                 <td th:each="upcomingAvailabilityDTO, groupIndex : ${squadEntry.value}" th:class="session-column">
@@ -159,10 +160,6 @@
         </table>
     </div>
 </main>
-
-
-
-
 
 <footer>
     <p>Data provided by <strong>OpenWeatherMap</strong></p>
@@ -191,7 +188,7 @@
 
     function saveAllChanges() {
         var data = [];
-
+// another bug - it only sends updates from one of the tables
         // Collect availability selections
         document.querySelectorAll('table').forEach(function(table) {
             var squadName = table.closest('div').querySelector('h3').innerText.trim();
@@ -199,7 +196,7 @@
             // Iterate over each session row (assuming the session rows have the same structure)
             table.querySelectorAll('tbody').forEach(function(tbody) {
                 // Get the session ID from the row that contains it
-                var sessionId = tbody.querySelector('tr:nth-child(2) td').innerText.trim();// UPDATE THIS this is null currently
+                var sessionId = tbody.querySelector('td[data-session-id]').dataset.sessionId;
 
                 // Get the selected availability option
                 var availability = tbody.querySelector('input[type="radio"]:checked');
