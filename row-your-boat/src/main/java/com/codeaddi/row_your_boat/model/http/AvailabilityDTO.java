@@ -8,7 +8,6 @@ import lombok.ToString;
 @Setter
 @ToString //remove me?
 public class AvailabilityDTO {
-    private String squadName;
     private String upcomingSessionId;
     private String availability;
 }
