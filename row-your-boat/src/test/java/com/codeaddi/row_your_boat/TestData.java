@@ -110,14 +110,14 @@ public class TestData {
   public static AvailabilityGroup availabilityGroup1 =
       AvailabilityGroup.builder()
           .upcomingSessionKey(new UpcomingSessionsGrouper.UpcomingSessionKey(upcomingSession1))
-          .levels(List.of(RowerLevel.NOVICE))
+          .levels(RowerLevel.NOVICE)
           .upcomingSessionIds(List.of(1L, 2L))
           .build();
 
   public static AvailabilityGroup availabilityGroup2 =
       AvailabilityGroup.builder()
           .upcomingSessionKey(new UpcomingSessionsGrouper.UpcomingSessionKey(upcomingSession3))
-          .levels(List.of(RowerLevel.DEVELOPMENT))
+          .levels(RowerLevel.DEVELOPMENT)
           .upcomingSessionIds(List.of(3L))
           .build();
 
