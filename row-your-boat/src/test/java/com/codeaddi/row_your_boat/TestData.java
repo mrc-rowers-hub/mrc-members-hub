@@ -93,7 +93,7 @@ public class TestData {
           .startTime(LocalTime.of(10, 0).toString())
           .endTime(LocalTime.of(11, 0).toString())
           .squad(Squad.MENS)
-          .level(RowerLevel.INTERMEDIATE)
+          .level(RowerLevel.NOVICE)
           .sessionType(SessionType.WATER)
           .build();
   public static UpcomingAvailabilityDTO upcomingSession3 =
@@ -110,7 +110,7 @@ public class TestData {
   public static AvailabilityGroup availabilityGroup1 =
       AvailabilityGroup.builder()
           .upcomingSessionKey(new UpcomingSessionsGrouper.UpcomingSessionKey(upcomingSession1))
-          .levels(List.of(RowerLevel.NOVICE, RowerLevel.INTERMEDIATE))
+          .levels(List.of(RowerLevel.NOVICE))
           .upcomingSessionIds(List.of(1L, 2L))
           .build();
 
