@@ -133,13 +133,15 @@
             </tr>
             <tr>
                 <td>Available</td>
-                <td th:each="availabilityGroup : ${squadEntry.value}" th:class="session-column">
-                    <input type="checkbox" th:name="'available_'" style="width: 30px; height: 30px;">
+                <td th:each="availabilityGroup, groupIndex : ${squadEntry.value}" th:class="session-column">
+                    <input type="radio" th:name="${'availability_' + groupIndex}" value="available" style="width: 30px; height: 30px;">
+                </td>
             </tr>
             <tr>
-                <td>Unvailable</td>
-                <td th:each="availabilityGroup : ${squadEntry.value}" th:class="session-column">
-                    <input type="checkbox" th:name="'unavailable_'" style="width: 30px; height: 30px;">
+                <td>Unavailable</td>
+                <td th:each="availabilityGroup, groupIndex : ${squadEntry.value}" th:class="session-column">
+                    <input type="radio" th:name="${'availability_' + groupIndex}" value="unavailable" style="width: 30px; height: 30px;">
+                </td>
             </tr>
 
 
