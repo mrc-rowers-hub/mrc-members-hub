@@ -14,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/internal")
 @Slf4j
@@ -101,12 +103,15 @@ public class ActionController {
   }
 
   @PostMapping("/save-availability")
-  public @ResponseBody String saveAvailability(@RequestBody AvailabilityDTO availability) {
-    log.info("save availability");
-    // Process the availability data here
-    // For example, save it to the database
+  public ResponseEntity<String> saveAvailability(@RequestBody List<AvailabilityDTO> availabilityData) {
+    // Process the availability data
+    // ...
+    log.info("Request received");
 
-    // Assuming the operation was successful
-    return "success";
+    for(AvailabilityDTO availabilityDTO : availabilityData){
+      log.info(availabilityDTO.toString());
+    }
+
+    return ResponseEntity.ok("Availability saved successfully");
   }
 }

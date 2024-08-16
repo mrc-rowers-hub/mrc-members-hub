@@ -194,17 +194,25 @@
         var data = [];
 
         // Collect availability selections
-        var radios = document.querySelectorAll('input[type="radio"]:checked');
-        radios.forEach(function(radio) {
-            var sessionId = radio.name.split('_')[1]; // Extract session ID from the name attribute
-            data.push({
-                sessionId: sessionId,
-                availability: radio.value
+        document.querySelectorAll('table').forEach(function(table) {
+            var squadName = table.closest('div').querySelector('h3').innerText.trim();
+
+            table.querySelectorAll('tbody tr:nth-child(6)').forEach(function(row) { // Select the "Available" row
+                var sessionId = row.closest('table').querySelector('tr:nth-child(2) td').innerText.trim(); // Get the session ID
+                var availability = row.querySelector('input[type="radio"]:checked');
+
+                if (availability) {
+                    data.push({
+                        squadName: squadName,
+                        sessionId: sessionId,
+                        availability: availability.value
+                    });
+                }
             });
         });
 
         // Send data to the backend
-        fetch('/internal/save-all-availability', {
+        fetch('/internal/save-availability', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -212,11 +220,14 @@
             body: JSON.stringify(data)
         })
             .then(response => {
-                if (response.ok) {
-                    alert('All changes saved successfully!');
-                } else {
-                    alert('Failed to save changes. Please try again.');
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok: ${response.statusText}`);
                 }
+                return response.json();
+            })
+            .then(responseData => {
+                console.log('Data saved successfully:', responseData);
+                alert('All changes saved successfully!');
             })
             .catch(error => {
                 console.error('Error saving changes:', error);
