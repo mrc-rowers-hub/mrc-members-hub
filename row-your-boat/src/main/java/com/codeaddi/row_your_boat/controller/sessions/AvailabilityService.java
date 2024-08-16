@@ -1,7 +1,7 @@
 package com.codeaddi.row_your_boat.controller.sessions;
 
-import com.codeaddi.row_your_boat.model.RowerLevel;
 import com.codeaddi.row_your_boat.model.Squad;
+import com.codeaddi.row_your_boat.model.Weekday;
 import com.codeaddi.row_your_boat.model.availability.AvailabilityGroup;
 import com.codeaddi.row_your_boat.model.http.UpcomingAvailabilityDTO;
 import java.time.LocalDate;
@@ -15,52 +15,43 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AvailabilityService {
 
-  public static List<AvailabilityGroup> mapToUpcomingAvailabilityGroups(
-      Map<UpcomingSessionsGrouper.UpcomingSessionKey, List<UpcomingAvailabilityDTO>>
-          upcomingSessionKeyListMap) {
-    List<AvailabilityGroup> availabilityGroups = new ArrayList<>();
+  public static List<UpcomingAvailabilityDTO> addWeekday(List<UpcomingAvailabilityDTO> upcomingAvailabilityDTOS){
+    List<UpcomingAvailabilityDTO> dtosWithWeekdays = new ArrayList<>();
 
-    for (UpcomingSessionsGrouper.UpcomingSessionKey upcomingSessionKey :
-        upcomingSessionKeyListMap.keySet()) {
-      List<UpcomingAvailabilityDTO> upcomingSessions =
-          upcomingSessionKeyListMap.get(upcomingSessionKey);
+    for(UpcomingAvailabilityDTO upcomingAvailabilityDTO : upcomingAvailabilityDTOS){
+      Weekday weekday = getDayOfTheWeekAsEnum(upcomingAvailabilityDTO.getDate());
 
-      List<Long> upcomingSessionIds =
-          upcomingSessionKeyListMap.get(upcomingSessionKey).stream()
-              .map(UpcomingAvailabilityDTO::getUpcomingSessionId)
-              .toList();
-
-      AvailabilityGroup availabilityGroup =
-          AvailabilityGroup.builder()
-              .date(upcomingSessionKey.getDate())
-              .dayOfTheWeek(getDayOfTheWeek(upcomingSessionKey.getDate()))
-              .startTime(upcomingSessionKey.getStartTime())
-              .endTime(upcomingSessionKey.getEndTime())
-              .sessionType(upcomingSessionKey.getSessionType())
-              .squad(upcomingSessionKey.getSquad())
-              .levels(upcomingSessionKey.getRowerLevel())
-              .upcomingSessionIds(upcomingSessionIds)
-              .build();
-      availabilityGroups.add(availabilityGroup);
+      dtosWithWeekdays.add(UpcomingAvailabilityDTO.builder()
+              .weekday(weekday)
+              .level(upcomingAvailabilityDTO.getLevel()).upcomingSessionId(upcomingAvailabilityDTO.getUpcomingSessionId())
+              .startTime(upcomingAvailabilityDTO.getStartTime()).endTime(upcomingAvailabilityDTO.getEndTime())
+              .date(upcomingAvailabilityDTO.getDate()).squad(upcomingAvailabilityDTO.getSquad())
+              .sessionType(upcomingAvailabilityDTO.getSessionType())
+              .build());
     }
-
-    return availabilityGroups;
+    return dtosWithWeekdays;
   }
 
-  public static Map<Squad, List<AvailabilityGroup>> mapAvailabilityGroupsToSquads(
-      Map<UpcomingSessionsGrouper.UpcomingSessionKey, List<UpcomingAvailabilityDTO>>
-          upcomingSessionKeyListMap) {
 
-    List<AvailabilityGroup> availabilityGroups =
-        mapToUpcomingAvailabilityGroups(upcomingSessionKeyListMap);
+  public static Map<Squad, List<UpcomingAvailabilityDTO>> mapUpcomingSessionsToSquads(
+          List<UpcomingAvailabilityDTO>
+                  upcomingSessionKeyListMap) {
 
-    return availabilityGroups.stream().collect(Collectors.groupingBy(AvailabilityGroup::getSquad));
+    return upcomingSessionKeyListMap.stream().collect(Collectors.groupingBy(UpcomingAvailabilityDTO::getSquad));
   }
+
+
 
   private static String getDayOfTheWeek(String dateAsString) {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     LocalDate date;
     date = LocalDate.parse(dateAsString, formatter);
     return date.getDayOfWeek().toString();
+  }
+
+  private static Weekday getDayOfTheWeekAsEnum(String dateAsString) {
+//    log.info(String.valueOf(Weekday.fromString(getDayOfTheWeek(dateAsString))));
+    return Weekday.fromString(getDayOfTheWeek(dateAsString));
+
   }
 }

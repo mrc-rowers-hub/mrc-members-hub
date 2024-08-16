@@ -109,58 +109,57 @@
             <thead>
             <tr>
                 <th>Detail</th>
-                <th th:each="availabilityGroup : ${squadEntry.value}" th:class="session-column" th:text="${availabilityGroup.getDate()}"></th>
-
+                <th th:each="upcomingAvailabilityDTO : ${squadEntry.value}" th:class="session-column" th:text="${upcomingAvailabilityDTO.getDate()}"></th>
+            </tr>
             </thead>
             <tbody>
             <tr>
                 <td>Day</td>
-                <td th:each="availabilityGroup : ${squadEntry.value}" th:class="session-column" th:text="${availabilityGroup.getDayOfTheWeek()}"></td>
+                <td th:each="upcomingAvailabilityDTO : ${squadEntry.value}" th:class="session-column" th:text="${upcomingAvailabilityDTO.getWeekday}"></td>
             </tr>
             <tr>
                 <td>Upcoming Sessions</td>
-                <td th:each="availabilityGroup : ${squadEntry.value}" th:class="session-column" th:text="${availabilityGroup.getUpcomingSessionIds()}"></td>
+                <td th:each="upcomingAvailabilityDTO : ${squadEntry.value}" th:class="session-column" th:text="${upcomingAvailabilityDTO.getUpcomingSessionId}"></td>
             </tr>
             <tr>
                 <td>Start Time</td>
-                <td th:each="availabilityGroup : ${squadEntry.value}" th:class="session-column" th:text="${availabilityGroup.getStartTime()}"></td>
+                <td th:each="upcomingAvailabilityDTO : ${squadEntry.value}" th:class="session-column" th:text="${upcomingAvailabilityDTO.getStartTime}"></td>
             </tr>
             <tr>
                 <td>End Time</td>
-                <td th:each="availabilityGroup : ${squadEntry.value}" th:class="session-column" th:text="${availabilityGroup.getEndTime()}"></td>
+                <td th:each="upcomingAvailabilityDTO : ${squadEntry.value}" th:class="session-column" th:text="${upcomingAvailabilityDTO.getEndTime}"></td>
             </tr>
             <tr>
-                <td>Levels</td>
-                <td th:each="availabilityGroup : ${squadEntry.value}" th:class="session-column" th:text="${availabilityGroup.getLevels()}"></td>
+                <td>Level</td>
+                <td th:each="upcomingAvailabilityDTO : ${squadEntry.value}" th:class="session-column" th:text="${upcomingAvailabilityDTO.getLevel}"></td>
             </tr>
             <tr>
                 <td>Session Type</td>
-                <td th:each="availabilityGroup : ${squadEntry.value}"
-                    th:class="session-column" th:text="${availabilityGroup.getSessionType()}"
-                    th:classappend="${#strings.equalsIgnoreCase(availabilityGroup.getSessionType, 'WATER')} ? 'water-session' :
-                        (${#strings.equalsIgnoreCase(availabilityGroup.getSessionType, 'ERG')} ? 'erg-session' : 'erg-session')"
+                <td th:each="upcomingAvailabilityDTO : ${squadEntry.value}"
+                    th:class="session-column"
+                    th:text="${upcomingAvailabilityDTO.sessionType}"
+                    th:classappend="${#strings.equalsIgnoreCase(upcomingAvailabilityDTO.sessionType.name(), 'WATER')} ? 'water-session' :
+                        (${#strings.equalsIgnoreCase(upcomingAvailabilityDTO.sessionType.name(), 'ERG')} ? 'erg-session' : '')"
                 ></td>
             </tr>
 
             <tr>
                 <td>Available</td>
-                <td th:each="availabilityGroup, groupIndex : ${squadEntry.value}" th:class="session-column">
+                <td th:each="upcomingAvailabilityDTO, groupIndex : ${squadEntry.value}" th:class="session-column">
                     <input type="radio" th:id="${'available_' + groupIndex}" th:name="${'availability_' + groupIndex}" value="available" style="width: 30px; height: 30px;" onclick="setAvailabilityColor(this)">
                 </td>
             </tr>
             <tr>
                 <td>Unavailable</td>
-                <td th:each="availabilityGroup, groupIndex : ${squadEntry.value}" th:class="session-column">
+                <td th:each="upcomingAvailabilityDTO, groupIndex : ${squadEntry.value}" th:class="session-column">
                     <input type="radio" th:id="${'unavailable_' + groupIndex}" th:name="${'availability_' + groupIndex}" value="unavailable" style="width: 30px; height: 30px;" onclick="setAvailabilityColor(this)">
                 </td>
             </tr>
-
-
             </tbody>
         </table>
     </div>
-
 </main>
+
 
 
 
