@@ -104,7 +104,7 @@
             <tr>
                 <th>Detail</th>
                 <th th:each="availabilityGroup : ${squadEntry.value}" th:class="session-column" th:text="${availabilityGroup.getDate()}"></th>
-            </tr>
+                <th>Available</th>  </tr>
             </thead>
             <tbody>
             <tr>
@@ -131,12 +131,14 @@
                         (${#strings.equalsIgnoreCase(availabilityGroup.getSessionType, 'ERG')} ? 'erg-session' : 'erg-session')"
                 ></td>
             </tr>
+            <tr>  <td>Available</td>
+                <td th:each="availabilityGroup : ${squadEntry.value}" th:class="session-column">
+                    <input type="checkbox" th:name="'available_'">            </tr>
 
             </tbody>
         </table>
     </div>
 </main>
-
 
 
 
