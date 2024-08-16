@@ -94,7 +94,13 @@
 <div th:replace="~{sections/sidebar :: sidebarFragment}"></div>
 
 <main class="content" id="content">
-    <h2>My Availability (Next 4 Weeks)</h2>
+    <div style="display: flex; flex-direction: column; align-items: flex-start;">
+        <h2>My Availability (Next 4 Weeks)</h2>
+        <div style="text-align: center; margin-top: 20px;">
+            <button type="button" style="padding: 10px 20px; font-size: 16px;" onclick="saveAllChanges()">Save All Changes</button>
+        </div>
+        <h2> </h2>
+    </div>
 
     <div th:each="squadEntry : ${availabilitySessions}">
         <h3>[[ ${squadEntry.key.name} ]] - Availability</h3>
@@ -110,6 +116,10 @@
             <tr>
                 <td>Day</td>
                 <td th:each="availabilityGroup : ${squadEntry.value}" th:class="session-column" th:text="${availabilityGroup.getDayOfTheWeek()}"></td>
+            </tr>
+            <tr>
+                <td>Upcoming Sessions</td>
+                <td th:each="availabilityGroup : ${squadEntry.value}" th:class="session-column" th:text="${availabilityGroup.getUpcomingSessionIds()}"></td>
             </tr>
             <tr>
                 <td>Start Time</td>
@@ -149,6 +159,7 @@
             </tbody>
         </table>
     </div>
+
 </main>
 
 
@@ -177,6 +188,40 @@
         } else if (element.value === "unavailable") {
             selectedColumn.style.backgroundColor = "#f8d7da"; // light red
         }
+    }
+
+    function saveAllChanges() {
+        var data = [];
+
+        // Collect availability selections
+        var radios = document.querySelectorAll('input[type="radio"]:checked');
+        radios.forEach(function(radio) {
+            var sessionId = radio.name.split('_')[1]; // Extract session ID from the name attribute
+            data.push({
+                sessionId: sessionId,
+                availability: radio.value
+            });
+        });
+
+        // Send data to the backend
+        fetch('/internal/save-all-availability', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('All changes saved successfully!');
+                } else {
+                    alert('Failed to save changes. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error saving changes:', error);
+                alert('An error occurred. Please try again.');
+            });
     }
 
     document.addEventListener("DOMContentLoaded", function() {
