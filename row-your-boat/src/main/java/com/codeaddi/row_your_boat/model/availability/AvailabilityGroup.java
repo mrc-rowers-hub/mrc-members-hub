@@ -20,6 +20,6 @@ public class AvailabilityGroup {
   private Squad squad;
 
   private UpcomingSessionKey upcomingSessionKey;
-  private List<RowerLevel> levels;
+  private RowerLevel levels;
   private List<Long> upcomingSessionIds;
 }

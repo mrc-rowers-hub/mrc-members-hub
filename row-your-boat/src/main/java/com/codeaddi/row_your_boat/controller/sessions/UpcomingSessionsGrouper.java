@@ -1,5 +1,6 @@
 package com.codeaddi.row_your_boat.controller.sessions;
 
+import com.codeaddi.row_your_boat.model.RowerLevel;
 import com.codeaddi.row_your_boat.model.SessionType;
 import com.codeaddi.row_your_boat.model.Squad;
 import com.codeaddi.row_your_boat.model.http.UpcomingAvailabilityDTO;
@@ -23,6 +24,7 @@ public class UpcomingSessionsGrouper {
     private final String endTime;
     private final SessionType sessionType;
     private final Squad squad;
+    private final RowerLevel rowerLevel;
 
     public UpcomingSessionKey(UpcomingAvailabilityDTO session) {
       this.date = session.getDate();
@@ -30,6 +32,7 @@ public class UpcomingSessionsGrouper {
       this.endTime = session.getEndTime();
       this.sessionType = session.getSessionType();
       this.squad = session.getSquad();
+      this.rowerLevel = session.getLevel();
     }
 
     @Override
@@ -42,12 +45,13 @@ public class UpcomingSessionsGrouper {
           && Objects.equals(startTime, that.startTime)
           && Objects.equals(endTime, that.endTime)
           && squad == that.squad
+          && rowerLevel == that.rowerLevel
           && sessionType == that.sessionType;
     }
 
     @Override
     public int hashCode() {
-      return Objects.hash(date, startTime, endTime, sessionType, squad);
+      return Objects.hash(date, startTime, endTime, sessionType, squad, rowerLevel);
     }
   }
 }

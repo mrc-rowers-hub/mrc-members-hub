@@ -25,12 +25,6 @@ public class AvailabilityService {
       List<UpcomingAvailabilityDTO> upcomingSessions =
           upcomingSessionKeyListMap.get(upcomingSessionKey);
 
-      List<RowerLevel> rowerLevels =
-          upcomingSessionKeyListMap.get(upcomingSessionKey).stream()
-              .map(UpcomingAvailabilityDTO::getLevel)
-              .distinct()
-              .toList();
-
       List<Long> upcomingSessionIds =
           upcomingSessionKeyListMap.get(upcomingSessionKey).stream()
               .map(UpcomingAvailabilityDTO::getUpcomingSessionId)
@@ -44,7 +38,7 @@ public class AvailabilityService {
               .endTime(upcomingSessionKey.getEndTime())
               .sessionType(upcomingSessionKey.getSessionType())
               .squad(upcomingSessionKey.getSquad())
-              .levels(rowerLevels)
+              .levels(upcomingSessionKey.getRowerLevel())
               .upcomingSessionIds(upcomingSessionIds)
               .build();
       availabilityGroups.add(availabilityGroup);
