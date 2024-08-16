@@ -4,15 +4,14 @@ import com.codeaddi.row_your_boat.controller.http.SchedulerClient;
 import com.codeaddi.row_your_boat.model.RowerLevel;
 import com.codeaddi.row_your_boat.model.SessionType;
 import com.codeaddi.row_your_boat.model.Squad;
+import com.codeaddi.row_your_boat.model.http.AvailabilityDTO;
 import com.codeaddi.row_your_boat.model.http.StandardResponse;
 import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -99,5 +98,15 @@ public class ActionController {
     } else {
       return ResponseEntity.badRequest().body(response.getMessage());
     }
+  }
+
+  @PostMapping("/save-availability")
+  public @ResponseBody String saveAvailability(@RequestBody AvailabilityDTO availability) {
+    log.info("save availability");
+    // Process the availability data here
+    // For example, save it to the database
+
+    // Assuming the operation was successful
+    return "success";
   }
 }
