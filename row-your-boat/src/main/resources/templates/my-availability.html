@@ -104,7 +104,7 @@
             <tr>
                 <th>Detail</th>
                 <th th:each="availabilityGroup : ${squadEntry.value}" th:class="session-column" th:text="${availabilityGroup.getDate()}"></th>
-                <th>Available</th>  </tr>
+
             </thead>
             <tbody>
             <tr>
@@ -131,16 +131,17 @@
                         (${#strings.equalsIgnoreCase(availabilityGroup.getSessionType, 'ERG')} ? 'erg-session' : 'erg-session')"
                 ></td>
             </tr>
+
             <tr>
                 <td>Available</td>
                 <td th:each="availabilityGroup, groupIndex : ${squadEntry.value}" th:class="session-column">
-                    <input type="radio" th:name="${'availability_' + groupIndex}" value="available" style="width: 30px; height: 30px;">
+                    <input type="radio" th:id="${'available_' + groupIndex}" th:name="${'availability_' + groupIndex}" value="available" style="width: 30px; height: 30px;" onclick="setAvailabilityColor(this)">
                 </td>
             </tr>
             <tr>
                 <td>Unavailable</td>
                 <td th:each="availabilityGroup, groupIndex : ${squadEntry.value}" th:class="session-column">
-                    <input type="radio" th:name="${'availability_' + groupIndex}" value="unavailable" style="width: 30px; height: 30px;">
+                    <input type="radio" th:id="${'unavailable_' + groupIndex}" th:name="${'availability_' + groupIndex}" value="unavailable" style="width: 30px; height: 30px;" onclick="setAvailabilityColor(this)">
                 </td>
             </tr>
 
@@ -159,6 +160,25 @@
 </footer>
 
 <script>
+    function setAvailabilityColor(element) {
+        // Find all radio buttons in the same group
+        var radioButtons = document.getElementsByName(element.name);
+
+        // Loop through and reset all backgrounds in the group
+        radioButtons.forEach(function(radio) {
+            var sessionColumn = radio.closest('td');
+            sessionColumn.style.backgroundColor = ""; // Reset background color
+        });
+
+        // Set the background color of the selected option
+        var selectedColumn = element.closest('td');
+        if (element.value === "available") {
+            selectedColumn.style.backgroundColor = "#c4f0c4"; // light green
+        } else if (element.value === "unavailable") {
+            selectedColumn.style.backgroundColor = "#f8d7da"; // light red
+        }
+    }
+
     document.addEventListener("DOMContentLoaded", function() {
         var sidebarToggle = document.getElementById("sidebarToggle");
         var sidebar = document.getElementById("sidebar");
