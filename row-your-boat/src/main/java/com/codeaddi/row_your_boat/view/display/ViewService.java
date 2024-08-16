@@ -4,20 +4,22 @@ import com.codeaddi.row_your_boat.controller.http.AvailabilityClient;
 import com.codeaddi.row_your_boat.controller.http.SchedulerClient;
 import com.codeaddi.row_your_boat.controller.sessions.AvailabilityService;
 import com.codeaddi.row_your_boat.controller.sessions.SessionsService;
-import com.codeaddi.row_your_boat.controller.sessions.UpcomingSessionsGrouper;
 import com.codeaddi.row_your_boat.model.Squad;
-import com.codeaddi.row_your_boat.model.availability.AvailabilityGroup;
 import com.codeaddi.row_your_boat.model.http.UpcomingAvailabilityDTO;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
 import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class ViewService {
+//Todo remove the availability group key bits
 
   @Autowired private SchedulerClient schedulerClient;
   @Autowired private AvailabilityClient availabilityClient;
@@ -37,11 +39,9 @@ public class ViewService {
     Map<Squad, List<RowingSessions>> standardSessions =
         SessionsService.getRowingSessionsPerSquad(groupedSessions);
 
-    // sort by time
     standardSessions.forEach(
         (key, value) -> value.sort(Comparator.comparing(RowingSessions::getStartTime)));
 
-    // sort into day order
     standardSessions.forEach(
         (key, value) ->
             value.sort(Comparator.comparing(rowingSession -> rowingSession.getDay().ordinal())));
@@ -58,14 +58,15 @@ public class ViewService {
         .orElse(0L);
   }
 
-  public Map<Squad, List<AvailabilityGroup>> getAvailabilitySessions() {
+  public  Map<Squad, List<UpcomingAvailabilityDTO>> getAvailabilitySessions() {
     List<UpcomingAvailabilityDTO> upcomingSessions = availabilityClient.getAllSessions();
-    Map<UpcomingSessionsGrouper.UpcomingSessionKey, List<UpcomingAvailabilityDTO>>
-        upcomingSessionKeyListMap = UpcomingSessionsGrouper.groupSessions(upcomingSessions);
-    Map<Squad, List<AvailabilityGroup>> toReturn =
-        AvailabilityService.mapAvailabilityGroupsToSquads(upcomingSessionKeyListMap);
 
-    toReturn.forEach((key, value) -> value.sort(Comparator.comparing(AvailabilityGroup::getDate)));
+    List<UpcomingAvailabilityDTO> sessionsWithDays = AvailabilityService.addWeekday(upcomingSessions);
+
+    Map<Squad, List<UpcomingAvailabilityDTO>> toReturn = AvailabilityService.mapUpcomingSessionsToSquads(sessionsWithDays);
+
+    toReturn.forEach((key, value) -> value.sort(Comparator.comparing(UpcomingAvailabilityDTO::getDate)));
+
     return toReturn;
   }
 }
