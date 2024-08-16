@@ -197,15 +197,20 @@
         document.querySelectorAll('table').forEach(function(table) {
             var squadName = table.closest('div').querySelector('h3').innerText.trim();
 
-            table.querySelectorAll('tbody tr:nth-child(6)').forEach(function(row) { // Select the "Available" row
-                var sessionId = row.closest('table').querySelector('tr:nth-child(2) td').innerText.trim(); // Get the session ID
-                var availability = row.querySelector('input[type="radio"]:checked');
+            // Iterate over each session row (assuming the session rows have the same structure)
+            table.querySelectorAll('tbody').forEach(function(tbody) {
+                // Get the session ID from the row that contains it
+                var sessionId = tbody.querySelector('tr:nth-child(2) td').innerText.trim();
 
+                // Get the selected availability option
+                var availability = tbody.querySelector('input[type="radio"]:checked');
+
+                // Push the data if there's a selection made
                 if (availability) {
                     data.push({
                         squadName: squadName,
                         sessionId: sessionId,
-                        availability: availability.value
+                        availability: availability.value === "available" // Save true for available, false for unavailable
                     });
                 }
             });
