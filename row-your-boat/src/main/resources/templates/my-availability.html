@@ -200,7 +200,7 @@
             // Iterate over each session row (assuming the session rows have the same structure)
             table.querySelectorAll('tbody').forEach(function(tbody) {
                 // Get the session ID from the row that contains it
-                var sessionId = tbody.querySelector('tr:nth-child(2) td').innerText.trim();
+                var sessionId = tbody.querySelector('tr:nth-child(2) td').innerText.trim();// UPDATE THIS this is null currently
 
                 // Get the selected availability option
                 var availability = tbody.querySelector('input[type="radio"]:checked');
