@@ -6,8 +6,8 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@ToString //remove me?
+@ToString
 public class AvailabilityDTO {
-    private String upcomingSessionId;
-    private String availability;
+    private int sessionId;
+    private boolean availability;
 }

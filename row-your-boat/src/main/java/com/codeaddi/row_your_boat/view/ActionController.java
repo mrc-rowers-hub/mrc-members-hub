@@ -104,14 +104,13 @@ public class ActionController {
 
   @PostMapping("/save-availability")
   public ResponseEntity<String> saveAvailability(@RequestBody List<AvailabilityDTO> availabilityData) {
-    // Process the availability data
-    // ...
-    log.info("Request received");
-
+    log.info("Availability save request received");
     for(AvailabilityDTO availabilityDTO : availabilityData){
       log.info(availabilityDTO.toString());
     }
 
-    return ResponseEntity.ok("Availability saved successfully");
+    // Todo tailor this
+    return ResponseEntity.ok("{\"message\": \"Availability saved successfully\"}");
   }
+
 }

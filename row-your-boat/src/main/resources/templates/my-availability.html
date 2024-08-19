@@ -6,32 +6,26 @@
     <link rel="stylesheet" th:href="@{/sidebar.css}"> <!-- Sidebar styles -->
 
     <style>
-
         .water-session {
             background-color: #3fb4d7 !important;
             color: black;
         }
-
         .erg-session {
             background-color: #f7f7ae !important;
             color: black;
         }
-
         body {
             font-family: Arial, sans-serif;
         }
-
         .content {
             max-width: 800px;
             margin: 20px auto;
             padding: 10px;
         }
-
         h2 {
             text-align: center;
             margin-bottom: 20px;
         }
-
         h3 {
             color: #333;
             margin-top: 20px;
@@ -39,37 +33,30 @@
             border-bottom: 2px solid #ddd;
             padding-bottom: 5px;
         }
-
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
         }
-
         th, td {
             padding: 10px;
             text-align: left;
             border: 1px solid #ccc;
         }
-
         th {
             background-color: #f4f4f4;
             font-weight: bold;
         }
-
         tbody tr {
             background-color: #f9f9f9;
         }
-
         tbody tr:nth-child(even) {
             background-color: #f1f1f1;
         }
-
         tbody td {
             border-right: 1px solid #ccc;
             border-bottom: 1px solid #ccc;
         }
-
         .session-column {
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -77,7 +64,6 @@
             background-color: #e9f4ff;
         }
     </style>
-
 </head>
 <body>
 <header>
@@ -88,7 +74,6 @@
         </div>
     </div>
 </header>
-
 
 <!-- Include the sidebar using the updated syntax -->
 <div th:replace="~{sections/sidebar :: sidebarFragment}"></div>
@@ -109,51 +94,35 @@
             <thead>
             <tr>
                 <th>Detail</th>
-                <th th:each="upcomingAvailabilityDTO : ${squadEntry.value}" th:class="session-column" th:text="${upcomingAvailabilityDTO.getDate()}"></th>
+                <th>Date</th>
+                <th>Day</th>
+                <th>Upcoming Session ID</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Level</th>
+                <th>Session Type</th>
+                <th>Available</th>
+                <th>Unavailable</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody th:each="upcomingAvailabilityDTO, iterStatus : ${squadEntry.value}">
             <tr>
-                <td>Day</td>
-                <td th:each="upcomingAvailabilityDTO : ${squadEntry.value}" th:class="session-column" th:text="${upcomingAvailabilityDTO.getWeekday}"></td>
-            </tr>
-            <tr>
-                <td>Upcoming Sessions</td>
-                <td th:each="upcomingAvailabilityDTO : ${squadEntry.value}" th:class="session-column"
-                    th:text="${upcomingAvailabilityDTO.getUpcomingSessionId()}"
-                    th:data-session-id="${upcomingAvailabilityDTO.getUpcomingSessionId()}"></td>
-            </tr>
-            <tr>
-                <td>Start Time</td>
-                <td th:each="upcomingAvailabilityDTO : ${squadEntry.value}" th:class="session-column" th:text="${upcomingAvailabilityDTO.getStartTime}"></td>
-            </tr>
-            <tr>
-                <td>End Time</td>
-                <td th:each="upcomingAvailabilityDTO : ${squadEntry.value}" th:class="session-column" th:text="${upcomingAvailabilityDTO.getEndTime}"></td>
-            </tr>
-            <tr>
-                <td>Level</td>
-                <td th:each="upcomingAvailabilityDTO : ${squadEntry.value}" th:class="session-column" th:text="${upcomingAvailabilityDTO.getLevel}"></td>
-            </tr>
-            <tr>
-                <td>Session Type</td>
-                <td th:each="upcomingAvailabilityDTO : ${squadEntry.value}"
-                    th:class="session-column"
-                    th:text="${upcomingAvailabilityDTO.sessionType}"
+                <td th:text="${iterStatus.index + 1}"></td> <!-- Index is zero-based, so adding 1 -->
+                <td th:text="${upcomingAvailabilityDTO.getDate()}"></td>
+                <td th:text="${upcomingAvailabilityDTO.getWeekday()}"></td>
+                <td th:text="${upcomingAvailabilityDTO.getUpcomingSessionId()}"
+                    th:attr="data-session-id=${upcomingAvailabilityDTO.getUpcomingSessionId()}"></td>
+                <td th:text="${upcomingAvailabilityDTO.getStartTime()}"></td>
+                <td th:text="${upcomingAvailabilityDTO.getEndTime()}"></td>
+                <td th:text="${upcomingAvailabilityDTO.getLevel()}"></td>
+                <td th:text="${upcomingAvailabilityDTO.sessionType.name()}"
                     th:classappend="${#strings.equalsIgnoreCase(upcomingAvailabilityDTO.sessionType.name(), 'WATER')} ? 'water-session' :
-                        (${#strings.equalsIgnoreCase(upcomingAvailabilityDTO.sessionType.name(), 'ERG')} ? 'erg-session' : '')">
+                            (${#strings.equalsIgnoreCase(upcomingAvailabilityDTO.sessionType.name(), 'ERG')} ? 'erg-session' : '')"></td>
+                <td>
+                    <input type="radio" th:id="${'available_' + iterStatus.index}" th:name="${'availability_' + iterStatus.index}" value="available" style="width: 30px; height: 30px;" onclick="setAvailabilityColor(this)">
                 </td>
-            </tr>
-            <tr>
-                <td>Available</td>
-                <td th:each="upcomingAvailabilityDTO, groupIndex : ${squadEntry.value}" th:class="session-column">
-                    <input type="radio" th:id="${'available_' + groupIndex}" th:name="${'availability_' + groupIndex}" value="available" style="width: 30px; height: 30px;" onclick="setAvailabilityColor(this)">
-                </td>
-            </tr>
-            <tr>
-                <td>Unavailable</td>
-                <td th:each="upcomingAvailabilityDTO, groupIndex : ${squadEntry.value}" th:class="session-column">
-                    <input type="radio" th:id="${'unavailable_' + groupIndex}" th:name="${'availability_' + groupIndex}" value="unavailable" style="width: 30px; height: 30px;" onclick="setAvailabilityColor(this)">
+                <td>
+                    <input type="radio" th:id="${'unavailable_' + iterStatus.index}" th:name="${'availability_' + iterStatus.index}" value="unavailable" style="width: 30px; height: 30px;" onclick="setAvailabilityColor(this)">
                 </td>
             </tr>
             </tbody>
@@ -174,39 +143,43 @@
         // Loop through and reset all backgrounds in the group
         radioButtons.forEach(function(radio) {
             var sessionColumn = radio.closest('td');
-            sessionColumn.style.backgroundColor = ""; // Reset background color
+            if (sessionColumn) {
+                sessionColumn.style.backgroundColor = ""; // Reset background color
+            }
         });
 
         // Set the background color of the selected option
         var selectedColumn = element.closest('td');
-        if (element.value === "available") {
-            selectedColumn.style.backgroundColor = "#c4f0c4"; // light green
-        } else if (element.value === "unavailable") {
-            selectedColumn.style.backgroundColor = "#f8d7da"; // light red
+        if (selectedColumn) {
+            if (element.value === "available") {
+                selectedColumn.style.backgroundColor = "#c4f0c4"; // light green
+            } else if (element.value === "unavailable") {
+                selectedColumn.style.backgroundColor = "#f8d7da"; // light red
+            }
         }
     }
 
     function saveAllChanges() {
         var data = [];
-// another bug - it only sends updates from one of the tables
-        // Collect availability selections
+
+        // Iterate over each table
         document.querySelectorAll('table').forEach(function(table) {
-            var squadName = table.closest('div').querySelector('h3').innerText.trim();
 
-            // Iterate over each session row (assuming the session rows have the same structure)
-            table.querySelectorAll('tbody').forEach(function(tbody) {
-                // Get the session ID from the row that contains it
-                var sessionId = tbody.querySelector('td[data-session-id]').dataset.sessionId;
+            // Iterate over each row in the tbody
+            table.querySelectorAll('tbody tr').forEach(function(row) {
+                // Get the session ID from the Upcoming Sessions column
+                var sessionIdCell = row.querySelector('td[data-session-id]');
+                var sessionId = sessionIdCell.getAttribute('data-session-id');
 
-                // Get the selected availability option
-                var availability = tbody.querySelector('input[type="radio"]:checked');
+                // Get the selected availability option (either available or unavailable)
+                var availabilityRadio = row.querySelector('input[type="radio"]:checked');
+                var availability = availabilityRadio ? availabilityRadio.value === "available" : null;
 
-                // Push the data if there's a selection made
-                if (availability) {
+                // Only push to data if sessionId is valid and availability is determined
+                if (sessionId && availability !== null) {
                     data.push({
-                        squadName: squadName,
                         sessionId: sessionId,
-                        availability: availability.value === "available" // Save true for available, false for unavailable
+                        availability: availability // true for available, false for unavailable
                     });
                 }
             });
@@ -224,7 +197,15 @@
                 if (!response.ok) {
                     throw new Error(`Network response was not ok: ${response.statusText}`);
                 }
-                return response.json();
+
+                // Check the content type of the response
+                const contentType = response.headers.get("content-type");
+                if (contentType && contentType.indexOf("application/json") !== -1) {
+                    return response.json();
+                } else {
+                    // If the response is not JSON, return the text
+                    return response.text();
+                }
             })
             .then(responseData => {
                 console.log('Data saved successfully:', responseData);
