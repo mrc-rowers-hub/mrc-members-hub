@@ -1,5 +1,6 @@
 package com.codeaddi.row_your_boat.model.http;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -7,10 +8,10 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@Builder
 public class AvailabilityDTO {
-//     todo add rowerId field
 //     Todo update the fields to have json strings
-    private String rowerId;
-    private int sessionId;
+    private Long rowerId;
+    private int sessionId; // todo update to be upcoming session id & to be Long
     private boolean availability;
 }

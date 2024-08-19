@@ -38,10 +38,7 @@ public class SchedulerClient extends HttpClient {
     try {
       String requestJson = objectMapper.writeValueAsString(session);
 
-      HttpHeaders headers = new HttpHeaders();
-      headers.setContentType(MediaType.APPLICATION_JSON);
-
-      HttpEntity<String> requestEntity = new HttpEntity<>(requestJson, headers);
+      HttpEntity<String> requestEntity = getRequestEntity(requestJson);
 
       ResponseEntity<String> responseEntity =
           restTemplate.exchange(url, HttpMethod.PUT, requestEntity, String.class);
