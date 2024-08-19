@@ -108,6 +108,7 @@ public class ActionController {
     for(AvailabilityDTO availabilityDTO : availabilityData){
       log.info(availabilityDTO.toString());
     }
+    // give a dummy rowerId for now, as this will be updated in due course
 
     // Todo tailor this
     return ResponseEntity.ok("{\"message\": \"Availability saved successfully\"}");
