@@ -11,7 +11,6 @@ import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class ViewService {
-//Todo remove the availability group key bits
+  // Todo remove the availability group key bits
 
   @Autowired private SchedulerClient schedulerClient;
   @Autowired private AvailabilityClient availabilityClient;
@@ -58,14 +57,17 @@ public class ViewService {
         .orElse(0L);
   }
 
-  public  Map<Squad, List<UpcomingAvailabilityDTO>> getAvailabilitySessions() {
+  public Map<Squad, List<UpcomingAvailabilityDTO>> getAvailabilitySessions() {
     List<UpcomingAvailabilityDTO> upcomingSessions = availabilityClient.getAllSessions();
 
-    List<UpcomingAvailabilityDTO> sessionsWithDays = AvailabilityService.addWeekday(upcomingSessions);
+    List<UpcomingAvailabilityDTO> sessionsWithDays =
+        AvailabilityService.addWeekday(upcomingSessions);
 
-    Map<Squad, List<UpcomingAvailabilityDTO>> toReturn = AvailabilityService.mapUpcomingSessionsToSquads(sessionsWithDays);
+    Map<Squad, List<UpcomingAvailabilityDTO>> toReturn =
+        AvailabilityService.mapUpcomingSessionsToSquads(sessionsWithDays);
 
-    toReturn.forEach((key, value) -> value.sort(Comparator.comparing(UpcomingAvailabilityDTO::getDate)));
+    toReturn.forEach(
+        (key, value) -> value.sort(Comparator.comparing(UpcomingAvailabilityDTO::getDate)));
 
     return toReturn;
   }

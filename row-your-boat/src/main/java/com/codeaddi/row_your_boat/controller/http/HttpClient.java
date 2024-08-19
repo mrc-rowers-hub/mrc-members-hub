@@ -25,7 +25,7 @@ public class HttpClient {
     return String.format(schedulerServiceBaseUrl + resource.getEndpoint() + endpoint);
   }
 
-  protected HttpEntity<String> getRequestEntity(String requestJson){
+  protected HttpEntity<String> getRequestEntity(String requestJson) {
 
     headers.setContentType(MediaType.APPLICATION_JSON);
 

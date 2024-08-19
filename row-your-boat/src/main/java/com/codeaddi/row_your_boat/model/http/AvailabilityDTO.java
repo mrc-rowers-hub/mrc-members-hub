@@ -10,8 +10,8 @@ import lombok.ToString;
 @ToString
 @Builder
 public class AvailabilityDTO {
-//     Todo update the fields to have json strings
-    private Long rowerId;
-    private int sessionId; // todo update to be upcoming session id & to be Long
-    private boolean availability;
+  //     Todo update the fields to have json strings
+  private Long rowerId;
+  private int sessionId; // todo update to be upcoming session id & to be Long
+  private boolean availability;
 }

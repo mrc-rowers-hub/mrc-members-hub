@@ -9,6 +9,8 @@ import com.codeaddi.row_your_boat.model.http.AvailabilityDTO;
 import com.codeaddi.row_your_boat.model.http.StandardResponse;
 import com.codeaddi.row_your_boat.model.http.enums.Status;
 import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,17 +18,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Controller
 @RequestMapping("/internal")
 @Slf4j
 public class ActionController {
 
   @Autowired SchedulerClient schedulerClient;
-  @Autowired
-  AvailabilityClient availabilityClient;
+  @Autowired AvailabilityClient availabilityClient;
 
   @PostMapping("/add-rowing-session")
   public String addRowingSession(
@@ -108,27 +106,33 @@ public class ActionController {
   }
 
   @PostMapping("/save-availability")
-  public ResponseEntity<String> saveAvailability(@RequestBody List<AvailabilityDTO> availabilityData) {
+  public ResponseEntity<String> saveAvailability(
+      @RequestBody List<AvailabilityDTO> availabilityData) {
     log.info("Availability save request received");
 
-    StandardResponse response = availabilityClient.saveAvailability(addDummyRowerId(availabilityData));
+    StandardResponse response =
+        availabilityClient.saveAvailability(addDummyRowerId(availabilityData));
 
-    if(response.getStatus().equals(Status.SUCCESS)){
+    if (response.getStatus().equals(Status.SUCCESS)) {
       return ResponseEntity.ok(response.getMessage());
     } else {
       return ResponseEntity.badRequest().body(response.getMessage());
     }
   }
 
-  private List<AvailabilityDTO> addDummyRowerId(List<AvailabilityDTO> availabilityData){
+  private List<AvailabilityDTO> addDummyRowerId(List<AvailabilityDTO> availabilityData) {
     List<AvailabilityDTO> availabilityDTOSWithDummyId = new ArrayList<>();
 
-    for(AvailabilityDTO availabilityDTO : availabilityData){
-      AvailabilityDTO updated = AvailabilityDTO.builder().rowerId(1L).availability(availabilityDTO.isAvailability()).sessionId(availabilityDTO.getSessionId()).build();
+    for (AvailabilityDTO availabilityDTO : availabilityData) {
+      AvailabilityDTO updated =
+          AvailabilityDTO.builder()
+              .rowerId(1L)
+              .availability(availabilityDTO.isAvailability())
+              .sessionId(availabilityDTO.getSessionId())
+              .build();
       availabilityDTOSWithDummyId.add(updated);
     }
 
     return availabilityDTOSWithDummyId;
   }
-
 }
