@@ -3,6 +3,7 @@ package com.codeaddi.row_your_boat.controller.http;
 import com.codeaddi.row_your_boat.model.http.AvailabilityDTO;
 import com.codeaddi.row_your_boat.model.http.StandardResponse;
 import com.codeaddi.row_your_boat.model.http.UpcomingAvailabilityDTO;
+import com.codeaddi.row_your_boat.model.http.UpcomingSessionAvailability;
 import com.codeaddi.row_your_boat.model.http.enums.Resource;
 import com.codeaddi.row_your_boat.model.http.enums.Status;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -26,6 +27,24 @@ public class AvailabilityClient extends HttpClient {
           objectMapper.readValue(response, new TypeReference<List<UpcomingAvailabilityDTO>>() {});
       log.info("Successfully retrieved all upcoming sessions");
       return sessions;
+    } catch (RestClientResponseException e) {
+      log.error("Scheduler service gave an unexpected response: {}", e.getStatusCode());
+      return List.of();
+    } catch (Exception e) {
+      log.error("Unexpected error: " + e.getMessage());
+      return List.of();
+    }
+  }
+
+  public List<UpcomingSessionAvailability> getUpcomingAvailabilityForRower(Long rowerId){
+    try {
+      String response =
+              restTemplate.getForObject(
+                      getUrl("get_upcoming_availability", Resource.SESSION_AVAILABILITY), String.class);
+      List<UpcomingSessionAvailability> availableSessions =
+              objectMapper.readValue(response, new TypeReference<List<UpcomingSessionAvailability>>() {});
+      log.info("Successfully retrieved all upcoming sessions");
+      return availableSessions;
     } catch (RestClientResponseException e) {
       log.error("Scheduler service gave an unexpected response: {}", e.getStatusCode());
       return List.of();
