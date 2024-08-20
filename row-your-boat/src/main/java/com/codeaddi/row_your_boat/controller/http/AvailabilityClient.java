@@ -36,15 +36,17 @@ public class AvailabilityClient extends HttpClient {
     }
   }
 
-  public List<UpcomingSessionAvailability> getUpcomingAvailabilityForRower(Long rowerId){
+  public List<UpcomingSessionAvailability> getUpcomingAvailabilityForRower(Long rowerId) {
     try {
-      String url = getUrl("get_upcoming_availability", Resource.SESSION_AVAILABILITY) + "?rowerId=" + rowerId;
+      String url =
+          getUrl("get_upcoming_availability", Resource.SESSION_AVAILABILITY)
+              + "?rowerId="
+              + rowerId;
 
-      String response =
-              restTemplate.getForObject(
-                      url, String.class);
+      String response = restTemplate.getForObject(url, String.class);
       List<UpcomingSessionAvailability> availableSessions =
-              objectMapper.readValue(response, new TypeReference<List<UpcomingSessionAvailability>>() {});
+          objectMapper.readValue(
+              response, new TypeReference<List<UpcomingSessionAvailability>>() {});
       log.info("Successfully retrieved all upcoming sessions");
       return availableSessions;
     } catch (RestClientResponseException e) {

@@ -34,6 +34,5 @@ public class UpcomingAvailabilityDTO {
   @JsonProperty("session_type")
   private SessionType sessionType;
 
-  @Setter
-  private Boolean rowerIsAvailable;
+  @Setter private Boolean rowerIsAvailable;
 }

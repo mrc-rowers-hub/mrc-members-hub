@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class UpcomingSessionAvailability {
-   private Long id;
-    private Long upcomingSessionId;
-    private Long rowerId;
+  private Long id;
+  private Long upcomingSessionId;
+  private Long rowerId;
 }
