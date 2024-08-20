@@ -76,4 +76,14 @@ public class UserController {
 
     return "view-sessions-to-edit";
   }
+
+  @GetMapping("/boats")
+  public String boats() {
+    return "boats";
+  }
+
+  @GetMapping("/blades")
+  public String blades() {
+    return "blades";
+  }
 }
