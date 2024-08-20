@@ -5,13 +5,11 @@ import com.codeaddi.row_your_boat.model.SessionType;
 import com.codeaddi.row_your_boat.model.Squad;
 import com.codeaddi.row_your_boat.model.Weekday;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Value;
+import lombok.*;
 import lombok.extern.jackson.Jacksonized;
 
 @Builder
-@Value
+@Getter
 @AllArgsConstructor
 @Jacksonized
 public class UpcomingAvailabilityDTO {
@@ -35,4 +33,7 @@ public class UpcomingAvailabilityDTO {
 
   @JsonProperty("session_type")
   private SessionType sessionType;
+
+  @Setter
+  private Boolean rowerIsAvailable;
 }

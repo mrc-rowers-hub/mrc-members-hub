@@ -9,6 +9,6 @@ import lombok.*;
 @ToString
 public class UpcomingSessionAvailability {
    private Long id;
- private Long upcomingSessionId;
+    private Long upcomingSessionId;
     private Long rowerId;
 }

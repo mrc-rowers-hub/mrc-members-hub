@@ -101,8 +101,9 @@
                 <th>End Time</th>
                 <th>Level</th>
                 <th>Session Type</th>
-                <th>Available</th>
-                <th>Unavailable</th>
+                <th>Currently Available</th>
+                <th>Set as available</th>
+                <th>Set as Unavailable</th>
             </tr>
             </thead>
             <tbody th:each="upcomingAvailabilityDTO, iterStatus : ${squadEntry.value}">
@@ -118,6 +119,7 @@
                 <td th:text="${upcomingAvailabilityDTO.sessionType.name()}"
                     th:classappend="${#strings.equalsIgnoreCase(upcomingAvailabilityDTO.sessionType.name(), 'WATER')} ? 'water-session' :
                             (${#strings.equalsIgnoreCase(upcomingAvailabilityDTO.sessionType.name(), 'ERG')} ? 'erg-session' : '')"></td>
+                <td th:text="${upcomingAvailabilityDTO.getRowerIsAvailable()}"></td>
                 <td>
                     <input type="radio" th:id="${'available_' + iterStatus.index}" th:name="${'availability_' + iterStatus.index}" value="available" style="width: 30px; height: 30px;" onclick="setAvailabilityColor(this)">
                 </td>
