@@ -58,6 +58,23 @@ public class AvailabilityClient extends HttpClient {
     }
   }
 
+  public List<UpcomingSessionAvailability> getUpcomingAvailabilityForAllRowers() {
+    try {
+      String response = restTemplate.getForObject(getUrl("get_upcoming_availability", Resource.SESSION_AVAILABILITY), String.class);
+      List<UpcomingSessionAvailability> availableSessions =
+              objectMapper.readValue(
+                      response, new TypeReference<List<UpcomingSessionAvailability>>() {});
+      log.info("Successfully retrieved all upcoming sessions");
+      return availableSessions;
+    } catch (RestClientResponseException e) {
+      log.error("Scheduler service gave an unexpected response: {}", e.getStatusCode());
+      return List.of();
+    } catch (Exception e) {
+      log.error("Unexpected error: " + e.getMessage());
+      return List.of();
+    }
+  }
+
   public StandardResponse saveAvailability(List<AvailabilityDTO> availabilityData) {
 
     String url = getUrl("save_availability", Resource.SESSION_AVAILABILITY);
