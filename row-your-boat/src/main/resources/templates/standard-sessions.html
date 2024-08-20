@@ -250,6 +250,14 @@
             });
         }
 
+        var boatsBladesToggle = document.getElementById('boatsBladesToggle');
+        var boatsBladesSubmenu = document.getElementById('boatsBladesSubmenu');
+
+        boatsBladesToggle.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent default link behavior
+            boatsBladesSubmenu.style.display = (boatsBladesSubmenu.style.display === 'block') ? 'none' : 'block';
+        });
+
         // Show form when button is clicked
         addNewSessionButton.addEventListener("click", function() {
             sessionForm.style.display = sessionForm.style.display === "none" || sessionForm.style.display === "" ? "block" : "none";
