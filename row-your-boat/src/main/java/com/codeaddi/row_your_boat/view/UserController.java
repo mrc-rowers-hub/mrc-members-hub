@@ -49,7 +49,10 @@ public class UserController {
     Map<Squad, List<UpcomingAvailabilityDTO>> availabilitySessions =
         viewService.getAvailabilitySessions();
 
-    model.addAttribute("availabilitySessions", availabilitySessions);
+    Map<Squad, List<UpcomingAvailabilityDTO>> sessionsWithAvailability =
+        viewService.addAvailabilityForThisUser(1L, Squad.WOMENS, availabilitySessions);
+
+    model.addAttribute("availabilitySessions", sessionsWithAvailability);
     return "my-availability";
   }
 

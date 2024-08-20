@@ -6,8 +6,10 @@ import com.codeaddi.row_your_boat.controller.sessions.AvailabilityService;
 import com.codeaddi.row_your_boat.controller.sessions.SessionsService;
 import com.codeaddi.row_your_boat.model.Squad;
 import com.codeaddi.row_your_boat.model.http.UpcomingAvailabilityDTO;
+import com.codeaddi.row_your_boat.model.http.UpcomingSessionAvailability;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
 import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -70,5 +72,34 @@ public class ViewService {
         (key, value) -> value.sort(Comparator.comparing(UpcomingAvailabilityDTO::getDate)));
 
     return toReturn;
+  }
+
+  // Todo should this live in viewService?
+  public Map<Squad, List<UpcomingAvailabilityDTO>> addAvailabilityForThisUser(
+      Long rowerId,
+      Squad rowerSquad,
+      Map<Squad, List<UpcomingAvailabilityDTO>> allUpcomingSessions) {
+    List<UpcomingSessionAvailability> rowersUpcomingAvailability =
+        availabilityClient.getUpcomingAvailabilityForRower(rowerId);
+    List<Long> rowersAvailableSessions =
+        rowersUpcomingAvailability.stream()
+            .map(UpcomingSessionAvailability::getUpcomingSessionId)
+            .toList();
+
+    List<UpcomingAvailabilityDTO> upcomingSessionsForThisSquad =
+        allUpcomingSessions.get(rowerSquad);
+    List<UpcomingAvailabilityDTO> upcomingSessionsForThisSquadWithAvailability = new ArrayList<>();
+
+    for (UpcomingAvailabilityDTO upcomingAvailabilityDTO : upcomingSessionsForThisSquad) {
+      if (rowersAvailableSessions.contains(upcomingAvailabilityDTO.getUpcomingSessionId())) {
+        upcomingAvailabilityDTO.setRowerIsAvailable(true);
+      }
+
+      upcomingSessionsForThisSquadWithAvailability.add(upcomingAvailabilityDTO);
+    }
+
+    allUpcomingSessions.replace(rowerSquad, upcomingSessionsForThisSquadWithAvailability);
+
+    return allUpcomingSessions;
   }
 }
