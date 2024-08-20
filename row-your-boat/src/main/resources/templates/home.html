@@ -42,6 +42,14 @@
                 this.classList.toggle("collapsed");
             });
         }
+
+        var boatsBladesToggle = document.getElementById('boatsBladesToggle');
+        var boatsBladesSubmenu = document.getElementById('boatsBladesSubmenu');
+
+        boatsBladesToggle.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent default link behavior
+            boatsBladesSubmenu.style.display = (boatsBladesSubmenu.style.display === 'block') ? 'none' : 'block';
+        });
     });
 </script>
 </body>
