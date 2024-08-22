@@ -60,7 +60,7 @@ public class ViewService {
   }
 
   public Map<Squad, List<UpcomingAvailabilityDTO>> getAvailabilitySessions() {
-    List<UpcomingAvailabilityDTO> upcomingSessions = availabilityClient.getAllSessions();
+    List<UpcomingAvailabilityDTO> upcomingSessions = availabilityClient.getAllUpcomingSessions();
 
     List<UpcomingAvailabilityDTO> sessionsWithDays =
         AvailabilityService.addWeekday(upcomingSessions);
