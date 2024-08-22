@@ -18,7 +18,7 @@ import org.springframework.web.client.RestClientResponseException;
 @Slf4j
 public class AvailabilityClient extends HttpClient {
 
-  public List<UpcomingAvailabilityDTO> getAllSessions() {
+  public List<UpcomingAvailabilityDTO> getAllUpcomingSessions() {
     try {
       String response =
           restTemplate.getForObject(
@@ -35,6 +35,8 @@ public class AvailabilityClient extends HttpClient {
       return List.of();
     }
   }
+
+  // add one in to get all past sessions
 
   public List<UpcomingSessionAvailability> getUpcomingAvailabilityForRower(Long rowerId) {
     try {
@@ -58,7 +60,7 @@ public class AvailabilityClient extends HttpClient {
     }
   }
 
-  public List<UpcomingSessionAvailability> getUpcomingAvailabilityForAllRowers() {
+  public List<UpcomingSessionAvailability> getAvailabilityForAllRowersForSessionPlanning() {
     try {
       String response = restTemplate.getForObject(getUrl("get_upcoming_availability", Resource.SESSION_AVAILABILITY), String.class);
       List<UpcomingSessionAvailability> availableSessions =
