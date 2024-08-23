@@ -102,4 +102,9 @@ public class ViewService {
 
     return allUpcomingSessions;
   }
+
+  public List<String> getAllPastSessionsDates(){
+    List<PastSession> upcomingPastSessions = availabilityClient.getAllUpcomingPastSessions();
+    return PastSessionsService.getUpcomingSessionDates(upcomingPastSessions);
+  }
 }
