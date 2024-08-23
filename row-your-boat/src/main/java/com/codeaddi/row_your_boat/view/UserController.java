@@ -80,6 +80,7 @@ public class UserController {
 
   @GetMapping("/make-new-sessions")
   public String makeNewSessions(){
+    log.info(viewService.getAllPastSessionsDates().toString());
     return "make-new-sessions";
   }
 

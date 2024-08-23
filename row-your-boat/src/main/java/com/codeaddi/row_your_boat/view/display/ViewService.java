@@ -3,16 +3,17 @@ package com.codeaddi.row_your_boat.view.display;
 import com.codeaddi.row_your_boat.controller.http.AvailabilityClient;
 import com.codeaddi.row_your_boat.controller.http.SchedulerClient;
 import com.codeaddi.row_your_boat.controller.sessions.AvailabilityService;
+import com.codeaddi.row_your_boat.controller.sessions.PastSessionsService;
 import com.codeaddi.row_your_boat.controller.sessions.SessionsService;
 import com.codeaddi.row_your_boat.model.Squad;
 import com.codeaddi.row_your_boat.model.http.UpcomingAvailabilityDTO;
 import com.codeaddi.row_your_boat.model.http.UpcomingSessionAvailability;
+import com.codeaddi.row_your_boat.model.http.inbound.PastSession;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
 import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
