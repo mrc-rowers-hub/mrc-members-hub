@@ -20,6 +20,7 @@ import org.springframework.web.servlet.view.RedirectView;
 @Controller
 @Slf4j
 public class UserController {
+//  Todo start splitting these into separate controllers by topic
 
   @Autowired ViewService viewService;
 
@@ -75,6 +76,11 @@ public class UserController {
     model.addAttribute("sessions", sessions);
 
     return "view-sessions-to-edit";
+  }
+
+  @GetMapping("/make-new-sessions")
+  public String makeNewSessions(){
+    return "make-new-sessions";
   }
 
   @GetMapping("/boats")
