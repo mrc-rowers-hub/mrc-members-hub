@@ -79,9 +79,10 @@ public class UserController {
   }
 
   @GetMapping("/make-new-sessions")
-  public String makeNewSessions(){
-    log.info(viewService.getAllPastSessionsDates().toString());
-    return "make-new-sessions";
+  public String makeNewSessions(Model model){
+List<String> sessionDates = viewService.getAllPastSessionsDates();
+model.addAttribute("list", sessionDates);
+return "make-new-sessions";
   }
 
   @GetMapping("/boats")
