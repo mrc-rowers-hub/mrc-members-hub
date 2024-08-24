@@ -12,7 +12,7 @@ import lombok.extern.jackson.Jacksonized;
 @Getter
 @AllArgsConstructor
 @Jacksonized
-public class UpcomingAvailabilityDTO {
+public class UpcomingSessionAvailabilityDTO {
 
   private Weekday weekday;
 

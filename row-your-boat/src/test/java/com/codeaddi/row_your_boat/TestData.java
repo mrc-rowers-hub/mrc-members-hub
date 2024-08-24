@@ -4,7 +4,7 @@ import com.codeaddi.row_your_boat.model.enums.RowerLevel;
 import com.codeaddi.row_your_boat.model.enums.SessionType;
 import com.codeaddi.row_your_boat.model.enums.Squad;
 import com.codeaddi.row_your_boat.model.enums.Weekday;
-import com.codeaddi.row_your_boat.model.http.UpcomingAvailabilityDTO;
+import com.codeaddi.row_your_boat.model.http.UpcomingSessionAvailabilityDTO;
 import com.codeaddi.row_your_boat.model.http.inbound.PastSession;
 import com.codeaddi.row_your_boat.model.http.inbound.PastSessionAvailability;
 import com.codeaddi.row_your_boat.model.http.inbound.Rower;
@@ -84,8 +84,8 @@ public class TestData {
 
 
   // Create sample data
-  public static UpcomingAvailabilityDTO upcomingSession1 =
-      UpcomingAvailabilityDTO.builder()
+  public static UpcomingSessionAvailabilityDTO upcomingSession1 =
+      UpcomingSessionAvailabilityDTO.builder()
           .upcomingSessionId(1L)
           .date("2024-08-16")
           .startTime(LocalTime.of(10, 0).toString())
@@ -94,8 +94,8 @@ public class TestData {
           .level(RowerLevel.NOVICE)
           .sessionType(SessionType.WATER)
           .build();
-  public static UpcomingAvailabilityDTO upcomingSession2 =
-      UpcomingAvailabilityDTO.builder()
+  public static UpcomingSessionAvailabilityDTO upcomingSession2 =
+      UpcomingSessionAvailabilityDTO.builder()
           .upcomingSessionId(2L)
           .date("2024-08-16")
           .startTime(LocalTime.of(10, 0).toString())
@@ -104,8 +104,8 @@ public class TestData {
           .level(RowerLevel.NOVICE)
           .sessionType(SessionType.WATER)
           .build();
-  public static UpcomingAvailabilityDTO upcomingSession3 =
-      UpcomingAvailabilityDTO.builder()
+  public static UpcomingSessionAvailabilityDTO upcomingSession3 =
+      UpcomingSessionAvailabilityDTO.builder()
           .upcomingSessionId(3L)
           .date("2024-08-17")
           .startTime(LocalTime.of(9, 0).toString())

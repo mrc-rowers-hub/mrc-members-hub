@@ -2,7 +2,7 @@ package com.codeaddi.row_your_boat.controller.http;
 
 import com.codeaddi.row_your_boat.model.http.AvailabilityDTO;
 import com.codeaddi.row_your_boat.model.http.StandardResponse;
-import com.codeaddi.row_your_boat.model.http.UpcomingAvailabilityDTO;
+import com.codeaddi.row_your_boat.model.http.UpcomingSessionAvailabilityDTO;
 import com.codeaddi.row_your_boat.model.http.UpcomingSessionAvailability;
 import com.codeaddi.row_your_boat.model.http.enums.Resource;
 import com.codeaddi.row_your_boat.model.http.enums.Status;
@@ -10,7 +10,7 @@ import com.codeaddi.row_your_boat.model.http.inbound.PastSession;
 import com.codeaddi.row_your_boat.model.http.inbound.PastSessionAvailability;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.util.List;
-import java.util.stream.Collectors;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
@@ -22,8 +22,8 @@ public class AvailabilityClient extends HttpClient {
 
   private final Resource resource = Resource.SESSION_AVAILABILITY;
 
-  public List<UpcomingAvailabilityDTO> getAllUpcomingSessions() {
-    return getForResourceAndParse("get_all_upcoming_sessions", new TypeReference<List<UpcomingAvailabilityDTO>>() {}, resource);
+  public List<UpcomingSessionAvailabilityDTO> getAllUpcomingSessions() {
+    return getForResourceAndParse("get_all_upcoming_sessions", new TypeReference<List<UpcomingSessionAvailabilityDTO>>() {}, resource);
   }
 
   public List<PastSession> getAllUpcomingPastSessions() {

@@ -2,7 +2,7 @@ package com.codeaddi.row_your_boat.view;
 
 import com.codeaddi.row_your_boat.controller.http.AvailabilityClient;
 import com.codeaddi.row_your_boat.model.enums.Squad;
-import com.codeaddi.row_your_boat.model.http.UpcomingAvailabilityDTO;
+import com.codeaddi.row_your_boat.model.http.UpcomingSessionAvailabilityDTO;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
 import com.codeaddi.row_your_boat.model.http.inbound.RowingSession;
 import com.codeaddi.row_your_boat.view.display.ViewService;
@@ -50,10 +50,10 @@ public class UserController {
 
   @GetMapping("/my-availability")
   public String myAvailability(Model model) {
-    Map<Squad, List<UpcomingAvailabilityDTO>> availabilitySessions =
+    Map<Squad, List<UpcomingSessionAvailabilityDTO>> availabilitySessions =
         viewService.getAvailabilitySessions();
 
-    Map<Squad, List<UpcomingAvailabilityDTO>> sessionsWithAvailability =
+    Map<Squad, List<UpcomingSessionAvailabilityDTO>> sessionsWithAvailability =
         viewService.addAvailabilityForThisUser(1L, Squad.WOMENS, availabilitySessions);
 
     model.addAttribute("availabilitySessions", sessionsWithAvailability);
