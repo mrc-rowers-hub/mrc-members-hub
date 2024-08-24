@@ -88,7 +88,7 @@ public class UserController {
     return "adminOnly/view-sessions-to-edit";
   }
 
-  @GetMapping("/make-new-sessions")
+  @GetMapping("/make-weekly-plan")
   public String makeNewSessions(Model model) {
     List<String> sessionDates = viewService.getAllPastSessionsDates();
 

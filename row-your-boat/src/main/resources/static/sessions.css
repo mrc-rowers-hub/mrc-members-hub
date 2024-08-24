@@ -44,50 +44,70 @@
     border: 1px solid #f5c6cb; /* Slightly darker red border */
     color: #721c24; /* Dark red text */
 }
+
 table {
     border-collapse: collapse;
     width: 100%;
     margin-bottom: 20px;
 }
+
 th, td {
     border: 1px solid #ddd;
     padding: 8px;
 }
+
 th {
     text-align: left;
 }
+
 .header-column {
     text-align: center;
     font-weight: bold;
 }
+
 .button-container {
     margin: 20px 0;
     text-align: right;
 }
+
 .button-container button {
     padding: 10px 15px;
     font-size: 16px;
     cursor: pointer;
 }
+
 .form-container {
-    display: none; /* Initially hidden */
+    display: none;
     margin-top: 20px;
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 5px;
     background-color: #f9f9f9;
 }
+
 .form-container label {
     display: block;
     margin-bottom: 10px;
 }
+
 .form-container select, .form-container input[type="text"], .form-container input[type="time"] {
     padding: 8px;
     width: 100%;
     margin-bottom: 10px;
 }
+
 .form-container button {
     padding: 10px 15px;
     font-size: 16px;
     cursor: pointer;
+}
+
+.edit-form {
+    display: none;
+    margin-top: 20px;
+}
+
+.edit-form input {
+    width: calc(100% - 20px);
+    margin: 5px 0;
 }
