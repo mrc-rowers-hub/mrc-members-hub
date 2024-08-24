@@ -54,7 +54,7 @@ public class UserController {
         viewService.getAvailabilitySessions();
 
     Map<Squad, List<UpcomingSessionAvailabilityDTO>> sessionsWithAvailability =
-        viewService.addAvailabilityForThisUser(1L, Squad.WOMENS, availabilitySessions);
+        viewService.addAvailabilityForThisUser(1L, Squad.WOMENS, availabilitySessions); // this will be passed in from the frontend eventually
 
     model.addAttribute("availabilitySessions", sessionsWithAvailability);
     return "availability/my-availability";
