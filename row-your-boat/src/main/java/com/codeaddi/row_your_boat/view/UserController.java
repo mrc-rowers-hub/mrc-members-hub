@@ -1,5 +1,6 @@
 package com.codeaddi.row_your_boat.view;
 
+import com.codeaddi.row_your_boat.controller.http.AvailabilityClient;
 import com.codeaddi.row_your_boat.model.Squad;
 import com.codeaddi.row_your_boat.model.http.UpcomingAvailabilityDTO;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
@@ -26,6 +27,8 @@ public class UserController {
 
   @Value("${services.weather.baseUrl}")
   private String weatherServiceBaseUrl;
+    @Autowired
+    private AvailabilityClient availabilityClient;
 
   @GetMapping("/")
   public String index(Model model) {
@@ -57,6 +60,14 @@ public class UserController {
     return "my-availability";
   }
 
+  @PostMapping("/session-availability")
+  public String showSessionAvailability(@RequestParam("date") String date, Model model) {
+    List<String> availableRowers = viewService.getAllAvailableRowersForDate(date);
+
+    model.addAttribute("availabilities", availableRowers);
+    return "session-availability";
+  }
+
   @GetMapping("/standard-sessions")
   public String standardSessions(Model model) {
     Map<Squad, List<RowingSessions>> sessions = viewService.getAllStandardSessionsToDisplay();
@@ -68,6 +79,7 @@ public class UserController {
 
     return "standard-sessions";
   }
+
 
   @GetMapping("/view-sessions-to-edit")
   public String viewSessions(Model model) {
@@ -81,6 +93,7 @@ public class UserController {
   @GetMapping("/make-new-sessions")
   public String makeNewSessions(Model model){
 List<String> sessionDates = viewService.getAllPastSessionsDates();
+
 model.addAttribute("list", sessionDates);
 return "make-new-sessions";
   }
