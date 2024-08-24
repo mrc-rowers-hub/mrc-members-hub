@@ -1,8 +1,8 @@
-package com.codeaddi.row_your_boat.controller.sessions;
+package com.codeaddi.row_your_boat.controller.services;
 
-import com.codeaddi.row_your_boat.model.SessionType;
-import com.codeaddi.row_your_boat.model.Squad;
-import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
+import com.codeaddi.row_your_boat.model.enums.SessionType;
+import com.codeaddi.row_your_boat.model.enums.Squad;
+import com.codeaddi.row_your_boat.model.http.inbound.RowingSession;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -18,7 +18,7 @@ public class RowingSessionGrouper {
   }
 
   @Getter
-  static class RowingSessionKey {
+  public static class RowingSessionKey {
     private final String day;
     private final String startTime;
     private final String endTime;

@@ -1,28 +1,27 @@
-package com.codeaddi.row_your_boat.controller.sessions;
+package com.codeaddi.row_your_boat.controller.services;
 
-import com.codeaddi.row_your_boat.model.Squad;
-import com.codeaddi.row_your_boat.model.Weekday;
-import com.codeaddi.row_your_boat.model.http.UpcomingAvailabilityDTO;
+import com.codeaddi.row_your_boat.model.enums.Squad;
+import com.codeaddi.row_your_boat.model.enums.Weekday;
+import com.codeaddi.row_your_boat.model.http.UpcomingSessionAvailabilityDTO;
+import com.codeaddi.row_your_boat.model.http.inbound.PastSession;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class AvailabilityService {
 
-  public static List<UpcomingAvailabilityDTO> addWeekday(
-      List<UpcomingAvailabilityDTO> upcomingAvailabilityDTOS) {
-    List<UpcomingAvailabilityDTO> dtosWithWeekdays = new ArrayList<>();
+  public static List<UpcomingSessionAvailabilityDTO> addWeekday(
+      List<UpcomingSessionAvailabilityDTO> upcomingAvailabilityDTOS) {
+    List<UpcomingSessionAvailabilityDTO> dtosWithWeekdays = new ArrayList<>();
 
-    for (UpcomingAvailabilityDTO upcomingAvailabilityDTO : upcomingAvailabilityDTOS) {
+    for (UpcomingSessionAvailabilityDTO upcomingAvailabilityDTO : upcomingAvailabilityDTOS) {
       Weekday weekday = getDayOfTheWeekAsEnum(upcomingAvailabilityDTO.getDate());
 
       dtosWithWeekdays.add(
-          UpcomingAvailabilityDTO.builder()
+          UpcomingSessionAvailabilityDTO.builder()
               .weekday(weekday)
               .level(upcomingAvailabilityDTO.getLevel())
               .upcomingSessionId(upcomingAvailabilityDTO.getUpcomingSessionId())
@@ -36,11 +35,19 @@ public class AvailabilityService {
     return dtosWithWeekdays;
   }
 
-  public static Map<Squad, List<UpcomingAvailabilityDTO>> mapUpcomingSessionsToSquads(
-      List<UpcomingAvailabilityDTO> upcomingSessionKeyListMap) {
+  public static Map<Squad, List<UpcomingSessionAvailabilityDTO>> mapUpcomingSessionsToSquads(
+      List<UpcomingSessionAvailabilityDTO> upcomingSessionKeyListMap) {
 
     return upcomingSessionKeyListMap.stream()
-        .collect(Collectors.groupingBy(UpcomingAvailabilityDTO::getSquad));
+        .collect(Collectors.groupingBy(UpcomingSessionAvailabilityDTO::getSquad));
+  }
+
+  public static Long getSessionIdByDate(Date date, List<PastSession> pastSessions) {
+    return pastSessions.stream()
+        .filter(session -> session.getDate().equals(date))
+        .findAny()
+        .map(PastSession::getUpcomingSessionId)
+        .orElseThrow(() -> new NoSuchElementException("No session found for the provided date"));
   }
 
   private static String getDayOfTheWeek(String dateAsString) {

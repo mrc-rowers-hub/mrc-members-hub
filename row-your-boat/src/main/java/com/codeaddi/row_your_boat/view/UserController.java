@@ -1,10 +1,10 @@
 package com.codeaddi.row_your_boat.view;
 
 import com.codeaddi.row_your_boat.controller.http.AvailabilityClient;
-import com.codeaddi.row_your_boat.model.Squad;
-import com.codeaddi.row_your_boat.model.http.UpcomingAvailabilityDTO;
+import com.codeaddi.row_your_boat.model.enums.Squad;
+import com.codeaddi.row_your_boat.model.http.UpcomingSessionAvailabilityDTO;
+import com.codeaddi.row_your_boat.model.http.inbound.RowingSession;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
-import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
 import com.codeaddi.row_your_boat.view.display.ViewService;
 import java.util.List;
 import java.util.Map;
@@ -50,21 +50,21 @@ public class UserController {
 
   @GetMapping("/my-availability")
   public String myAvailability(Model model) {
-    Map<Squad, List<UpcomingAvailabilityDTO>> availabilitySessions =
+    Map<Squad, List<UpcomingSessionAvailabilityDTO>> availabilitySessions =
         viewService.getAvailabilitySessions();
 
-    Map<Squad, List<UpcomingAvailabilityDTO>> sessionsWithAvailability =
+    Map<Squad, List<UpcomingSessionAvailabilityDTO>> sessionsWithAvailability =
         viewService.addAvailabilityForThisUser(1L, Squad.WOMENS, availabilitySessions);
 
     model.addAttribute("availabilitySessions", sessionsWithAvailability);
-    return "my-availability";
+    return "availability/my-availability";
   }
 
   @PostMapping("/session-availability")
   public String showSessionAvailability(@RequestParam("date") String date, Model model) {
     List<String> availableRowers = viewService.getAllAvailableRowersForDate(date);
     model.addAttribute("availabilities", availableRowers);
-    return "session-availability";
+    return "adminOnly/session-availability";
   }
 
   @GetMapping("/standard-sessions")
@@ -76,7 +76,7 @@ public class UserController {
 
     model.addAttribute("maxId", maxId);
 
-    return "standard-sessions";
+    return "adminOnly/standard-sessions";
   }
 
   @GetMapping("/view-sessions-to-edit")
@@ -85,24 +85,24 @@ public class UserController {
 
     model.addAttribute("sessions", sessions);
 
-    return "view-sessions-to-edit";
+    return "adminOnly/view-sessions-to-edit";
   }
 
-  @GetMapping("/make-new-sessions")
+  @GetMapping("/make-weekly-plan")
   public String makeNewSessions(Model model) {
     List<String> sessionDates = viewService.getAllPastSessionsDates();
 
     model.addAttribute("list", sessionDates);
-    return "make-new-sessions";
+    return "adminOnly/make-new-sessions";
   }
 
   @GetMapping("/boats")
   public String boats() {
-    return "boats";
+    return "resources/boats";
   }
 
   @GetMapping("/blades")
   public String blades() {
-    return "blades";
+    return "resources/blades";
   }
 }

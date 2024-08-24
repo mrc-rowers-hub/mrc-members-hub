@@ -1,4 +1,4 @@
-package com.codeaddi.row_your_boat.model;
+package com.codeaddi.row_your_boat.model.enums;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;

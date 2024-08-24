@@ -1,10 +1,10 @@
-package com.codeaddi.row_your_boat.controller.sessions;
+package com.codeaddi.row_your_boat.controller.services;
 
-import com.codeaddi.row_your_boat.model.RowerLevel;
-import com.codeaddi.row_your_boat.model.Squad;
-import com.codeaddi.row_your_boat.model.Weekday;
+import com.codeaddi.row_your_boat.model.enums.RowerLevel;
+import com.codeaddi.row_your_boat.model.enums.Squad;
+import com.codeaddi.row_your_boat.model.enums.Weekday;
+import com.codeaddi.row_your_boat.model.http.inbound.RowingSession;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
-import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

@@ -3,7 +3,7 @@
 <head>
     <title>Home</title>
     <link rel="stylesheet" th:href="@{/styles.css}">
-    <link rel="stylesheet" th:href="@{/sidebar.css}"> <!-- Sidebar styles -->
+    <link rel="stylesheet" th:href="@{/sidebar.css}">
 </head>
 <body>
 <header>
@@ -20,7 +20,25 @@
 <div th:replace="~{sections/sidebar :: sidebarFragment}"></div>
 
 <main class="content" id="content">
-    <h2> Blades </h2>
+    <h2>Session Availability</h2>
+
+    <table th:if="${availabilities != null}">
+        <thead>
+        <tr>
+            <th>Rowers Available</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="rower : ${availabilities}">
+            <td th:text="${rower}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="form-container">
+        <button class="submit-button" onclick="window.location.href='/make-new-sessions'">Back to All Sessions</button>
+    </div>
+
 </main>
 
 

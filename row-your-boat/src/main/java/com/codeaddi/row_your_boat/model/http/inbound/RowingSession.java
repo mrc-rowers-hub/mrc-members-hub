@@ -1,8 +1,8 @@
-package com.codeaddi.row_your_boat.model.sessions.http;
+package com.codeaddi.row_your_boat.model.http.inbound;
 
-import com.codeaddi.row_your_boat.model.RowerLevel;
-import com.codeaddi.row_your_boat.model.SessionType;
-import com.codeaddi.row_your_boat.model.Squad;
+import com.codeaddi.row_your_boat.model.enums.RowerLevel;
+import com.codeaddi.row_your_boat.model.enums.SessionType;
+import com.codeaddi.row_your_boat.model.enums.Squad;
 import lombok.*;
 import lombok.extern.jackson.Jacksonized;
 
