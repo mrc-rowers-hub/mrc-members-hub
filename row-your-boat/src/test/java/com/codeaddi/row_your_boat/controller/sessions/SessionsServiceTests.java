@@ -15,8 +15,8 @@ public class SessionsServiceTests {
   public void mapRowingSessionToSessions_withMultipleSessions_groupsSessionsByTime() {
 
     List<RowingSessions> actualRowingSessions =
-        SessionsService.mapRowingSessionToSessions(TestData.sessions);
-    List<RowingSessions> expectedRowingSessions = TestData.groupedSessions;
+        SessionsService.mapRowingSessionToSessions(TestData.StandardSessions.sessions);
+    List<RowingSessions> expectedRowingSessions = TestData.StandardSessions.groupedSessions;
 
     for (RowingSessions rowingSessions : actualRowingSessions) {
       System.out.println(rowingSessions.toString());
@@ -32,7 +32,7 @@ public class SessionsServiceTests {
   public void getRowingSessionsPerSquad_withTwoSquads_groupsBySquad() {
 
     List<Squad> expectedSquads = new ArrayList<>();
-    for (RowingSession rowingSession : TestData.sessions) {
+    for (RowingSession rowingSession : TestData.StandardSessions.sessions) {
       if (!expectedSquads.contains(rowingSession.getSquad())) {
         expectedSquads.add(rowingSession.getSquad());
       }
@@ -41,7 +41,7 @@ public class SessionsServiceTests {
 
 
     List<RowingSessions> actualRowingSessions =
-        SessionsService.mapRowingSessionToSessions(TestData.sessions);
+        SessionsService.mapRowingSessionToSessions(TestData.StandardSessions.sessions);
     Map<Squad, List<RowingSessions>> actualMap =
         SessionsService.getRowingSessionsPerSquad(actualRowingSessions);
 
