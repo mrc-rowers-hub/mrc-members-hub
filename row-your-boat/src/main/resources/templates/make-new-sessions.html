@@ -44,6 +44,17 @@
         <option th:each="item : ${list}" th:value="${item}" th:text="${item}"></option>
     </select>
 
+    <h1> some gap plz </h1>
+
+    <form action="/session-availability" method="post">
+        <label for="machine">Please select a date to make a session for:</label>
+        <select name="machine" id="machine">
+            <!-- Thymeleaf syntax to iterate over a list of machines -->
+            <option th:each="machine : ${list}" th:value="${list}" th:text="${list}"></option>
+        </select>
+        <input type="submit" value="Proceed"/>
+    </form>
+
 
 
 
