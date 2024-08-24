@@ -49,8 +49,7 @@
     <form action="/session-availability" method="post">
         <label for="machine">Please select a date to make a session for:</label>
         <select name="machine" id="machine">
-            <!-- Thymeleaf syntax to iterate over a list of machines -->
-            <option th:each="machine : ${list}" th:value="${list}" th:text="${list}"></option>
+            <option th:each="machine : ${list}" th:value="${machine}" th:text="${machine}"></option>
         </select>
         <input type="submit" value="Proceed"/>
     </form>
