@@ -1,4 +1,4 @@
-package com.codeaddi.row_your_boat.view.display;
+package com.codeaddi.row_your_boat.controller.services.view;
 
 import com.codeaddi.row_your_boat.controller.http.AvailabilityClient;
 import com.codeaddi.row_your_boat.controller.http.RowerClient;

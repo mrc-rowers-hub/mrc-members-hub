@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 import com.codeaddi.row_your_boat.TestData;
 import com.codeaddi.row_your_boat.controller.http.AvailabilityClient;
 import com.codeaddi.row_your_boat.controller.http.RowerClient;
+import com.codeaddi.row_your_boat.controller.services.view.ViewService;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

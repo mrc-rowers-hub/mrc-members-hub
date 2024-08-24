@@ -10,14 +10,13 @@ import org.springframework.web.servlet.view.RedirectView;
 @Slf4j
 public class WeatherController {
 
+  @Value("${services.weather.baseUrl}")
+  private String weatherServiceBaseUrl;
 
-    @Value("${services.weather.baseUrl}")
-    private String weatherServiceBaseUrl;
-
-    @GetMapping("/weather")
-    public RedirectView redirectToOtherService() {
-        RedirectView redirectView = new RedirectView();
-        redirectView.setUrl(weatherServiceBaseUrl);
-        return redirectView;
-    }
+  @GetMapping("/weather")
+  public RedirectView redirectToOtherService() {
+    RedirectView redirectView = new RedirectView();
+    redirectView.setUrl(weatherServiceBaseUrl);
+    return redirectView;
+  }
 }
