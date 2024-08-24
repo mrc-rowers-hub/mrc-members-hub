@@ -3,10 +3,10 @@ package com.codeaddi.row_your_boat.controller.http;
 import com.codeaddi.row_your_boat.model.http.AvailabilityDTO;
 import com.codeaddi.row_your_boat.model.http.StandardResponse;
 import com.codeaddi.row_your_boat.model.http.UpcomingAvailabilityDTO;
-import com.codeaddi.row_your_boat.model.http.inbound.PastSession;
 import com.codeaddi.row_your_boat.model.http.UpcomingSessionAvailability;
 import com.codeaddi.row_your_boat.model.http.enums.Resource;
 import com.codeaddi.row_your_boat.model.http.enums.Status;
+import com.codeaddi.row_your_boat.model.http.inbound.PastSession;
 import com.codeaddi.row_your_boat.model.http.inbound.PastSessionAvailability;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.util.List;
@@ -41,10 +41,10 @@ public class AvailabilityClient extends HttpClient {
   public List<PastSession> getAllUpcomingPastSessions() {
     try {
       String response =
-              restTemplate.getForObject(
-                      getUrl("get_upcoming_past_sessions", Resource.SESSION_AVAILABILITY), String.class);
+          restTemplate.getForObject(
+              getUrl("get_upcoming_past_sessions", Resource.SESSION_AVAILABILITY), String.class);
       List<PastSession> sessions =
-              objectMapper.readValue(response, new TypeReference<List<PastSession>>() {});
+          objectMapper.readValue(response, new TypeReference<List<PastSession>>() {});
       log.info("Successfully retrieved all upcoming sessions");
       return sessions;
     } catch (RestClientResponseException e) {
@@ -59,10 +59,10 @@ public class AvailabilityClient extends HttpClient {
   public List<PastSessionAvailability> getAllUpcomingPastSessionAvailability() {
     try {
       String response =
-              restTemplate.getForObject(
-                      getUrl("get_rowers_availability", Resource.SESSION_AVAILABILITY), String.class);
+          restTemplate.getForObject(
+              getUrl("get_rowers_availability", Resource.SESSION_AVAILABILITY), String.class);
       List<PastSessionAvailability> sessions =
-              objectMapper.readValue(response, new TypeReference<List<PastSessionAvailability>>() {});
+          objectMapper.readValue(response, new TypeReference<List<PastSessionAvailability>>() {});
       log.info("Successfully retrieved all upcoming session availability");
       return sessions;
     } catch (RestClientResponseException e) {
@@ -100,10 +100,12 @@ public class AvailabilityClient extends HttpClient {
 
   public List<UpcomingSessionAvailability> getAvailabilityForAllRowersForSessionPlanning() {
     try {
-      String response = restTemplate.getForObject(getUrl("get_upcoming_availability", Resource.SESSION_AVAILABILITY), String.class);
+      String response =
+          restTemplate.getForObject(
+              getUrl("get_upcoming_availability", Resource.SESSION_AVAILABILITY), String.class);
       List<UpcomingSessionAvailability> availableSessions =
-              objectMapper.readValue(
-                      response, new TypeReference<List<UpcomingSessionAvailability>>() {});
+          objectMapper.readValue(
+              response, new TypeReference<List<UpcomingSessionAvailability>>() {});
       log.info("Successfully retrieved all upcoming sessions");
       return availableSessions;
     } catch (RestClientResponseException e) {

@@ -16,9 +16,7 @@ import com.codeaddi.row_your_boat.model.http.inbound.PastSessionAvailability;
 import com.codeaddi.row_your_boat.model.rowers.Rower;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
 import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
-
 import java.util.*;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -110,18 +108,27 @@ public class ViewService {
     return allUpcomingSessions;
   }
 
-  public List<String> getAllPastSessionsDates(){
+  public List<String> getAllPastSessionsDates() {
     List<PastSession> upcomingPastSessions = availabilityClient.getAllUpcomingPastSessions();
     return PastSessionsService.getUpcomingSessionDates(upcomingPastSessions);
   }
 
-  public List<String> getAllAvailableRowersForDate(String formattedDate){
+  public List<String> getAllAvailableRowersForDate(String formattedDate) {
     Date date = DateUtil.getDateFromFormattedString(formattedDate);
     List<PastSession> upcomingPastSessions = availabilityClient.getAllUpcomingPastSessions();
-    Long upcomingSessionId = upcomingPastSessions.stream().filter(session -> session.getDate().equals(date)).findAny().get().getUpcomingSessionId();
+    Long upcomingSessionId =
+        upcomingPastSessions.stream()
+            .filter(session -> session.getDate().equals(date))
+            .findAny()
+            .get()
+            .getUpcomingSessionId();
 
-    List<PastSessionAvailability> rowersAvailable = availabilityClient.getAllUpcomingPastSessionAvailability().stream().filter(availability -> availability.getUpcomingSessionId().equals(upcomingSessionId)).toList();
-    List<Long> availableRowers = rowersAvailable.stream().map(PastSessionAvailability::getRowerId).toList();
+    List<PastSessionAvailability> rowersAvailable =
+        availabilityClient.getAllUpcomingPastSessionAvailability().stream()
+            .filter(availability -> availability.getUpcomingSessionId().equals(upcomingSessionId))
+            .toList();
+    List<Long> availableRowers =
+        rowersAvailable.stream().map(PastSessionAvailability::getRowerId).toList();
     List<Rower> allRowers = rowerClient.getAllRowers();
 
     return RowerService.getNamesByIDs(availableRowers, allRowers);

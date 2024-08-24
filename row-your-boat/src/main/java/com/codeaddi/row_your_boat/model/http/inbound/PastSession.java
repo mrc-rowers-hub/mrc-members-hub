@@ -1,8 +1,7 @@
 package com.codeaddi.row_your_boat.model.http.inbound;
 
-import lombok.*;
-
 import java.util.Date;
+import lombok.*;
 
 @ToString
 @EqualsAndHashCode

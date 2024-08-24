@@ -21,14 +21,14 @@ import org.springframework.web.servlet.view.RedirectView;
 @Controller
 @Slf4j
 public class UserController {
-//  Todo start splitting these into separate controllers by topic
+  //  Todo start splitting these into separate controllers by topic
 
   @Autowired ViewService viewService;
 
   @Value("${services.weather.baseUrl}")
   private String weatherServiceBaseUrl;
-    @Autowired
-    private AvailabilityClient availabilityClient;
+
+  @Autowired private AvailabilityClient availabilityClient;
 
   @GetMapping("/")
   public String index(Model model) {
@@ -67,7 +67,6 @@ public class UserController {
     return "session-availability";
   }
 
-
   @GetMapping("/standard-sessions")
   public String standardSessions(Model model) {
     Map<Squad, List<RowingSessions>> sessions = viewService.getAllStandardSessionsToDisplay();
@@ -80,7 +79,6 @@ public class UserController {
     return "standard-sessions";
   }
 
-
   @GetMapping("/view-sessions-to-edit")
   public String viewSessions(Model model) {
     List<RowingSession> sessions = viewService.getAllSessions();
@@ -91,11 +89,11 @@ public class UserController {
   }
 
   @GetMapping("/make-new-sessions")
-  public String makeNewSessions(Model model){
-List<String> sessionDates = viewService.getAllPastSessionsDates();
+  public String makeNewSessions(Model model) {
+    List<String> sessionDates = viewService.getAllPastSessionsDates();
 
-model.addAttribute("list", sessionDates);
-return "make-new-sessions";
+    model.addAttribute("list", sessionDates);
+    return "make-new-sessions";
   }
 
   @GetMapping("/boats")
