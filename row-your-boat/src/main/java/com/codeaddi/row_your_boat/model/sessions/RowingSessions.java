@@ -1,9 +1,9 @@
 package com.codeaddi.row_your_boat.model.sessions;
 
-import com.codeaddi.row_your_boat.model.RowerLevel;
-import com.codeaddi.row_your_boat.model.SessionType;
-import com.codeaddi.row_your_boat.model.Squad;
-import com.codeaddi.row_your_boat.model.Weekday;
+import com.codeaddi.row_your_boat.model.enums.RowerLevel;
+import com.codeaddi.row_your_boat.model.enums.SessionType;
+import com.codeaddi.row_your_boat.model.enums.Squad;
+import com.codeaddi.row_your_boat.model.enums.Weekday;
 import java.util.List;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;

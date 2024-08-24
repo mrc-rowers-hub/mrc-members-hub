@@ -5,7 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.codeaddi.row_your_boat.TestData;
-import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
+import com.codeaddi.row_your_boat.controller.services.RowingSessionGrouper;
+import com.codeaddi.row_your_boat.model.http.inbound.RowingSession;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;

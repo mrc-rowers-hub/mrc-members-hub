@@ -1,4 +1,4 @@
-package com.codeaddi.row_your_boat.controller.sessions;
+package com.codeaddi.row_your_boat.controller.services;
 
 import com.codeaddi.row_your_boat.controller.util.DateUtil;
 import com.codeaddi.row_your_boat.model.http.inbound.PastSession;

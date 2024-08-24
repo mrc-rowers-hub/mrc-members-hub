@@ -1,17 +1,16 @@
 package com.codeaddi.row_your_boat;
 
-import com.codeaddi.row_your_boat.model.RowerLevel;
-import com.codeaddi.row_your_boat.model.SessionType;
-import com.codeaddi.row_your_boat.model.Squad;
-import com.codeaddi.row_your_boat.model.Weekday;
+import com.codeaddi.row_your_boat.model.enums.RowerLevel;
+import com.codeaddi.row_your_boat.model.enums.SessionType;
+import com.codeaddi.row_your_boat.model.enums.Squad;
+import com.codeaddi.row_your_boat.model.enums.Weekday;
 import com.codeaddi.row_your_boat.model.http.UpcomingAvailabilityDTO;
 import com.codeaddi.row_your_boat.model.http.inbound.PastSession;
 import com.codeaddi.row_your_boat.model.http.inbound.PastSessionAvailability;
-import com.codeaddi.row_your_boat.model.rowers.Rower;
+import com.codeaddi.row_your_boat.model.http.inbound.Rower;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
-import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
+import com.codeaddi.row_your_boat.model.http.inbound.RowingSession;
 import java.time.*;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;

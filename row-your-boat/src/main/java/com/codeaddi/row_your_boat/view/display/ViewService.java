@@ -3,19 +3,19 @@ package com.codeaddi.row_your_boat.view.display;
 import com.codeaddi.row_your_boat.controller.http.AvailabilityClient;
 import com.codeaddi.row_your_boat.controller.http.RowerClient;
 import com.codeaddi.row_your_boat.controller.http.SchedulerClient;
-import com.codeaddi.row_your_boat.controller.sessions.AvailabilityService;
-import com.codeaddi.row_your_boat.controller.sessions.PastSessionsService;
-import com.codeaddi.row_your_boat.controller.sessions.RowerService;
-import com.codeaddi.row_your_boat.controller.sessions.SessionsService;
+import com.codeaddi.row_your_boat.controller.services.AvailabilityService;
+import com.codeaddi.row_your_boat.controller.services.PastSessionsService;
+import com.codeaddi.row_your_boat.controller.services.RowerService;
+import com.codeaddi.row_your_boat.controller.services.SessionsService;
 import com.codeaddi.row_your_boat.controller.util.DateUtil;
-import com.codeaddi.row_your_boat.model.Squad;
+import com.codeaddi.row_your_boat.model.enums.Squad;
 import com.codeaddi.row_your_boat.model.http.UpcomingAvailabilityDTO;
 import com.codeaddi.row_your_boat.model.http.UpcomingSessionAvailability;
 import com.codeaddi.row_your_boat.model.http.inbound.PastSession;
 import com.codeaddi.row_your_boat.model.http.inbound.PastSessionAvailability;
-import com.codeaddi.row_your_boat.model.rowers.Rower;
+import com.codeaddi.row_your_boat.model.http.inbound.Rower;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
-import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
+import com.codeaddi.row_your_boat.model.http.inbound.RowingSession;
 import java.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,6 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class ViewService {
-  // Todo remove the availability group key bits
 
   @Autowired private SchedulerClient schedulerClient;
   @Autowired private AvailabilityClient availabilityClient;
@@ -32,105 +31,92 @@ public class ViewService {
 
   public List<RowingSession> getAllSessions() {
     List<RowingSession> sessionsToReturn = schedulerClient.getAllSessions();
-
-    sessionsToReturn.sort(Comparator.comparing(RowingSession::getStartTime));
-
-    return sessionsToReturn;
+    return sortSessionsByStartTime(sessionsToReturn);
   }
 
   public Map<Squad, List<RowingSessions>> getAllStandardSessionsToDisplay() {
     List<RowingSession> rowingSessions = schedulerClient.getAllSessions();
-    List<RowingSessions> groupedSessions =
-        SessionsService.mapRowingSessionToSessions(rowingSessions);
-    Map<Squad, List<RowingSessions>> standardSessions =
-        SessionsService.getRowingSessionsPerSquad(groupedSessions);
-
-    standardSessions.forEach(
-        (key, value) -> value.sort(Comparator.comparing(RowingSessions::getStartTime)));
-
-    standardSessions.forEach(
-        (key, value) ->
-            value.sort(Comparator.comparing(rowingSession -> rowingSession.getDay().ordinal())));
-
-    return standardSessions;
+    List<RowingSessions> groupedSessions = SessionsService.mapRowingSessionToSessions(rowingSessions);
+    return sortSessionsBySquadAndDay(SessionsService.getRowingSessionsPerSquad(groupedSessions));
   }
 
   public Long getMaxId() {
-    List<RowingSession> rowingSessions = schedulerClient.getAllSessions();
-
-    return rowingSessions.stream()
-        .max(Comparator.comparingLong(RowingSession::getId))
-        .map(RowingSession::getId)
-        .orElse(0L);
+    return schedulerClient.getAllSessions().stream()
+            .max(Comparator.comparingLong(RowingSession::getId))
+            .map(RowingSession::getId)
+            .orElse(0L);
   }
 
   public Map<Squad, List<UpcomingAvailabilityDTO>> getAvailabilitySessions() {
     List<UpcomingAvailabilityDTO> upcomingSessions = availabilityClient.getAllUpcomingSessions();
-
-    List<UpcomingAvailabilityDTO> sessionsWithDays =
-        AvailabilityService.addWeekday(upcomingSessions);
-
-    Map<Squad, List<UpcomingAvailabilityDTO>> toReturn =
-        AvailabilityService.mapUpcomingSessionsToSquads(sessionsWithDays);
-
-    toReturn.forEach(
-        (key, value) -> value.sort(Comparator.comparing(UpcomingAvailabilityDTO::getDate)));
-
-    return toReturn;
+    List<UpcomingAvailabilityDTO> sessionsWithDays = AvailabilityService.addWeekday(upcomingSessions);
+    return sortAvailabilitySessionsByDate(AvailabilityService.mapUpcomingSessionsToSquads(sessionsWithDays));
   }
 
-  // Todo should this live in viewService?
   public Map<Squad, List<UpcomingAvailabilityDTO>> addAvailabilityForThisUser(
-      Long rowerId,
-      Squad rowerSquad,
-      Map<Squad, List<UpcomingAvailabilityDTO>> allUpcomingSessions) {
-    List<UpcomingSessionAvailability> rowersUpcomingAvailability =
-        availabilityClient.getUpcomingAvailabilityForRower(rowerId);
-    List<Long> rowersAvailableSessions =
-        rowersUpcomingAvailability.stream()
+          Long rowerId, Squad rowerSquad, Map<Squad, List<UpcomingAvailabilityDTO>> allUpcomingSessions) {
+
+    List<UpcomingSessionAvailability> rowersUpcomingAvailability = availabilityClient.getUpcomingAvailabilityForRower(rowerId);
+    List<Long> rowersAvailableSessions = rowersUpcomingAvailability.stream()
             .map(UpcomingSessionAvailability::getUpcomingSessionId)
             .toList();
 
-    List<UpcomingAvailabilityDTO> upcomingSessionsForThisSquad =
-        allUpcomingSessions.get(rowerSquad);
-    List<UpcomingAvailabilityDTO> upcomingSessionsForThisSquadWithAvailability = new ArrayList<>();
+    List<UpcomingAvailabilityDTO> updatedSessionsForSquad = updateRowerAvailabilityForSquad(
+            allUpcomingSessions.get(rowerSquad), rowersAvailableSessions);
 
-    for (UpcomingAvailabilityDTO upcomingAvailabilityDTO : upcomingSessionsForThisSquad) {
-      if (rowersAvailableSessions.contains(upcomingAvailabilityDTO.getUpcomingSessionId())) {
-        upcomingAvailabilityDTO.setRowerIsAvailable(true);
-      }
-
-      upcomingSessionsForThisSquadWithAvailability.add(upcomingAvailabilityDTO);
-    }
-
-    allUpcomingSessions.replace(rowerSquad, upcomingSessionsForThisSquadWithAvailability);
-
+    allUpcomingSessions.replace(rowerSquad, updatedSessionsForSquad);
     return allUpcomingSessions;
   }
 
   public List<String> getAllPastSessionsDates() {
-    List<PastSession> upcomingPastSessions = availabilityClient.getAllUpcomingPastSessions();
-    return PastSessionsService.getUpcomingSessionDates(upcomingPastSessions);
+    return PastSessionsService.getUpcomingSessionDates(availabilityClient.getAllUpcomingPastSessions());
   }
 
   public List<String> getAllAvailableRowersForDate(String formattedDate) {
     Date date = DateUtil.getDateFromFormattedString(formattedDate);
-    List<PastSession> upcomingPastSessions = availabilityClient.getAllUpcomingPastSessions();
-    Long upcomingSessionId =
-        upcomingPastSessions.stream()
-            .filter(session -> session.getDate().equals(date))
-            .findAny()
-            .get()
-            .getUpcomingSessionId();
+    Long upcomingSessionId = getSessionIdByDate(date);
 
-    List<PastSessionAvailability> rowersAvailable =
-        availabilityClient.getAllUpcomingPastSessionAvailability().stream()
+    List<PastSessionAvailability> rowersAvailable = availabilityClient.getAllUpcomingPastSessionAvailability().stream()
             .filter(availability -> availability.getUpcomingSessionId().equals(upcomingSessionId))
             .toList();
-    List<Long> availableRowers =
-        rowersAvailable.stream().map(PastSessionAvailability::getRowerId).toList();
-    List<Rower> allRowers = rowerClient.getAllRowers();
 
-    return RowerService.getNamesByIDs(availableRowers, allRowers);
+    List<Long> availableRowerIds = rowersAvailable.stream().map(PastSessionAvailability::getRowerId).toList();
+    return RowerService.getNamesByIDs(availableRowerIds, rowerClient.getAllRowers());
+  }
+
+  private List<RowingSession> sortSessionsByStartTime(List<RowingSession> sessions) {
+    sessions.sort(Comparator.comparing(RowingSession::getStartTime));
+    return sessions;
+  }
+
+  private Map<Squad, List<RowingSessions>> sortSessionsBySquadAndDay(Map<Squad, List<RowingSessions>> sessions) {
+    sessions.forEach((key, value) -> {
+      value.sort(Comparator.comparing(RowingSessions::getStartTime));
+      value.sort(Comparator.comparing(session -> session.getDay().ordinal()));
+    });
+    return sessions;
+  }
+
+  private Map<Squad, List<UpcomingAvailabilityDTO>> sortAvailabilitySessionsByDate(
+          Map<Squad, List<UpcomingAvailabilityDTO>> sessions) {
+    sessions.forEach((key, value) -> value.sort(Comparator.comparing(UpcomingAvailabilityDTO::getDate)));
+    return sessions;
+  }
+
+  private List<UpcomingAvailabilityDTO> updateRowerAvailabilityForSquad(
+          List<UpcomingAvailabilityDTO> squadSessions, List<Long> availableSessionIds) {
+
+    List<UpcomingAvailabilityDTO> updatedSessions = new ArrayList<>();
+    for (UpcomingAvailabilityDTO session : squadSessions) {
+      if (availableSessionIds.contains(session.getUpcomingSessionId())) {
+        session.setRowerIsAvailable(true);
+      }
+      updatedSessions.add(session);
+    }
+    return updatedSessions;
+  }
+
+  private Long getSessionIdByDate(Date date) {
+    return  AvailabilityService.getSessionIdByDate(date, availabilityClient.getAllUpcomingPastSessions());
   }
 }

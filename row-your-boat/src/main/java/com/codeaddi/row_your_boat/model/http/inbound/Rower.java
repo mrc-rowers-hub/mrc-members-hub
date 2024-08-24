@@ -1,7 +1,7 @@
-package com.codeaddi.row_your_boat.model.rowers;
+package com.codeaddi.row_your_boat.model.http.inbound;
 
-import com.codeaddi.row_your_boat.model.RowerLevel;
-import com.codeaddi.row_your_boat.model.Squad;
+import com.codeaddi.row_your_boat.model.enums.RowerLevel;
+import com.codeaddi.row_your_boat.model.enums.Squad;
 import lombok.*;
 
 @ToString

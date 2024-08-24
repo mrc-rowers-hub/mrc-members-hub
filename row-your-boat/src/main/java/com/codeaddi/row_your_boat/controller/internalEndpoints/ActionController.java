@@ -1,14 +1,14 @@
-package com.codeaddi.row_your_boat.view;
+package com.codeaddi.row_your_boat.controller.internalEndpoints;
 
 import com.codeaddi.row_your_boat.controller.http.AvailabilityClient;
 import com.codeaddi.row_your_boat.controller.http.SchedulerClient;
-import com.codeaddi.row_your_boat.model.RowerLevel;
-import com.codeaddi.row_your_boat.model.SessionType;
-import com.codeaddi.row_your_boat.model.Squad;
+import com.codeaddi.row_your_boat.model.enums.RowerLevel;
+import com.codeaddi.row_your_boat.model.enums.SessionType;
+import com.codeaddi.row_your_boat.model.enums.Squad;
 import com.codeaddi.row_your_boat.model.http.AvailabilityDTO;
 import com.codeaddi.row_your_boat.model.http.StandardResponse;
 import com.codeaddi.row_your_boat.model.http.enums.Status;
-import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
+import com.codeaddi.row_your_boat.model.http.inbound.RowingSession;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;

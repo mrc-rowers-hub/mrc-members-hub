@@ -1,14 +1,14 @@
-package com.codeaddi.row_your_boat.controller.sessions;
+package com.codeaddi.row_your_boat.controller.services;
 
-import com.codeaddi.row_your_boat.model.Squad;
-import com.codeaddi.row_your_boat.model.Weekday;
+import com.codeaddi.row_your_boat.model.enums.Squad;
+import com.codeaddi.row_your_boat.model.enums.Weekday;
 import com.codeaddi.row_your_boat.model.http.UpcomingAvailabilityDTO;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import com.codeaddi.row_your_boat.model.http.inbound.PastSession;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -41,6 +41,14 @@ public class AvailabilityService {
 
     return upcomingSessionKeyListMap.stream()
         .collect(Collectors.groupingBy(UpcomingAvailabilityDTO::getSquad));
+  }
+
+  public static Long getSessionIdByDate(Date date, List<PastSession> pastSessions){
+    return pastSessions.stream()
+            .filter(session -> session.getDate().equals(date))
+            .findAny()
+            .map(PastSession::getUpcomingSessionId)
+            .orElseThrow(() -> new NoSuchElementException("No session found for the provided date"));
   }
 
   private static String getDayOfTheWeek(String dateAsString) {

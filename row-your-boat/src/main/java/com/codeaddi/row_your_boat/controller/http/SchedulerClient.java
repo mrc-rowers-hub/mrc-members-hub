@@ -1,16 +1,14 @@
 package com.codeaddi.row_your_boat.controller.http;
 
 import com.codeaddi.row_your_boat.model.http.StandardResponse;
-import com.codeaddi.row_your_boat.model.http.UpcomingAvailabilityDTO;
 import com.codeaddi.row_your_boat.model.http.enums.Resource;
 import com.codeaddi.row_your_boat.model.http.enums.Status;
-import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
+import com.codeaddi.row_your_boat.model.http.inbound.RowingSession;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestClientResponseException;
 
 @Component
 @Slf4j

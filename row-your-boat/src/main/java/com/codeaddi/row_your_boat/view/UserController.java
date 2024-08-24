@@ -1,10 +1,10 @@
 package com.codeaddi.row_your_boat.view;
 
 import com.codeaddi.row_your_boat.controller.http.AvailabilityClient;
-import com.codeaddi.row_your_boat.model.Squad;
+import com.codeaddi.row_your_boat.model.enums.Squad;
 import com.codeaddi.row_your_boat.model.http.UpcomingAvailabilityDTO;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
-import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
+import com.codeaddi.row_your_boat.model.http.inbound.RowingSession;
 import com.codeaddi.row_your_boat.view.display.ViewService;
 import java.util.List;
 import java.util.Map;

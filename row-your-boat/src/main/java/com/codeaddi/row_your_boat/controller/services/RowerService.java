@@ -1,6 +1,6 @@
-package com.codeaddi.row_your_boat.controller.sessions;
+package com.codeaddi.row_your_boat.controller.services;
 
-import com.codeaddi.row_your_boat.model.rowers.Rower;
+import com.codeaddi.row_your_boat.model.http.inbound.Rower;
 import java.util.ArrayList;
 import java.util.List;
 

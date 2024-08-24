@@ -3,9 +3,10 @@ package com.codeaddi.row_your_boat.controller.sessions;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.codeaddi.row_your_boat.TestData;
-import com.codeaddi.row_your_boat.model.Squad;
+import com.codeaddi.row_your_boat.controller.services.SessionsService;
+import com.codeaddi.row_your_boat.model.enums.Squad;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
-import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
+import com.codeaddi.row_your_boat.model.http.inbound.RowingSession;
 import java.util.*;
 import org.junit.jupiter.api.Test;
 
