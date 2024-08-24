@@ -11,7 +11,7 @@ public class PastSessionsService {
 
     public static List<String> getUpcomingSessionDates(List<PastSession> sessions){
         List<String> formattedDates = new ArrayList<>();
-        for(Date date :sessions.stream().map(PastSession::getDate).toList() ){
+        for(Date date : sessions.stream().map(PastSession::getDate).toList() ){
             formattedDates.add(DateUtil.formatDate(date));
         }
         return formattedDates;

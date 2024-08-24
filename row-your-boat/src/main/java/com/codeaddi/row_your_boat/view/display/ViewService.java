@@ -1,14 +1,19 @@
 package com.codeaddi.row_your_boat.view.display;
 
 import com.codeaddi.row_your_boat.controller.http.AvailabilityClient;
+import com.codeaddi.row_your_boat.controller.http.RowerClient;
 import com.codeaddi.row_your_boat.controller.http.SchedulerClient;
 import com.codeaddi.row_your_boat.controller.sessions.AvailabilityService;
 import com.codeaddi.row_your_boat.controller.sessions.PastSessionsService;
+import com.codeaddi.row_your_boat.controller.sessions.RowerService;
 import com.codeaddi.row_your_boat.controller.sessions.SessionsService;
+import com.codeaddi.row_your_boat.controller.util.DateUtil;
 import com.codeaddi.row_your_boat.model.Squad;
 import com.codeaddi.row_your_boat.model.http.UpcomingAvailabilityDTO;
 import com.codeaddi.row_your_boat.model.http.UpcomingSessionAvailability;
 import com.codeaddi.row_your_boat.model.http.inbound.PastSession;
+import com.codeaddi.row_your_boat.model.http.inbound.PastSessionAvailability;
+import com.codeaddi.row_your_boat.model.rowers.Rower;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
 import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
 
@@ -25,6 +30,7 @@ public class ViewService {
 
   @Autowired private SchedulerClient schedulerClient;
   @Autowired private AvailabilityClient availabilityClient;
+  @Autowired private RowerClient rowerClient;
 
   public List<RowingSession> getAllSessions() {
     List<RowingSession> sessionsToReturn = schedulerClient.getAllSessions();
@@ -109,13 +115,15 @@ public class ViewService {
     return PastSessionsService.getUpcomingSessionDates(upcomingPastSessions);
   }
 
-  public void getAllAvailableRowersForDate(Date date){
-    // pass in the string formatted date
-    // turn this back into a Date
-    // find the upcomingSessionId by this Date, from getAllUpcomingPastSessions
+  public List<String> getAllAvailableRowersForDate(String formattedDate){
+    Date date = DateUtil.getDateFromFormattedString(formattedDate);
+    List<PastSession> upcomingPastSessions = availabilityClient.getAllUpcomingPastSessions();
+    Long upcomingSessionId = upcomingPastSessions.stream().filter(session -> session.getDate().equals(date)).findAny().get().getUpcomingSessionId();
 
-    // then use streams to filter the below by upcomingSessionId matching the above
-    // then we need a new endpoint/call to get the rowerName by rowerId - or list of
-    availabilityClient.getAllUpcomingPastSessionAvailability();
+    List<PastSessionAvailability> rowersAvailable = availabilityClient.getAllUpcomingPastSessionAvailability().stream().filter(availability -> availability.getUpcomingSessionId().equals(upcomingSessionId)).toList();
+    List<Long> availableRowers = rowersAvailable.stream().map(PastSessionAvailability::getRowerId).toList();
+    List<Rower> allRowers = rowerClient.getAllRowers();
+
+    return RowerService.getNamesByIDs(availableRowers, allRowers);
   }
 }
