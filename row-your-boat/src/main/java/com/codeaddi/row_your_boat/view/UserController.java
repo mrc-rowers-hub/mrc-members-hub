@@ -21,14 +21,6 @@ import org.springframework.web.servlet.view.RedirectView;
 @Controller
 @Slf4j
 public class UserController {
-  //  Todo start splitting these into separate controllers by topic
-
-  @Autowired ViewService viewService;
-
-  @Value("${services.weather.baseUrl}")
-  private String weatherServiceBaseUrl;
-
-  @Autowired private AvailabilityClient availabilityClient;
 
   @GetMapping("/")
   public String index(Model model) {
@@ -41,68 +33,4 @@ public class UserController {
     return "home";
   }
 
-  @GetMapping("/weather")
-  public RedirectView redirectToOtherService() {
-    RedirectView redirectView = new RedirectView();
-    redirectView.setUrl(weatherServiceBaseUrl);
-    return redirectView;
-  }
-
-  @GetMapping("/my-availability")
-  public String myAvailability(Model model) {
-    Map<Squad, List<UpcomingSessionAvailabilityDTO>> availabilitySessions =
-        viewService.getAvailabilitySessions();
-
-    Map<Squad, List<UpcomingSessionAvailabilityDTO>> sessionsWithAvailability =
-        viewService.addAvailabilityForThisUser(1L, Squad.WOMENS, availabilitySessions); // this will be passed in from the frontend eventually
-
-    model.addAttribute("availabilitySessions", sessionsWithAvailability);
-    return "availability/my-availability";
-  }
-
-  @PostMapping("/session-availability")
-  public String showSessionAvailability(@RequestParam("date") String date, Model model) {
-    List<String> availableRowers = viewService.getAllAvailableRowersForDate(date);
-    model.addAttribute("availabilities", availableRowers);
-    return "adminOnly/session-availability";
-  }
-
-  @GetMapping("/standard-sessions")
-  public String standardSessions(Model model) {
-    Map<Squad, List<RowingSessions>> sessions = viewService.getAllStandardSessionsToDisplay();
-    model.addAttribute("sessions", sessions);
-
-    Long maxId = viewService.getMaxId();
-
-    model.addAttribute("maxId", maxId);
-
-    return "adminOnly/standard-sessions";
-  }
-
-  @GetMapping("/view-sessions-to-edit")
-  public String viewSessions(Model model) {
-    List<RowingSession> sessions = viewService.getAllSessions();
-
-    model.addAttribute("sessions", sessions);
-
-    return "adminOnly/view-sessions-to-edit";
-  }
-
-  @GetMapping("/make-weekly-plan")
-  public String makeNewSessions(Model model) {
-    List<String> sessionDates = viewService.getAllPastSessionsDates();
-
-    model.addAttribute("list", sessionDates);
-    return "adminOnly/make-new-sessions";
-  }
-
-  @GetMapping("/boats")
-  public String boats() {
-    return "resources/boats";
-  }
-
-  @GetMapping("/blades")
-  public String blades() {
-    return "resources/blades";
-  }
 }
