@@ -35,28 +35,19 @@
 <div th:replace="~{sections/sidebar :: sidebarFragment}"></div>
 
 <main class="content" id="content">
-    <h2> Make new sessions </h2>
-    <!-- Add more content for the home page here -->
+    <h2>Make new sessions</h2>
 
-
-    <h3>Select a session to view availability</h3>
-    <select th:if="${list != null}">
-        <option th:each="item : ${list}" th:value="${item}" th:text="${item}"></option>
-    </select>
-
-    <h1> some gap plz </h1>
-
-    <form th:action="@{/session-availability(date=${machine})}" method="post">
-        <label for="machine">Please select a date to make a session for:</label>
-        <select name="machine" id="machine">
+    <form th:action="@{/session-availability}" method="post">
+        <label for="date">Please select a date to make a session for:</label>
+        <select name="date" id="date">
+            <option value="" disabled selected>Select a date</option>
             <option th:each="machine : ${list}" th:value="${machine}" th:text="${machine}"></option>
         </select>
         <input type="submit" value="Proceed"/>
     </form>
-
-
-
 </main>
+
+
 
 
 

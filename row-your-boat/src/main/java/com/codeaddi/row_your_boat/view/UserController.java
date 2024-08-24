@@ -63,10 +63,10 @@ public class UserController {
   @PostMapping("/session-availability")
   public String showSessionAvailability(@RequestParam("date") String date, Model model) {
     List<String> availableRowers = viewService.getAllAvailableRowersForDate(date);
-
     model.addAttribute("availabilities", availableRowers);
     return "session-availability";
   }
+
 
   @GetMapping("/standard-sessions")
   public String standardSessions(Model model) {

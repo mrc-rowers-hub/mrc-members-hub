@@ -1,9 +1,12 @@
 package com.codeaddi.row_your_boat.controller.util;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@Slf4j
 public class DateUtil {
 
     private static final String dateFormat = "EEE MMM dd yyyy HH:mm";
@@ -14,6 +17,8 @@ public class DateUtil {
     }
 
     public static Date getDateFromFormattedString(String formattedDate){
+        log.info("formatted date {}",formattedDate);
+
         SimpleDateFormat inputFormat = new SimpleDateFormat(dateFormat);
         try {
             return inputFormat.parse(formattedDate);
