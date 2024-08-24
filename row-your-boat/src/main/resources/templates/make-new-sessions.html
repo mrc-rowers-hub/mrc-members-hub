@@ -37,15 +37,27 @@
 <main class="content" id="content">
     <h2>Make new sessions</h2>
 
-    <form th:action="@{/session-availability}" method="post">
+    <form th:action="@{/session-availability}" method="post" onsubmit="return validateForm()">
         <label for="date">Please select a date to make a session for:</label>
-        <select name="date" id="date">
+        <select name="date" id="date" required>
             <option value="" disabled selected>Select a date</option>
             <option th:each="machine : ${list}" th:value="${machine}" th:text="${machine}"></option>
         </select>
         <input type="submit" value="Proceed"/>
     </form>
+
+    <script>
+        function validateForm() {
+            var dateSelect = document.getElementById("date");
+            if (dateSelect.value === "") {
+                alert("Please select a date before proceeding.");
+                return false; // Prevent form submission
+            }
+            return true; // Allow form submission
+        }
+    </script>
 </main>
+
 
 
 
