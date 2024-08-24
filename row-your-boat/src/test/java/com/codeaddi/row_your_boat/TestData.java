@@ -1,11 +1,9 @@
 package com.codeaddi.row_your_boat;
 
-import com.codeaddi.row_your_boat.controller.sessions.UpcomingSessionsGrouper;
 import com.codeaddi.row_your_boat.model.RowerLevel;
 import com.codeaddi.row_your_boat.model.SessionType;
 import com.codeaddi.row_your_boat.model.Squad;
 import com.codeaddi.row_your_boat.model.Weekday;
-import com.codeaddi.row_your_boat.model.availability.AvailabilityGroup;
 import com.codeaddi.row_your_boat.model.http.UpcomingAvailabilityDTO;
 import com.codeaddi.row_your_boat.model.http.inbound.PastSession;
 import com.codeaddi.row_your_boat.model.http.inbound.PastSessionAvailability;
@@ -112,27 +110,13 @@ public class TestData {
           .sessionType(SessionType.ERG)
           .build();
 
-  public static AvailabilityGroup availabilityGroup1 =
-      AvailabilityGroup.builder()
-          .upcomingSessionKey(new UpcomingSessionsGrouper.UpcomingSessionKey(upcomingSession1))
-          .levels(RowerLevel.NOVICE)
-          .upcomingSessionIds(List.of(1L, 2L))
-          .build();
 
-  public static AvailabilityGroup availabilityGroup2 =
-      AvailabilityGroup.builder()
-          .upcomingSessionKey(new UpcomingSessionsGrouper.UpcomingSessionKey(upcomingSession3))
-          .levels(RowerLevel.DEVELOPMENT)
-          .upcomingSessionIds(List.of(3L))
-          .build();
 
-  public static List<UpcomingAvailabilityDTO> upcomingAvailabilityDTOS =
-      List.of(upcomingSession1, upcomingSession2, upcomingSession3);
+
   public static List<RowingSession> sessions = Arrays.asList(session1, session2, session3);
   public static List<RowingSession> sameSessionsMenWomen = Arrays.asList(session2, session4);
   public static List<RowingSessions> groupedSessions = Arrays.asList(session1And2, session3s);
-  public static List<AvailabilityGroup> availabilityGroups =
-      Arrays.asList(availabilityGroup1, availabilityGroup2);
+
   public static String formattedDate = "Mon Nov 11 2024 00:00";
 
   public static PastSession pastSession1 = TestUtil.createPastSession(formattedDate);

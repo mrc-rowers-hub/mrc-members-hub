@@ -11,7 +11,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Rower {
-
   private Long rowerId;
   private String name;
   private Squad squad;
