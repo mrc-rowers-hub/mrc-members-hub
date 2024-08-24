@@ -1,6 +1,7 @@
 package com.codeaddi.row_your_boat.controller.http;
 
 import com.codeaddi.row_your_boat.model.http.StandardResponse;
+import com.codeaddi.row_your_boat.model.http.UpcomingAvailabilityDTO;
 import com.codeaddi.row_your_boat.model.http.enums.Resource;
 import com.codeaddi.row_your_boat.model.http.enums.Status;
 import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
@@ -15,22 +16,11 @@ import org.springframework.web.client.RestClientResponseException;
 @Slf4j
 public class SchedulerClient extends HttpClient {
 
+  private final Resource resource = Resource.STANDARD_SESSIONS;
+
+
   public List<RowingSession> getAllSessions() {
-    try {
-      String response =
-          restTemplate.getForObject(
-              getUrl("get_all_sessions", Resource.STANDARD_SESSIONS), String.class);
-      List<RowingSession> sessions =
-          objectMapper.readValue(response, new TypeReference<List<RowingSession>>() {});
-      log.info("Successfully retrieved all sessions from scheduler service");
-      return sessions;
-    } catch (RestClientResponseException e) {
-      log.error("Scheduler service gave an unexpected response: {}", e.getStatusCode());
-      return List.of();
-    } catch (Exception e) {
-      log.error("Unexpected error: " + e.getMessage());
-      return List.of();
-    }
+    return getForResourceAndParse("get_all_sessions", new TypeReference<List<RowingSession>>() {}, resource);
   }
 
   public StandardResponse updateSession(RowingSession session) {
