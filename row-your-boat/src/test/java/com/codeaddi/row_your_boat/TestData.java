@@ -135,7 +135,7 @@ public class TestData {
       Arrays.asList(availabilityGroup1, availabilityGroup2);
   public static String formattedDate = "Mon Nov 11 00:00";
 
-  public static PastSession pastSession1 = createPastSession(formattedDate);
+  public static PastSession pastSession1 = TestUtil.createPastSession(formattedDate);
   public static PastSession pastSession2 =
       PastSession.builder()
           .sessionId(2L)
@@ -172,17 +172,4 @@ public class TestData {
           .level(RowerLevel.INTERMEDIATE)
           .build();
 
-  private static PastSession createPastSession(String dateString) {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm");
-    LocalDate localDate = LocalDate.parse(dateString, formatter);
-
-    LocalDateTime localDateTime = localDate.atTime(LocalTime.MIN);
-
-    ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.of("UTC"));
-
-    Instant instant = zonedDateTime.toInstant();
-    Date date = Date.from(instant);
-
-    return PastSession.builder().date(date).upcomingSessionId(1L).sessionId(2L).build();
-  }
 }
