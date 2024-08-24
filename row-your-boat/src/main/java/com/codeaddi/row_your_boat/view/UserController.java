@@ -57,14 +57,14 @@ public class UserController {
         viewService.addAvailabilityForThisUser(1L, Squad.WOMENS, availabilitySessions);
 
     model.addAttribute("availabilitySessions", sessionsWithAvailability);
-    return "my-availability";
+    return "availability/my-availability";
   }
 
   @PostMapping("/session-availability")
   public String showSessionAvailability(@RequestParam("date") String date, Model model) {
     List<String> availableRowers = viewService.getAllAvailableRowersForDate(date);
     model.addAttribute("availabilities", availableRowers);
-    return "session-availability";
+    return "adminOnly/session-availability";
   }
 
   @GetMapping("/standard-sessions")
@@ -76,7 +76,7 @@ public class UserController {
 
     model.addAttribute("maxId", maxId);
 
-    return "standard-sessions";
+    return "adminOnly/standard-sessions";
   }
 
   @GetMapping("/view-sessions-to-edit")
@@ -85,7 +85,7 @@ public class UserController {
 
     model.addAttribute("sessions", sessions);
 
-    return "view-sessions-to-edit";
+    return "adminOnly/view-sessions-to-edit";
   }
 
   @GetMapping("/make-new-sessions")
@@ -93,16 +93,16 @@ public class UserController {
     List<String> sessionDates = viewService.getAllPastSessionsDates();
 
     model.addAttribute("list", sessionDates);
-    return "make-new-sessions";
+    return "adminOnly/make-new-sessions";
   }
 
   @GetMapping("/boats")
   public String boats() {
-    return "boats";
+    return "resources/boats";
   }
 
   @GetMapping("/blades")
   public String blades() {
-    return "blades";
+    return "resources/blades";
   }
 }
