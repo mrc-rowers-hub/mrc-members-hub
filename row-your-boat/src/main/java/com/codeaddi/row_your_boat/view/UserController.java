@@ -1,5 +1,6 @@
 package com.codeaddi.row_your_boat.view;
 
+import com.codeaddi.row_your_boat.controller.http.AvailabilityClient;
 import com.codeaddi.row_your_boat.model.Squad;
 import com.codeaddi.row_your_boat.model.http.UpcomingAvailabilityDTO;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
@@ -20,11 +21,14 @@ import org.springframework.web.servlet.view.RedirectView;
 @Controller
 @Slf4j
 public class UserController {
+  //  Todo start splitting these into separate controllers by topic
 
   @Autowired ViewService viewService;
 
   @Value("${services.weather.baseUrl}")
   private String weatherServiceBaseUrl;
+
+  @Autowired private AvailabilityClient availabilityClient;
 
   @GetMapping("/")
   public String index(Model model) {
@@ -56,6 +60,13 @@ public class UserController {
     return "my-availability";
   }
 
+  @PostMapping("/session-availability")
+  public String showSessionAvailability(@RequestParam("date") String date, Model model) {
+    List<String> availableRowers = viewService.getAllAvailableRowersForDate(date);
+    model.addAttribute("availabilities", availableRowers);
+    return "session-availability";
+  }
+
   @GetMapping("/standard-sessions")
   public String standardSessions(Model model) {
     Map<Squad, List<RowingSessions>> sessions = viewService.getAllStandardSessionsToDisplay();
@@ -75,6 +86,14 @@ public class UserController {
     model.addAttribute("sessions", sessions);
 
     return "view-sessions-to-edit";
+  }
+
+  @GetMapping("/make-new-sessions")
+  public String makeNewSessions(Model model) {
+    List<String> sessionDates = viewService.getAllPastSessionsDates();
+
+    model.addAttribute("list", sessionDates);
+    return "make-new-sessions";
   }
 
   @GetMapping("/boats")

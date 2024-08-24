@@ -6,6 +6,8 @@ import com.codeaddi.row_your_boat.model.http.UpcomingAvailabilityDTO;
 import com.codeaddi.row_your_boat.model.http.UpcomingSessionAvailability;
 import com.codeaddi.row_your_boat.model.http.enums.Resource;
 import com.codeaddi.row_your_boat.model.http.enums.Status;
+import com.codeaddi.row_your_boat.model.http.inbound.PastSession;
+import com.codeaddi.row_your_boat.model.http.inbound.PastSessionAvailability;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +20,7 @@ import org.springframework.web.client.RestClientResponseException;
 @Slf4j
 public class AvailabilityClient extends HttpClient {
 
-  public List<UpcomingAvailabilityDTO> getAllSessions() {
+  public List<UpcomingAvailabilityDTO> getAllUpcomingSessions() {
     try {
       String response =
           restTemplate.getForObject(
@@ -26,6 +28,42 @@ public class AvailabilityClient extends HttpClient {
       List<UpcomingAvailabilityDTO> sessions =
           objectMapper.readValue(response, new TypeReference<List<UpcomingAvailabilityDTO>>() {});
       log.info("Successfully retrieved all upcoming sessions");
+      return sessions;
+    } catch (RestClientResponseException e) {
+      log.error("Scheduler service gave an unexpected response: {}", e.getStatusCode());
+      return List.of();
+    } catch (Exception e) {
+      log.error("Unexpected error: " + e.getMessage());
+      return List.of();
+    }
+  }
+
+  public List<PastSession> getAllUpcomingPastSessions() {
+    try {
+      String response =
+          restTemplate.getForObject(
+              getUrl("get_upcoming_past_sessions", Resource.SESSION_AVAILABILITY), String.class);
+      List<PastSession> sessions =
+          objectMapper.readValue(response, new TypeReference<List<PastSession>>() {});
+      log.info("Successfully retrieved all upcoming sessions");
+      return sessions;
+    } catch (RestClientResponseException e) {
+      log.error("Scheduler service gave an unexpected response: {}", e.getStatusCode());
+      return List.of();
+    } catch (Exception e) {
+      log.error("Unexpected error: " + e.getMessage());
+      return List.of();
+    }
+  }
+
+  public List<PastSessionAvailability> getAllUpcomingPastSessionAvailability() {
+    try {
+      String response =
+          restTemplate.getForObject(
+              getUrl("get_rowers_availability", Resource.SESSION_AVAILABILITY), String.class);
+      List<PastSessionAvailability> sessions =
+          objectMapper.readValue(response, new TypeReference<List<PastSessionAvailability>>() {});
+      log.info("Successfully retrieved all upcoming session availability");
       return sessions;
     } catch (RestClientResponseException e) {
       log.error("Scheduler service gave an unexpected response: {}", e.getStatusCode());
@@ -44,6 +82,25 @@ public class AvailabilityClient extends HttpClient {
               + rowerId;
 
       String response = restTemplate.getForObject(url, String.class);
+      List<UpcomingSessionAvailability> availableSessions =
+          objectMapper.readValue(
+              response, new TypeReference<List<UpcomingSessionAvailability>>() {});
+      log.info("Successfully retrieved all upcoming sessions");
+      return availableSessions;
+    } catch (RestClientResponseException e) {
+      log.error("Scheduler service gave an unexpected response: {}", e.getStatusCode());
+      return List.of();
+    } catch (Exception e) {
+      log.error("Unexpected error: " + e.getMessage());
+      return List.of();
+    }
+  }
+
+  public List<UpcomingSessionAvailability> getAvailabilityForAllRowersForSessionPlanning() {
+    try {
+      String response =
+          restTemplate.getForObject(
+              getUrl("get_upcoming_availability", Resource.SESSION_AVAILABILITY), String.class);
       List<UpcomingSessionAvailability> availableSessions =
           objectMapper.readValue(
               response, new TypeReference<List<UpcomingSessionAvailability>>() {});

@@ -7,10 +7,15 @@ import com.codeaddi.row_your_boat.model.Squad;
 import com.codeaddi.row_your_boat.model.Weekday;
 import com.codeaddi.row_your_boat.model.availability.AvailabilityGroup;
 import com.codeaddi.row_your_boat.model.http.UpcomingAvailabilityDTO;
+import com.codeaddi.row_your_boat.model.http.inbound.PastSession;
+import com.codeaddi.row_your_boat.model.http.inbound.PastSessionAvailability;
+import com.codeaddi.row_your_boat.model.rowers.Rower;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
 import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
-import java.time.LocalTime;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class TestData {
@@ -128,4 +133,56 @@ public class TestData {
   public static List<RowingSessions> groupedSessions = Arrays.asList(session1And2, session3s);
   public static List<AvailabilityGroup> availabilityGroups =
       Arrays.asList(availabilityGroup1, availabilityGroup2);
+  public static String formattedDate = "Mon Nov 11 00:00";
+
+  public static PastSession pastSession1 = createPastSession(formattedDate);
+  public static PastSession pastSession2 =
+      PastSession.builder()
+          .sessionId(2L)
+          .upcomingSessionId(3L)
+          .date(Date.from(Instant.now()))
+          .build();
+
+  public static PastSessionAvailability pastSessionAvailability1 =
+      PastSessionAvailability.builder().upcomingSessionId(1L).rowerId(1L).build();
+  public static PastSessionAvailability pastSessionAvailability3 =
+      PastSessionAvailability.builder().upcomingSessionId(1L).rowerId(2L).build();
+  public static PastSessionAvailability pastSessionAvailability2 =
+      PastSessionAvailability.builder().upcomingSessionId(2L).rowerId(1L).build();
+
+  public static Rower rower1 =
+      Rower.builder()
+          .rowerId(1L)
+          .name("rower 1")
+          .squad(Squad.WOMENS)
+          .level(RowerLevel.INTERMEDIATE)
+          .build();
+  public static Rower rower2 =
+      Rower.builder()
+          .rowerId(2L)
+          .name("rower 2")
+          .squad(Squad.WOMENS)
+          .level(RowerLevel.INTERMEDIATE)
+          .build();
+  public static Rower rower3 =
+      Rower.builder()
+          .rowerId(3L)
+          .name("rower 2")
+          .squad(Squad.WOMENS)
+          .level(RowerLevel.INTERMEDIATE)
+          .build();
+
+  private static PastSession createPastSession(String dateString) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm");
+    LocalDate localDate = LocalDate.parse(dateString, formatter);
+
+    LocalDateTime localDateTime = localDate.atTime(LocalTime.MIN);
+
+    ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.of("UTC"));
+
+    Instant instant = zonedDateTime.toInstant();
+    Date date = Date.from(instant);
+
+    return PastSession.builder().date(date).upcomingSessionId(1L).sessionId(2L).build();
+  }
 }

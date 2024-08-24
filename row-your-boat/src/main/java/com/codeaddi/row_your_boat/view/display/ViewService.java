@@ -1,18 +1,22 @@
 package com.codeaddi.row_your_boat.view.display;
 
 import com.codeaddi.row_your_boat.controller.http.AvailabilityClient;
+import com.codeaddi.row_your_boat.controller.http.RowerClient;
 import com.codeaddi.row_your_boat.controller.http.SchedulerClient;
 import com.codeaddi.row_your_boat.controller.sessions.AvailabilityService;
+import com.codeaddi.row_your_boat.controller.sessions.PastSessionsService;
+import com.codeaddi.row_your_boat.controller.sessions.RowerService;
 import com.codeaddi.row_your_boat.controller.sessions.SessionsService;
+import com.codeaddi.row_your_boat.controller.util.DateUtil;
 import com.codeaddi.row_your_boat.model.Squad;
 import com.codeaddi.row_your_boat.model.http.UpcomingAvailabilityDTO;
 import com.codeaddi.row_your_boat.model.http.UpcomingSessionAvailability;
+import com.codeaddi.row_your_boat.model.http.inbound.PastSession;
+import com.codeaddi.row_your_boat.model.http.inbound.PastSessionAvailability;
+import com.codeaddi.row_your_boat.model.rowers.Rower;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
 import com.codeaddi.row_your_boat.model.sessions.http.RowingSession;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +28,7 @@ public class ViewService {
 
   @Autowired private SchedulerClient schedulerClient;
   @Autowired private AvailabilityClient availabilityClient;
+  @Autowired private RowerClient rowerClient;
 
   public List<RowingSession> getAllSessions() {
     List<RowingSession> sessionsToReturn = schedulerClient.getAllSessions();
@@ -60,7 +65,7 @@ public class ViewService {
   }
 
   public Map<Squad, List<UpcomingAvailabilityDTO>> getAvailabilitySessions() {
-    List<UpcomingAvailabilityDTO> upcomingSessions = availabilityClient.getAllSessions();
+    List<UpcomingAvailabilityDTO> upcomingSessions = availabilityClient.getAllUpcomingSessions();
 
     List<UpcomingAvailabilityDTO> sessionsWithDays =
         AvailabilityService.addWeekday(upcomingSessions);
@@ -101,5 +106,31 @@ public class ViewService {
     allUpcomingSessions.replace(rowerSquad, upcomingSessionsForThisSquadWithAvailability);
 
     return allUpcomingSessions;
+  }
+
+  public List<String> getAllPastSessionsDates() {
+    List<PastSession> upcomingPastSessions = availabilityClient.getAllUpcomingPastSessions();
+    return PastSessionsService.getUpcomingSessionDates(upcomingPastSessions);
+  }
+
+  public List<String> getAllAvailableRowersForDate(String formattedDate) {
+    Date date = DateUtil.getDateFromFormattedString(formattedDate);
+    List<PastSession> upcomingPastSessions = availabilityClient.getAllUpcomingPastSessions();
+    Long upcomingSessionId =
+        upcomingPastSessions.stream()
+            .filter(session -> session.getDate().equals(date))
+            .findAny()
+            .get()
+            .getUpcomingSessionId();
+
+    List<PastSessionAvailability> rowersAvailable =
+        availabilityClient.getAllUpcomingPastSessionAvailability().stream()
+            .filter(availability -> availability.getUpcomingSessionId().equals(upcomingSessionId))
+            .toList();
+    List<Long> availableRowers =
+        rowersAvailable.stream().map(PastSessionAvailability::getRowerId).toList();
+    List<Rower> allRowers = rowerClient.getAllRowers();
+
+    return RowerService.getNamesByIDs(availableRowers, allRowers);
   }
 }
