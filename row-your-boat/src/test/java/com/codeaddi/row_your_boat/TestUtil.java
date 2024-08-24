@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class TestUtil {
     public static PastSession createPastSession(String dateString) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM dd yyyy HH:mm");
         LocalDate localDate = LocalDate.parse(dateString, formatter);
 
         LocalDateTime localDateTime = localDate.atTime(LocalTime.MIN);

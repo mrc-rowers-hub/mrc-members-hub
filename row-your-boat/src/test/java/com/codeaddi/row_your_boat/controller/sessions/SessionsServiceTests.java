@@ -36,13 +36,15 @@ public class SessionsServiceTests {
         expectedSquads.add(rowingSession.getSquad());
       }
     }
+    Collections.sort(expectedSquads);
+
 
     List<RowingSessions> actualRowingSessions =
         SessionsService.mapRowingSessionToSessions(TestData.sessions);
     Map<Squad, List<RowingSessions>> actualMap =
         SessionsService.getRowingSessionsPerSquad(actualRowingSessions);
 
-    List<Squad> actualSquads = actualMap.keySet().stream().toList();
+    List<Squad> actualSquads = actualMap.keySet().stream().sorted().toList();
 
     assertArrayEquals(new List[] {expectedSquads}, new List[] {actualSquads});
   }

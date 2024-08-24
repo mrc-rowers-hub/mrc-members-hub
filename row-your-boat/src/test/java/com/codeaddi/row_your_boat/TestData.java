@@ -133,7 +133,7 @@ public class TestData {
   public static List<RowingSessions> groupedSessions = Arrays.asList(session1And2, session3s);
   public static List<AvailabilityGroup> availabilityGroups =
       Arrays.asList(availabilityGroup1, availabilityGroup2);
-  public static String formattedDate = "Mon Nov 11 00:00";
+  public static String formattedDate = "Mon Nov 11 2024 00:00";
 
   public static PastSession pastSession1 = TestUtil.createPastSession(formattedDate);
   public static PastSession pastSession2 =
