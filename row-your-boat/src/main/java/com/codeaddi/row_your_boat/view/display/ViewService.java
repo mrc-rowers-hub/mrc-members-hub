@@ -108,4 +108,14 @@ public class ViewService {
     List<PastSession> upcomingPastSessions = availabilityClient.getAllUpcomingPastSessions();
     return PastSessionsService.getUpcomingSessionDates(upcomingPastSessions);
   }
+
+  public void getAllAvailableRowersForDate(Date date){
+    // pass in the string formatted date
+    // turn this back into a Date
+    // find the upcomingSessionId by this Date, from getAllUpcomingPastSessions
+
+    // then use streams to filter the below by upcomingSessionId matching the above
+    // then we need a new endpoint/call to get the rowerName by rowerId - or list of
+    availabilityClient.getAllUpcomingPastSessionAvailability();
+  }
 }
