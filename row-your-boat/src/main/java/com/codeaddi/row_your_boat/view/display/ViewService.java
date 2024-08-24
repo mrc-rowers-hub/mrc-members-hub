@@ -73,14 +73,9 @@ public class ViewService {
   }
 
   public List<String> getAllAvailableRowersForDate(String formattedDate) {
-    Date date = DateUtil.getDateFromFormattedString(formattedDate);
-    Long upcomingSessionId = getSessionIdByDate(date);
+    Long upcomingSessionId = getSessionIdByDate(DateUtil.getDateFromFormattedString(formattedDate));
 
-    List<PastSessionAvailability> rowersAvailable = availabilityClient.getAllUpcomingPastSessionAvailability().stream()
-            .filter(availability -> availability.getUpcomingSessionId().equals(upcomingSessionId))
-            .toList();
-
-    List<Long> availableRowerIds = rowersAvailable.stream().map(PastSessionAvailability::getRowerId).toList();
+    List<Long> availableRowerIds = PastSessionsService.getRowersAvailableForSession(upcomingSessionId, availabilityClient.getAllUpcomingPastSessionAvailability());
     return RowerService.getNamesByIDs(availableRowerIds, rowerClient.getAllRowers());
   }
 

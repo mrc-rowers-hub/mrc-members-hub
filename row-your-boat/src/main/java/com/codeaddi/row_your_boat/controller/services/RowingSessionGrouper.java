@@ -18,7 +18,7 @@ public class RowingSessionGrouper {
   }
 
   @Getter
-  static class RowingSessionKey {
+  public static class RowingSessionKey {
     private final String day;
     private final String startTime;
     private final String endTime;
