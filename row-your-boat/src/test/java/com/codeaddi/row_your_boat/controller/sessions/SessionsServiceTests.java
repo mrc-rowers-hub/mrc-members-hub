@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.codeaddi.row_your_boat.TestData;
 import com.codeaddi.row_your_boat.controller.services.SessionsService;
 import com.codeaddi.row_your_boat.model.enums.Squad;
-import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
 import com.codeaddi.row_your_boat.model.http.inbound.RowingSession;
+import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
 import java.util.*;
 import org.junit.jupiter.api.Test;
 
@@ -38,7 +38,6 @@ public class SessionsServiceTests {
       }
     }
     Collections.sort(expectedSquads);
-
 
     List<RowingSessions> actualRowingSessions =
         SessionsService.mapRowingSessionToSessions(TestData.StandardSessions.sessions);

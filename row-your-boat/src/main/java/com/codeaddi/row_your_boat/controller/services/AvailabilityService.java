@@ -3,12 +3,11 @@ package com.codeaddi.row_your_boat.controller.services;
 import com.codeaddi.row_your_boat.model.enums.Squad;
 import com.codeaddi.row_your_boat.model.enums.Weekday;
 import com.codeaddi.row_your_boat.model.http.UpcomingSessionAvailabilityDTO;
+import com.codeaddi.row_your_boat.model.http.inbound.PastSession;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import com.codeaddi.row_your_boat.model.http.inbound.PastSession;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -43,12 +42,12 @@ public class AvailabilityService {
         .collect(Collectors.groupingBy(UpcomingSessionAvailabilityDTO::getSquad));
   }
 
-  public static Long getSessionIdByDate(Date date, List<PastSession> pastSessions){
+  public static Long getSessionIdByDate(Date date, List<PastSession> pastSessions) {
     return pastSessions.stream()
-            .filter(session -> session.getDate().equals(date))
-            .findAny()
-            .map(PastSession::getUpcomingSessionId)
-            .orElseThrow(() -> new NoSuchElementException("No session found for the provided date"));
+        .filter(session -> session.getDate().equals(date))
+        .findAny()
+        .map(PastSession::getUpcomingSessionId)
+        .orElseThrow(() -> new NoSuchElementException("No session found for the provided date"));
   }
 
   private static String getDayOfTheWeek(String dateAsString) {

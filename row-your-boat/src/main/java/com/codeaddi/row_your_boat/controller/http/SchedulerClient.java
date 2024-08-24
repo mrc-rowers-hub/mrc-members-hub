@@ -16,9 +16,9 @@ public class SchedulerClient extends HttpClient {
 
   private final Resource resource = Resource.STANDARD_SESSIONS;
 
-
   public List<RowingSession> getAllSessions() {
-    return getForResourceAndParse("get_all_sessions", new TypeReference<List<RowingSession>>() {}, resource);
+    return getForResourceAndParse(
+        "get_all_sessions", new TypeReference<List<RowingSession>>() {}, resource);
   }
 
   public StandardResponse updateSession(RowingSession session) {
