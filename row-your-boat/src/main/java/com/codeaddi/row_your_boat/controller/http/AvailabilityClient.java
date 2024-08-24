@@ -74,8 +74,6 @@ public class AvailabilityClient extends HttpClient {
     }
   }
 
-  // add one in to get all past sessions
-
   public List<UpcomingSessionAvailability> getUpcomingAvailabilityForRower(Long rowerId) {
     try {
       String url =
