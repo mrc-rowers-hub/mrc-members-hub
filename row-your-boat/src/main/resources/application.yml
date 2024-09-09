@@ -7,3 +7,5 @@ services:
     baseUrl: http://localhost:8080/
   scheduler-sevice:
     baseUrl: http://localhost:8081/
+  resources-sevice:
+    baseUrl: http://localhost:8083/
