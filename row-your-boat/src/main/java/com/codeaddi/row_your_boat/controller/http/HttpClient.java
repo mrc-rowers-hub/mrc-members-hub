@@ -2,6 +2,7 @@ package com.codeaddi.row_your_boat.controller.http;
 
 import com.codeaddi.row_your_boat.model.http.StandardResponse;
 import com.codeaddi.row_your_boat.model.http.enums.Resource;
+import com.codeaddi.row_your_boat.model.http.enums.Service;
 import com.codeaddi.row_your_boat.model.http.enums.Status;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,25 +20,24 @@ import org.springframework.web.client.RestTemplate;
 @Component
 @Slf4j
 public class HttpClient {
-  //   Todo, when using other services, update to not just use scheduler service
 
   @Value("${services.scheduler-sevice.baseUrl}")
   protected String schedulerServiceBaseUrl;
+
+  @Value("${services.resources-sevice.baseUrl}")
+  protected String resourcesServiceBaseUrl;
 
   protected RestTemplate restTemplate = new RestTemplate();
   protected ObjectMapper objectMapper = new ObjectMapper();
   protected HttpHeaders headers = new HttpHeaders();
 
   protected String getUrl(String endpoint, Resource resource) {
-    return String.format(schedulerServiceBaseUrl + resource.getEndpoint() + endpoint);
+    return String.format(getBaseUrlFromResource(resource) + resource.getEndpoint() + endpoint);
   }
 
   protected HttpEntity<String> getRequestEntity(String requestJson) {
-
     headers.setContentType(MediaType.APPLICATION_JSON);
-
     HttpEntity<String> requestEntity = new HttpEntity<>(requestJson, headers);
-
     return requestEntity;
   }
 
@@ -89,6 +89,21 @@ public class HttpClient {
     } catch (Exception e) {
       log.error("Unexpected error: {}", e.getMessage());
       return List.of();
+    }
+  }
+
+  private String getBaseUrlFromResource(Resource resource) {
+    Service service = resource.getService();
+    switch (service) {
+      case SCHEDULER -> {
+        return schedulerServiceBaseUrl;
+      }
+      case RESOURCES -> {
+        return resourcesServiceBaseUrl;
+      }
+      default -> {
+        throw new IllegalArgumentException("No base URL found for service: " + service);
+      }
     }
   }
 }

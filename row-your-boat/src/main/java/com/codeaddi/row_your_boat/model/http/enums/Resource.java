@@ -4,13 +4,15 @@ import lombok.Getter;
 
 @Getter
 public enum Resource {
-  SESSION_AVAILABILITY("session_availability/"),
-  STANDARD_SESSIONS("standard_sessions/"),
-  ROWERS("rowers/");
+  SESSION_AVAILABILITY("session_availability/", Service.SCHEDULER),
+  STANDARD_SESSIONS("standard_sessions/", Service.SCHEDULER),
+  ROWERS("rowers/", Service.SCHEDULER);
 
   private String endpoint;
+  private Service service;
 
-  Resource(String s) {
-    this.endpoint = s;
+  Resource(String endpoint, Service service) {
+    this.endpoint = endpoint;
+    this.service = service;
   }
 }

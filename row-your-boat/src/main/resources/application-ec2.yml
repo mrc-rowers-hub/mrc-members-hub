@@ -3,3 +3,5 @@ services:
     baseUrl: http://13.43.87.233:8080/
   scheduler-sevice:
     baseUrl: http://13.43.87.233:8081/
+  resources-sevice:
+    baseUrl: http://13.43.87.233:8083/
