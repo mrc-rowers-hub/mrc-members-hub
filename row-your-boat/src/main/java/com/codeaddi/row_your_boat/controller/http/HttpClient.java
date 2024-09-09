@@ -33,19 +33,6 @@ public class HttpClient {
     protected ObjectMapper objectMapper = new ObjectMapper();
     protected HttpHeaders headers = new HttpHeaders();
 
-    private String getBaseUrlFromResource(Resource resource) {
-        Service service = resource.getService();
-        switch (service) {
-            case Service.SCHEDULER -> {
-                return schedulerServiceBaseUrl;
-            }
-            case Service.RESOURCES -> {
-                return resourcesServiceBaseUrl;
-            }
-        }
-        return null; // update this?
-    }
-
     protected String getUrl(String endpoint, Resource resource) {
         return String.format(getBaseUrlFromResource(resource) + resource.getEndpoint() + endpoint);
     }
@@ -87,6 +74,21 @@ public class HttpClient {
         } catch (Exception e) {
             log.error("Unexpected error: {}", e.getMessage());
             return List.of();
+        }
+    }
+
+    private String getBaseUrlFromResource(Resource resource) {
+        Service service = resource.getService();
+        switch (service) {
+            case SCHEDULER -> {
+                return schedulerServiceBaseUrl;
+            }
+            case RESOURCES -> {
+                return resourcesServiceBaseUrl;
+            }
+            default -> {
+                throw new IllegalArgumentException("No base URL found for service: " + service);
+            }
         }
     }
 }
