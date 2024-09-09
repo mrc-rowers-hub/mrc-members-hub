@@ -16,8 +16,6 @@ public class DateUtil {
   }
 
   public static Date getDateFromFormattedString(String formattedDate) {
-    log.info("formatted date {}", formattedDate);
-
     SimpleDateFormat inputFormat = new SimpleDateFormat(dateFormat);
     try {
       return inputFormat.parse(formattedDate);
