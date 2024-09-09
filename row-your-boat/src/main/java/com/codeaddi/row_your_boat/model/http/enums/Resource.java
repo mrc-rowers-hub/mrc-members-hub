@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum Resource {
   SESSION_AVAILABILITY("session_availability/", Service.SCHEDULER),
-  STANDARD_SESSIONS("standard_sessions/",Service.SCHEDULER),
+  STANDARD_SESSIONS("standard_sessions/", Service.SCHEDULER),
   ROWERS("rowers/", Service.SCHEDULER);
 
   private String endpoint;
