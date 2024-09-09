@@ -22,7 +22,6 @@ import org.springframework.web.client.RestTemplate;
 @Component
 @Slf4j
 public class HttpClient {
-    //   Todo, when using other services, update to not just use scheduler service
 
     @Value("${services.scheduler-sevice.baseUrl}")
     protected String schedulerServiceBaseUrl;
