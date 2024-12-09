@@ -30,4 +30,13 @@ public class AvailabilityController {
     model.addAttribute("availabilitySessions", sessionsWithAvailability);
     return "availability/my-availability";
   }
+
+  //  getAllUpcomingPastSessionAvailability
+  @GetMapping("/my-past-availability")
+  public String myPastAvailability(Model model) {
+//    List<Date> pastAvailabilityDates = viewService.getAllPastAvailableSessionsForRower(1L);
+//    model.addAttribute("pastAvailabilityDates", pastAvailabilityDates);
+    return "availability/my-past-availability";
+
+  }
 }
