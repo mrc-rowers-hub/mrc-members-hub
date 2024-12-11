@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+    <link rel="stylesheet" th:href="@{/sidebar.css}">
+</head>
+<body>
+<header>
+    <div class="header-container">
+        <div class="header-content">
+            <h1>MRC Rowing Services</h1>
+            <img src="/mrc_logo.png" alt="MRC Logo" width="100">
+        </div>
+    </div>
+</header>
+
+
+<!-- Include the sidebar using the updated syntax -->
+<div th:replace="~{sections/sidebar :: sidebarFragment}"></div>
+
+<main class="content" id="content">
+    <p>Welcome, <span th:text="${username}"></span>!</p>
+
+    <h2>Past Availability</h2>
+    <p>A record of your availability, for upcoming sessions.</p>
+    <ul>
+        <li th:each="date : ${pastAvailabilityDates}" th:text="${date}"></li>
+    </ul></main>
+
+
+
+<footer>
+    <p>Data provided by <strong>OpenWeatherMap</strong></p>
+    <p>Logic/weather rules, & website, provided by Mersey Rowing Club</p>
+</footer>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var sidebarToggle = document.getElementById("sidebarToggle");
+        var sidebar = document.getElementById("sidebar");
+        var content = document.getElementById("content");
+
+        if (sidebarToggle && sidebar && content) {
+            sidebarToggle.addEventListener("click", function() {
+                sidebar.classList.toggle("collapsed");
+                content.classList.toggle("collapsed");
+                this.classList.toggle("collapsed");
+            });
+        }
+
+        var boatsBladesToggle = document.getElementById('boatsBladesToggle');
+        var boatsBladesSubmenu = document.getElementById('boatsBladesSubmenu');
+
+        boatsBladesToggle.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent default link behavior
+            boatsBladesSubmenu.style.display = (boatsBladesSubmenu.style.display === 'block') ? 'none' : 'block';
+        });
+    });
+</script>
+</body>
+</html>

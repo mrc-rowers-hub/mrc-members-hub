@@ -11,9 +11,13 @@ import com.codeaddi.row_your_boat.controller.util.DateUtil;
 import com.codeaddi.row_your_boat.model.enums.Squad;
 import com.codeaddi.row_your_boat.model.http.UpcomingSessionAvailability;
 import com.codeaddi.row_your_boat.model.http.UpcomingSessionAvailabilityDTO;
+import com.codeaddi.row_your_boat.model.http.inbound.PastSession;
+import com.codeaddi.row_your_boat.model.http.inbound.PastSessionAvailability;
 import com.codeaddi.row_your_boat.model.http.inbound.RowingSession;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
 import java.util.*;
+import java.util.stream.Collectors;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,11 +69,9 @@ public class ViewService {
         rowersUpcomingAvailability.stream()
             .map(UpcomingSessionAvailability::getUpcomingSessionId)
             .toList();
-
     List<UpcomingSessionAvailabilityDTO> updatedSessionsForSquad =
         updateRowerAvailabilityForSquad(
             allUpcomingSessions.get(rowerSquad), rowersAvailableSessions);
-
     allUpcomingSessions.replace(rowerSquad, updatedSessionsForSquad);
     return allUpcomingSessions;
   }
@@ -86,6 +88,27 @@ public class ViewService {
         PastSessionsService.getRowersAvailableForSession(
             upcomingSessionId, availabilityClient.getAllUpcomingPastSessionAvailability());
     return RowerService.getNamesByIDs(availableRowerIds, rowerClient.getAllRowers());
+  }
+
+  public List<Date> getAllPastAvailableSessionsForRower(Long rowerId){
+    List<PastSessionAvailability> allPastSessionAvailabilities = availabilityClient.getAllUpcomingPastSessionAvailability();
+
+    List<PastSessionAvailability> filteredList = allPastSessionAvailabilities.stream()
+            .filter(availability -> availability.getRowerId().equals(rowerId))
+            .toList();
+
+    List<PastSession> pastSessions = availabilityClient.getAllUpcomingPastSessions();
+
+    List<Date> pastAvailability = new ArrayList<>(); // todo, this is being updated in MRC-80 with sufficient info
+
+    Map<Long, Date> sessionIdToDateMap = pastSessions.stream()
+            .collect(Collectors.toMap(PastSession::getUpcomingSessionId, PastSession::getDate));
+
+    return filteredList.stream()
+            .map(PastSessionAvailability::getUpcomingSessionId)
+            .map(sessionIdToDateMap::get)
+            .filter(Objects::nonNull)
+            .toList();
   }
 
   private List<RowingSession> sortSessionsByStartTime(List<RowingSession> sessions) {

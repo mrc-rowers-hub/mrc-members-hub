@@ -3,6 +3,8 @@ package com.codeaddi.row_your_boat.view.availability;
 import com.codeaddi.row_your_boat.controller.services.view.ViewService;
 import com.codeaddi.row_your_boat.model.enums.Squad;
 import com.codeaddi.row_your_boat.model.http.UpcomingSessionAvailabilityDTO;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
@@ -29,5 +31,13 @@ public class AvailabilityController {
 
     model.addAttribute("availabilitySessions", sessionsWithAvailability);
     return "availability/my-availability";
+  }
+
+  @GetMapping("/my-past-availability")
+  public String myPastAvailability(Model model) {
+    List<Date> pastAvailabilityDates = viewService.getAllPastAvailableSessionsForRower(1L);
+    model.addAttribute("pastAvailabilityDates", pastAvailabilityDates);
+    return "availability/my-past-availability";
+
   }
 }
