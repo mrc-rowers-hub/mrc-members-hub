@@ -16,6 +16,8 @@ import com.codeaddi.row_your_boat.model.http.inbound.PastSessionAvailability;
 import com.codeaddi.row_your_boat.model.http.inbound.RowingSession;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
 import java.util.*;
+import java.util.stream.Collectors;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -98,15 +100,15 @@ public class ViewService {
     List<PastSession> pastSessions = availabilityClient.getAllUpcomingPastSessions();
 
     List<Date> pastAvailability = new ArrayList<>(); // todo, this is being updated in MRC-80 with sufficient info
-    for(PastSessionAvailability pastSessionAvailability : filteredList){
 
-      for(PastSession pastSession : pastSessions){
-        if (pastSession.getUpcomingSessionId().equals(pastSessionAvailability.getUpcomingSessionId())){
-          pastAvailability.add(pastSession.getDate()); // todo for the above too
-        }
-      }
-    }
-    return pastAvailability;
+    Map<Long, Date> sessionIdToDateMap = pastSessions.stream()
+            .collect(Collectors.toMap(PastSession::getUpcomingSessionId, PastSession::getDate));
+
+    return filteredList.stream()
+            .map(PastSessionAvailability::getUpcomingSessionId)
+            .map(sessionIdToDateMap::get)
+            .filter(Objects::nonNull)
+            .toList();
   }
 
   private List<RowingSession> sortSessionsByStartTime(List<RowingSession> sessions) {
