@@ -89,7 +89,7 @@ public class ViewService {
   }
 
   public List<Date> getAllPastAvailableSessionsForRower(Long rowerId){
-    List<PastSessionAvailability> allPastSessionAvailabilities = availabilityClient.getAllUpcomingPastSessionAvailability();// filter for this rowerId, // this is fine
+    List<PastSessionAvailability> allPastSessionAvailabilities = availabilityClient.getAllUpcomingPastSessionAvailability();
 
     List<PastSessionAvailability> filteredList = allPastSessionAvailabilities.stream()
             .filter(availability -> availability.getRowerId().equals(rowerId))
