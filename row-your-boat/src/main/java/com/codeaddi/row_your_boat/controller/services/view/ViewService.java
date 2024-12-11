@@ -11,6 +11,8 @@ import com.codeaddi.row_your_boat.controller.util.DateUtil;
 import com.codeaddi.row_your_boat.model.enums.Squad;
 import com.codeaddi.row_your_boat.model.http.UpcomingSessionAvailability;
 import com.codeaddi.row_your_boat.model.http.UpcomingSessionAvailabilityDTO;
+import com.codeaddi.row_your_boat.model.http.inbound.PastSession;
+import com.codeaddi.row_your_boat.model.http.inbound.PastSessionAvailability;
 import com.codeaddi.row_your_boat.model.http.inbound.RowingSession;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
 import java.util.*;
@@ -65,11 +67,9 @@ public class ViewService {
         rowersUpcomingAvailability.stream()
             .map(UpcomingSessionAvailability::getUpcomingSessionId)
             .toList();
-
     List<UpcomingSessionAvailabilityDTO> updatedSessionsForSquad =
         updateRowerAvailabilityForSquad(
             allUpcomingSessions.get(rowerSquad), rowersAvailableSessions);
-
     allUpcomingSessions.replace(rowerSquad, updatedSessionsForSquad);
     return allUpcomingSessions;
   }
@@ -86,6 +86,27 @@ public class ViewService {
         PastSessionsService.getRowersAvailableForSession(
             upcomingSessionId, availabilityClient.getAllUpcomingPastSessionAvailability());
     return RowerService.getNamesByIDs(availableRowerIds, rowerClient.getAllRowers());
+  }
+
+  public List<Date> getAllPastAvailableSessionsForRower(Long rowerId){
+    List<PastSessionAvailability> allPastSessionAvailabilities = availabilityClient.getAllUpcomingPastSessionAvailability();// filter for this rowerId, // this is fine
+
+    List<PastSessionAvailability> filteredList = allPastSessionAvailabilities.stream()
+            .filter(availability -> availability.getRowerId().equals(rowerId))
+            .toList();
+
+    List<PastSession> pastSessions = availabilityClient.getAllUpcomingPastSessions();
+
+    List<Date> pastAvailability = new ArrayList<>(); // todo, this is being updated in MRC-80 with sufficient info
+    for(PastSessionAvailability pastSessionAvailability : filteredList){
+
+      for(PastSession pastSession : pastSessions){
+        if (pastSession.getUpcomingSessionId().equals(pastSessionAvailability.getUpcomingSessionId())){
+          pastAvailability.add(pastSession.getDate()); // todo for the above too
+        }
+      }
+    }
+    return pastAvailability;
   }
 
   private List<RowingSession> sortSessionsByStartTime(List<RowingSession> sessions) {

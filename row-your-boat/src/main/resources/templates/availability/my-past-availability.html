@@ -21,9 +21,9 @@
 
 <main class="content" id="content">
     <p>Welcome, <span th:text="${username}"></span>!</p>
-    <p>Welcome, <span th:text="${username}"></span>!</p>
 
     <h2>Past Availability</h2>
+    <p>A record of your availability, for upcoming sessions.</p>
     <ul>
         <li th:each="date : ${pastAvailabilityDates}" th:text="${date}"></li>
     </ul></main>

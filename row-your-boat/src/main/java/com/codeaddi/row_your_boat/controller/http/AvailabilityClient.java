@@ -33,7 +33,7 @@ public class AvailabilityClient extends HttpClient {
         "get_upcoming_past_sessions", new TypeReference<List<PastSession>>() {}, resource);
   }
 
-  public List<PastSessionAvailability> getAllUpcomingPastSessionAvailability() {
+  public List<PastSessionAvailability> getAllUpcomingPastSessionAvailability() { // todo, is this actually all upcoming?
     return getForResourceAndParse(
         "get_rowers_availability", new TypeReference<List<PastSessionAvailability>>() {}, resource);
   }
