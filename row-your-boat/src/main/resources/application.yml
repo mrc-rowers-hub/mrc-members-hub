@@ -4,8 +4,8 @@ server:
 
 services:
   weather:
-    baseUrl: http://localhost:8080/
-  scheduler-sevice:
-    baseUrl: http://localhost:8081/
-  resources-sevice:
-    baseUrl: http://localhost:8083/
+    baseUrl: ${WEATHER_SERVICE_URL:-http://localhost:8080/}
+  scheduler-sevice: # update this spelling
+    baseUrl: ${SCHEDULER_SERVICE_URL:-http://localhost:8081/}
+  resources-sevice: # update this spelling
+    baseUrl: ${RESOURCES_SERVICE_URL:-http://localhost:8083/}
