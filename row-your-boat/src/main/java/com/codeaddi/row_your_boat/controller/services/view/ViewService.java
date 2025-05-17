@@ -1,6 +1,7 @@
 package com.codeaddi.row_your_boat.controller.services.view;
 
 import com.codeaddi.row_your_boat.controller.http.AvailabilityClient;
+import com.codeaddi.row_your_boat.controller.http.ResourceClient;
 import com.codeaddi.row_your_boat.controller.http.RowerClient;
 import com.codeaddi.row_your_boat.controller.http.SchedulerClient;
 import com.codeaddi.row_your_boat.controller.services.AvailabilityService;
@@ -11,9 +12,7 @@ import com.codeaddi.row_your_boat.controller.util.DateUtil;
 import com.codeaddi.row_your_boat.model.enums.Squad;
 import com.codeaddi.row_your_boat.model.http.UpcomingSessionAvailability;
 import com.codeaddi.row_your_boat.model.http.UpcomingSessionAvailabilityDTO;
-import com.codeaddi.row_your_boat.model.http.inbound.PastSession;
-import com.codeaddi.row_your_boat.model.http.inbound.PastSessionAvailability;
-import com.codeaddi.row_your_boat.model.http.inbound.RowingSession;
+import com.codeaddi.row_your_boat.model.http.inbound.*;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,10 +24,11 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class ViewService {
-
+// Todo - refactor this! Too much in one place
   @Autowired private SchedulerClient schedulerClient;
   @Autowired private AvailabilityClient availabilityClient;
   @Autowired private RowerClient rowerClient;
+  @Autowired private ResourceClient resourceClient;
 
   public List<RowingSession> getAllSessions() {
     List<RowingSession> sessionsToReturn = schedulerClient.getAllSessions();
@@ -109,6 +109,14 @@ public class ViewService {
             .map(sessionIdToDateMap::get)
             .filter(Objects::nonNull)
             .toList();
+  }
+
+  public List<Boat> getAllBoats(){
+    return resourceClient.getAllBoats();
+  }
+
+  public List<Blade> getAllBlades() {
+    return resourceClient.getAllBlades();
   }
 
   private List<RowingSession> sortSessionsByStartTime(List<RowingSession> sessions) {

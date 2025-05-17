@@ -20,8 +20,34 @@
 <div th:replace="~{sections/sidebar :: sidebarFragment}"></div>
 
 <main class="content" id="content">
-    <h2> Boats </h2>
+    <h2>Boats</h2>
+
+    <table border="1">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Avg Crew Weight</th>
+            <th>Boat Type</th>
+            <th>Minimum Rower Level</th>
+            <th>Status</th>
+            <th>Best Blades ID</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="boat : ${boats}">
+            <td th:text="${boat.id}"></td>
+            <td th:text="${boat.name}"></td>
+            <td th:text="${boat.avgCrewWeight}"></td>
+            <td th:text="${boat.boatType}"></td>
+            <td th:text="${boat.minimumRowerLevel}"></td>
+            <td th:text="${boat.status}"></td>
+            <td th:text="${boat.bestBladesId}"></td>
+        </tr>
+        </tbody>
+    </table>
 </main>
+
 
 
 
