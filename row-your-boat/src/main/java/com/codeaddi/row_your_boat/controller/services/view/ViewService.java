@@ -27,7 +27,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class ViewService {
-
+// Todo - refactor this! Too much in one place
   @Autowired private SchedulerClient schedulerClient;
   @Autowired private AvailabilityClient availabilityClient;
   @Autowired private RowerClient rowerClient;
