@@ -8,4 +8,5 @@ services:
   scheduler-sevice: # update this spelling
     baseUrl: ${SCHEDULER_SERVICE_URL:-http://localhost:8081/}
   resources-sevice: # update this spelling
-    baseUrl: ${RESOURCES_SERVICE_URL:-http://localhost:8083/}
+    baseUrl: ${RESOURCES_SERVICE_URL:http://localhost:8083/}
+#    TODO - do all need updating here? I had to remove - from resources, but others seem to work okay?
