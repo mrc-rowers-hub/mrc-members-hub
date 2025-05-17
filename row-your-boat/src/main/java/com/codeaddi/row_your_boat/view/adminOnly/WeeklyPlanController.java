@@ -2,6 +2,9 @@ package com.codeaddi.row_your_boat.view.adminOnly;
 
 import com.codeaddi.row_your_boat.controller.services.view.ViewService;
 import java.util.List;
+
+import com.codeaddi.row_your_boat.model.http.enums.resources.EquipmentType;
+import com.codeaddi.row_your_boat.model.http.inbound.ResourceInUse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +22,10 @@ public class WeeklyPlanController {
   @GetMapping("/make-weekly-plan")
   public String makeNewSessions(Model model) {
     List<String> sessionDates = viewService.getAllPastSessionsDates();
+    List<ResourceInUse> boatsAvailableAtTime = viewService.getResourcesAvailable(EquipmentType.BOAT);
+    List<ResourceInUse> bladesAvailableAtTime = viewService.getResourcesAvailable(EquipmentType.BLADE);
+
+    // a note saying 'think a resource should be a vailable? Check the status of all in PAGE TO BE DONE'
 
     model.addAttribute("list", sessionDates);
     return "adminOnly/make-new-sessions";

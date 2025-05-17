@@ -12,6 +12,7 @@ import com.codeaddi.row_your_boat.controller.util.DateUtil;
 import com.codeaddi.row_your_boat.model.enums.Squad;
 import com.codeaddi.row_your_boat.model.http.UpcomingSessionAvailability;
 import com.codeaddi.row_your_boat.model.http.UpcomingSessionAvailabilityDTO;
+import com.codeaddi.row_your_boat.model.http.enums.resources.EquipmentType;
 import com.codeaddi.row_your_boat.model.http.inbound.*;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
 import java.util.*;
@@ -161,5 +162,9 @@ public class ViewService {
   private Long getSessionIdByDate(Date date) {
     return AvailabilityService.getSessionIdByDate(
         date, availabilityClient.getAllUpcomingPastSessions());
+  }
+
+  public List<ResourceInUse> getResourcesAvailable(EquipmentType equipmentType) {
+    return null;
   }
 }
