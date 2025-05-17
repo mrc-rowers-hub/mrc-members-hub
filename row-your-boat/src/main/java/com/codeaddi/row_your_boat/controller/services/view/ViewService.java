@@ -137,12 +137,16 @@ public class ViewService {
       List<UpcomingSessionAvailabilityDTO> squadSessions, List<Long> availableSessionIds) {
 
     List<UpcomingSessionAvailabilityDTO> updatedSessions = new ArrayList<>();
-    for (UpcomingSessionAvailabilityDTO session : squadSessions) {
-      if (availableSessionIds.contains(session.getUpcomingSessionId())) {
-        session.setRowerIsAvailable(true);
+
+    if (squadSessions != null) {
+      for (UpcomingSessionAvailabilityDTO session : squadSessions) {
+        if (availableSessionIds.contains(session.getUpcomingSessionId())) {
+          session.setRowerIsAvailable(true);
+        }
+        updatedSessions.add(session);
       }
-      updatedSessions.add(session);
     }
+
     return updatedSessions;
   }
 
