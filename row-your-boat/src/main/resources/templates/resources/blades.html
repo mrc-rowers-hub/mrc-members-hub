@@ -15,14 +15,33 @@
     </div>
 </header>
 
+<main class="content" id="content">
+    <h2>Blades</h2>
+
+    <table border="1">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Amount</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="blade : ${blades}">
+            <td th:text="${blade.id}"></td>
+            <td th:text="${blade.name}"></td>
+            <td th:text="${blade.amount}"></td>
+            <td th:text="${blade.status}"></td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+
 
 <!-- Include the sidebar using the updated syntax -->
 <div th:replace="~{sections/sidebar :: sidebarFragment}"></div>
-
-<main class="content" id="content">
-    <h2> Blades </h2>
-</main>
-
 
 
 <footer>

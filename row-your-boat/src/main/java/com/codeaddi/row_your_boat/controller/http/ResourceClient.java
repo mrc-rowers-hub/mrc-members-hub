@@ -1,6 +1,7 @@
 package com.codeaddi.row_your_boat.controller.http;
 
 import com.codeaddi.row_your_boat.model.http.enums.Resource;
+import com.codeaddi.row_your_boat.model.http.inbound.Blade;
 import com.codeaddi.row_your_boat.model.http.inbound.Boat;
 import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.extern.slf4j.Slf4j;
@@ -20,5 +21,12 @@ public class ResourceClient extends HttpClient {
                 "get_all",
                 new TypeReference<List<Boat>>() {},
                 boatResource);
+    }
+
+    public List<Blade> getAllBlades() {
+        return getForResourceAndParse(
+                "get_all",
+                new TypeReference<List<Blade>>() {},
+                bladeResource);
     }
 }

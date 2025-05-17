@@ -1,6 +1,7 @@
 package com.codeaddi.row_your_boat.view.resources;
 
 import com.codeaddi.row_your_boat.controller.services.view.ViewService;
+import com.codeaddi.row_your_boat.model.http.inbound.Blade;
 import com.codeaddi.row_your_boat.model.http.inbound.Boat;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,9 @@ public class ResourcesController {
   }
 
   @GetMapping("/blades")
-  public String blades() {
+  public String blades(Model model) {
+    List<Blade> blades = viewService.getAllBlades();
+    model.addAttribute("blades", blades);
     return "resources/blades";
   }
 }
