@@ -12,6 +12,8 @@ import com.codeaddi.row_your_boat.controller.util.DateUtil;
 import com.codeaddi.row_your_boat.model.enums.Squad;
 import com.codeaddi.row_your_boat.model.http.UpcomingSessionAvailability;
 import com.codeaddi.row_your_boat.model.http.UpcomingSessionAvailabilityDTO;
+import com.codeaddi.row_your_boat.model.http.enums.resources.EquipmentStatus;
+import com.codeaddi.row_your_boat.model.http.enums.resources.EquipmentType;
 import com.codeaddi.row_your_boat.model.http.inbound.*;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
 import java.util.*;
@@ -119,6 +121,30 @@ public class ViewService {
     return resourceClient.getAllBlades();
   }
 
+  public List<Boat> getAllBoatsAvailableAtTime(String from, String to, String date){
+    // todo - format the dates and times
+    List<ResourceUseDTO<Boat>> allBoatAvailability = resourceClient.getBoatsAvailableAtDateTime("01/01/2024", "1800", "2000");
+    List<ResourceUseDTO<Boat>> allBoatsAvailable = allBoatAvailability.stream().filter(resource -> resource.getInUseOnDate().isEmpty()).toList();
+    List<ResourceUseDTO<Boat>> allBoatsAvailableAndWorking = allBoatsAvailable.stream().filter(resource -> resource.getResource().getStatus().equals(EquipmentStatus.WORKING)).toList();
+    List<Boat> workingAndFreeBoats = new ArrayList<>();
+    for(ResourceUseDTO<Boat> resourceUseDTO : allBoatsAvailableAndWorking){
+      workingAndFreeBoats.add(resourceUseDTO.getResource());
+    }
+    return workingAndFreeBoats;
+  }
+
+  public List<Blade> getAllBladesAvailableAtTime(String from, String to, String date){
+    // todo - format the dates and times
+    List<ResourceUseDTO<Blade>> allBoatAvailability = resourceClient.getBladesAvailableAtDateTime("01/01/2024", "1800", "2000");
+    List<ResourceUseDTO<Blade>> allBoatsAvailable = allBoatAvailability.stream().filter(resource -> resource.getInUseOnDate().isEmpty()).toList();
+    List<ResourceUseDTO<Blade>> allBoatsAvailableAndWorking = allBoatsAvailable.stream().filter(resource -> resource.getResource().getStatus().equals(EquipmentStatus.WORKING)).toList();
+    List<Blade> workingAndFreeBoats = new ArrayList<>();
+    for(ResourceUseDTO<Blade> resourceUseDTO : allBoatsAvailableAndWorking){
+      workingAndFreeBoats.add(resourceUseDTO.getResource());
+    }
+    return workingAndFreeBoats;
+  }
+
   private List<RowingSession> sortSessionsByStartTime(List<RowingSession> sessions) {
     sessions.sort(Comparator.comparing(RowingSession::getStartTime));
     return sessions;
@@ -161,5 +187,9 @@ public class ViewService {
   private Long getSessionIdByDate(Date date) {
     return AvailabilityService.getSessionIdByDate(
         date, availabilityClient.getAllUpcomingPastSessions());
+  }
+
+  public List<ResourceInUse> getResourcesAvailable(EquipmentType equipmentType) {
+    return null;
   }
 }

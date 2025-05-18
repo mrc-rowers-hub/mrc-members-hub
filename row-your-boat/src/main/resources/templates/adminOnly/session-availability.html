@@ -21,6 +21,10 @@
 
 <main class="content" id="content">
     <h2>Session Availability</h2>
+    <div class="session-info">
+        <p><strong>Date:</strong> <span th:text="${sessionDate}"></span></p>
+        <p><strong>Time:</strong> <span th:text="${sessionStartTime}"></span> to <span th:text="${sessionEndTime}"></span></p>
+    </div>
 
     <table th:if="${availabilities != null}">
         <thead>
@@ -34,6 +38,18 @@
         </tr>
         </tbody>
     </table>
+
+
+    <h3>Boats Available</h3>
+    <ul th:if="${boatsAvailable != null}" th:each="boat : ${boatsAvailable}">
+        <li th:text="${boat.name}"></li>
+    </ul>
+
+    <h3>Blades Available</h3>
+    <ul th:if="${bladesAvailable != null}" th:each="blade : ${bladesAvailable}">
+        <li th:text="${blade.name}"></li>
+    </ul>
+
 
     <div class="form-container">
         <button class="submit-button" onclick="window.location.href='/make-weekly-plan'">Back to Make Weekly Plans</button>
