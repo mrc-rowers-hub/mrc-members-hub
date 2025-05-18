@@ -39,4 +39,12 @@ public class ResourceClient extends HttpClient {
                 new TypeReference<List<ResourceUseDTO<Boat>>>() {},
                 boatResource);
     }
-}
+
+    public List<ResourceUseDTO<Blade>> getBladesAvailableAtDateTime(String date, String startMilitaryTime, String endMilitaryTime){
+        String endpoint = "available?date=" + date + "&from=" + startMilitaryTime + "&to=" + endMilitaryTime;
+
+        return getForResourceAndParse(
+                endpoint,
+                new TypeReference<List<ResourceUseDTO<Blade>>>() {},
+                bladeResource);
+    }}

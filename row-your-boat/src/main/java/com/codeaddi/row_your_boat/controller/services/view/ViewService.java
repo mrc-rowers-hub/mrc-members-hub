@@ -133,6 +133,18 @@ public class ViewService {
     return workingAndFreeBoats;
   }
 
+  public List<Blade> getAllBladesAvailableAtTime(String from, String to, String date){
+    // todo - format the dates and times
+    List<ResourceUseDTO<Blade>> allBoatAvailability = resourceClient.getBladesAvailableAtDateTime("01/01/2024", "1800", "2000");
+    List<ResourceUseDTO<Blade>> allBoatsAvailable = allBoatAvailability.stream().filter(resource -> resource.getInUseOnDate().isEmpty()).toList();
+    List<ResourceUseDTO<Blade>> allBoatsAvailableAndWorking = allBoatsAvailable.stream().filter(resource -> resource.getResource().getStatus().equals(EquipmentStatus.WORKING)).toList();
+    List<Blade> workingAndFreeBoats = new ArrayList<>();
+    for(ResourceUseDTO<Blade> resourceUseDTO : allBoatsAvailableAndWorking){
+      workingAndFreeBoats.add(resourceUseDTO.getResource());
+    }
+    return workingAndFreeBoats;
+  }
+
   private List<RowingSession> sortSessionsByStartTime(List<RowingSession> sessions) {
     sessions.sort(Comparator.comparing(RowingSession::getStartTime));
     return sessions;
