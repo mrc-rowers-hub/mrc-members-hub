@@ -15,79 +15,73 @@
     </div>
 </header>
 
-
-<!-- Include the sidebar using the updated syntax -->
+<!-- Include the sidebar -->
 <div th:replace="~{sections/sidebar :: sidebarFragment}"></div>
 
 <main class="content" id="content">
     <h2>Session Availability</h2>
-    <div class="session-info">
-        <p><strong>Date:</strong> <span th:text="${sessionDate}"></span></p>
-        <p><strong>Time:</strong> <span th:text="${sessionStartTime}"></span> to <span th:text="${sessionEndTime}"></span></p>
-    </div>
 
-    <table th:if="${availabilities != null}">
-        <thead>
-        <tr>
-            <th>Rowers Available</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="rower : ${availabilities}">
-            <td th:text="${rower}"></td>
-        </tr>
-        </tbody>
-    </table>
+    <div style="display: flex; align-items: flex-start; gap: 3rem; margin-bottom: 2rem;">
 
+        <!-- Left: Session info + Rowers -->
+        <div style="min-width: 250px;">
+            <h2>Session Availability</h2>
+            <div class="session-info" style="margin-bottom: 1rem;">
+                <p><strong>Date:</strong> <span th:text="${sessionDate}"></span></p>
+                <p><strong>Time:</strong> <span th:text="${sessionStartTime}"></span> to <span th:text="${sessionEndTime}"></span></p>
+            </div>
 
-    <h3>Boats Available</h3>
-<!--     todo the above h3 and the blades one should look the same as the date, time and rowers available -->
-    <div class="boats-container" style="display: flex; align-items: flex-start; gap: 2rem;">
-        <!-- Left column: vertical list of boats -->
+            <table th:if="${availabilities != null}">
+                <thead>
+                <tr>
+                    <th>Rowers Available</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="rower : ${availabilities}">
+                    <td th:text="${rower}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Right: Boats Available -->
         <div style="flex: 1;">
-            <ul id="boatList" style="list-style: none; padding-left: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 0.5rem;"
-                th:if="${boatsAvailable != null}"
-                th:each="boat, iter : ${boatsAvailable}">
-                <li th:id="'boat-' + ${iter.index}"
-                    th:data-name="${boat.name}"
-                    th:data-type="${boat.boatType}"
-                    th:data-capacity="${boat.capacity}"
+            <h3>Boats Available</h3>
+            <ul id="boatList" th:if="${boatsAvailable != null}"
+                style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.75rem;">
+                <li th:each="boat : ${boatsAvailable}"
+                    th:attr="data-name=${boat.name}, data-type=${boat.boatType}, data-capacity=${boat.capacity}"
                     onclick="selectBoat(this)"
-                    style="cursor: pointer; padding: 0.5rem 1rem; border: 1px solid #ccc; border-radius: 4px; width: fit-content; max-width: 100%;">
+                    style="border: 1px solid #ccc; padding: 0.5rem 1rem; border-radius: 4px; background: #f9f9f9;
+                           cursor: pointer; flex: 1 1 120px; max-width: 150px; text-align: center;
+                           box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
                     <span th:text="${boat.name}"></span>
                 </li>
             </ul>
         </div>
 
-        <div id="selectedBoatContainer" style="flex: 2; border-left: 1px solid #ddd; padding-left: 1rem;">
-            <strong>Selected Boat:</strong>
-            <p id="selectedBoatName" style="font-weight: bold;"></p>
-            <p id="selectedBoatType" style="color: #666;"></p>
-            <p id="selectedBoatCapacity" style="color: #666;"></p>
-
-            <div id="boatDiagram" style="margin-top: 1rem;"></div>
-
-
-        </div>
-
-
     </div>
 
+    <div id="selectedBoatContainer" style="flex: 2; border-left: 1px solid #ddd; padding-left: 1rem;">
+        <strong>Selected Boat:</strong>
+        <p id="selectedBoatName" style="font-weight: bold;"></p>
+        <p id="selectedBoatType" style="color: #666;"></p>
+        <p id="selectedBoatCapacity" style="color: #666;"></p>
 
+        <div id="boatDiagram" style="margin-top: 1rem;"></div>
+    </div>
 
     <h3>Blades Available</h3>
     <ul th:if="${bladesAvailable != null}" th:each="blade : ${bladesAvailable}">
         <li th:text="${blade.name}"></li>
     </ul>
 
-
     <div class="form-container">
         <button class="submit-button" onclick="window.location.href='/make-weekly-plan'">Back to Make Weekly Plans</button>
     </div>
 
 </main>
-
-
 
 <footer>
     <p>Data provided by <strong>OpenWeatherMap</strong></p>
@@ -202,7 +196,6 @@
             boatShell.appendChild(seat);
         }
 
-
         // Compose wrapper: bow label + boat shell + stroke label
         wrapper.appendChild(bowLabel);
         wrapper.appendChild(boatShell);
@@ -210,7 +203,6 @@
 
         container.appendChild(wrapper);
     }
-
 </script>
 </body>
 </html>
