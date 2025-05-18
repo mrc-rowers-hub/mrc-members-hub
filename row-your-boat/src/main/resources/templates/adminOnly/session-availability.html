@@ -62,14 +62,18 @@
         </div>
 
     </div>
+    <hr>
 
-    <div id="selectedBoatContainer" style="flex: 2; border-left: 1px solid #ddd; padding-left: 1rem; padding-right: 2rem;">
-        <strong>Selected Boat:</strong>
-        <p id="selectedBoatName" style="font-weight: bold;"></p>
-        <p id="selectedBoatType" style="color: #666;"></p>
-        <p id="selectedBoatCapacity" style="color: #666;"></p>
+    <div id="selectedBoatContainer" style="display: flex; gap: 2rem; flex-wrap: nowrap; align-items: flex-start; border-left: 1px solid #ddd; padding-left: 1rem; padding-right: 2rem;">
+        <div id="boatInfo" style="min-width: 180px; max-width: 250px;">
+            <strong>Selected Boat:</strong>
+            <p id="selectedBoatName" style="font-weight: bold; margin-top: 0.25rem;"></p>
+            <p id="selectedBoatType" style="color: #666; margin: 0.25rem 0;"></p>
+            <p id="selectedBoatCapacity" style="color: #666; margin: 0.25rem 0;"></p>
+        </div>
 
-        <div id="boatDiagram" style="margin-top: 1rem; display: flex; justify-content: flex-end;"></div>
+        <div id="boatDiagram" style="margin-top: 0; flex-grow: 1; display: flex; justify-content: flex-end;"></div>
+
     </div>
 
     <h3>Blades Available</h3>
