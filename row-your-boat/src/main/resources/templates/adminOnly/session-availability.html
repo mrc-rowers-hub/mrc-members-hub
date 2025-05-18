@@ -46,6 +46,60 @@
             user-select: none;
             cursor: pointer;
         }
+
+        /* Boats list styling */
+        #boatList li {
+            border: 1px solid #ccc;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            background: #f9f9f9;
+            cursor: pointer;
+            flex: 1 1 120px;
+            max-width: 150px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            user-select: none;
+            transition: background-color 0.2s, font-weight 0.2s;
+        }
+        #boatList li.selected {
+            font-weight: bold;
+            background-color: #eef;
+        }
+
+        /* Container for selected boats diagrams */
+        #selectedBoatsContainer {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+            border-left: 1px solid #ddd;
+            padding-left: 1rem;
+            padding-right: 2rem;
+        }
+
+        .selected-boat {
+            min-width: 200px;
+            max-width: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .boatDiagramWrapper {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .boat-name {
+            font-weight: bold;
+            margin-top: 0.25rem;
+        }
+
+        .boat-type {
+            color: #666;
+        }
     </style>
 </head>
 <body>
@@ -78,7 +132,6 @@
             <div id="rowersContainer" th:if="${availabilities != null}">
                 <div class="rower-box" draggable="true" th:each="rower : ${availabilities}" th:text="${rower}"></div>
             </div>
-
         </div>
 
         <!-- Right: Boats Available -->
@@ -88,10 +141,7 @@
                 style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.75rem;">
                 <li th:each="boat : ${boatsAvailable}"
                     th:attr="data-name=${boat.name}, data-type=${boat.boatType}, data-capacity=${boat.capacity}"
-                    onclick="selectBoat(this)"
-                    style="border: 1px solid #ccc; padding: 0.5rem 1rem; border-radius: 4px; background: #f9f9f9;
-                           cursor: pointer; flex: 1 1 120px; max-width: 150px; text-align: center;
-                           box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                    onclick="toggleBoatSelection(this)">
                     <span th:text="${boat.name}"></span>
                 </li>
             </ul>
@@ -100,16 +150,9 @@
     </div>
     <hr>
 
-    <div id="selectedBoatContainer" style="display: flex; gap: 2rem; flex-wrap: nowrap; align-items: flex-start; border-left: 1px solid #ddd; padding-left: 1rem; padding-right: 2rem;">
-        <div id="boatInfo" style="min-width: 180px; max-width: 250px;">
-            <strong>Selected Boat:</strong>
-            <p id="selectedBoatName" style="font-weight: bold; margin-top: 0.25rem;"></p>
-            <p id="selectedBoatType" style="color: #666; margin: 0.25rem 0;"></p>
-            <p id="selectedBoatCapacity" style="color: #666; margin: 0.25rem 0;"></p>
-        </div>
-
-        <div id="boatDiagram" style="margin-top: 0; flex-grow: 1; display: flex; justify-content: flex-end;"></div>
-
+    <h3>Selected Boats</h3>
+    <div id="selectedBoatsContainer">
+        <!-- Selected boats with diagrams will be inserted here -->
     </div>
 
     <h3>Blades Available</h3>
@@ -151,49 +194,49 @@
         });
 
         // Drag and drop handlers for rower boxes and boat drop boxes
-        const rowers = document.querySelectorAll('.rower-box');
-        rowers.forEach(rower => {
-            rower.addEventListener('dragstart', (e) => {
-                if (rower.classList.contains('assigned')) {
+        const rowersContainer = document.getElementById('rowersContainer');
+
+        rowersContainer.addEventListener('dragstart', (e) => {
+            if (e.target.classList.contains('rower-box')) {
+                if (e.target.classList.contains('assigned')) {
                     e.preventDefault(); // Don't allow dragging if assigned
                     return;
                 }
-                e.dataTransfer.setData('text/plain', rower.textContent);
-            });
+                e.dataTransfer.setData('text/plain', e.target.textContent);
+            }
         });
 
-        const boatDiagram = document.getElementById('boatDiagram');
+        // Handle drop & dragover events on selected boats container (delegated)
+        const selectedBoatsContainer = document.getElementById('selectedBoatsContainer');
 
-        boatDiagram.addEventListener('dragover', (e) => {
+        selectedBoatsContainer.addEventListener('dragover', (e) => {
             if (e.target.classList.contains('drop-box')) {
                 e.preventDefault(); // Allow drop
                 e.target.style.backgroundColor = '#def'; // Highlight drop box
             }
         });
 
-        boatDiagram.addEventListener('dragleave', (e) => {
+        selectedBoatsContainer.addEventListener('dragleave', (e) => {
             if (e.target.classList.contains('drop-box')) {
                 e.target.style.backgroundColor = '#fff'; // Remove highlight
             }
         });
 
-        boatDiagram.addEventListener('drop', (e) => {
+        selectedBoatsContainer.addEventListener('drop', (e) => {
             e.preventDefault();
             if (e.target.classList.contains('drop-box')) {
-                // Only allow drop if drop-box is empty or contains placeholder text
                 if (e.target.textContent !== '' && e.target.textContent !== 'Drop rower') {
-                    // Already assigned, ignore the drop
+                    // Already assigned, ignore
                     return;
                 }
 
                 const rowerName = e.dataTransfer.getData('text/plain');
 
-                // Prevent assigning the same rower twice:
+                // Prevent assigning same rower twice globally:
                 const assignedRower = Array.from(document.querySelectorAll('.rower-box.assigned')).find(
                     box => box.textContent === rowerName
                 );
                 if (assignedRower) {
-                    // Already assigned elsewhere, ignore the drop
                     return;
                 }
 
@@ -213,7 +256,7 @@
         });
 
         // Allow unassigning rowers by clicking on assigned drop boxes
-        boatDiagram.addEventListener('click', (e) => {
+        selectedBoatsContainer.addEventListener('click', (e) => {
             if (e.target.classList.contains('drop-box') && e.target.textContent !== 'Drop rower') {
                 const rowerName = e.target.textContent;
 
@@ -234,60 +277,67 @@
 
     });
 
-    function selectBoat(element) {
-        // Reset styling
-        document.querySelectorAll('#boatList li').forEach(li => {
-            li.style.fontWeight = 'normal';
-            li.style.backgroundColor = 'white';
-        });
+    // Track selected boats
+    const selectedBoats = new Map();
 
-        // Highlight selected boat
-        element.style.fontWeight = 'bold';
-        element.style.backgroundColor = '#eef';
-
-        // Extract info
+    function toggleBoatSelection(element) {
         const boatName = element.getAttribute('data-name');
         const boatType = element.getAttribute('data-type');
-        const boatCapacity = element.getAttribute('data-capacity');
+        const boatCapacity = parseInt(element.getAttribute('data-capacity'));
 
-        // Populate display
-        document.getElementById('selectedBoatName').innerText = boatName;
-        document.getElementById('selectedBoatType').innerText = `Type: ${boatType}`;
-        document.getElementById('selectedBoatCapacity').innerText = `Capacity: ${boatCapacity}`;
-
-        renderBoatDiagram(parseInt(boatCapacity));
+        if (selectedBoats.has(boatName)) {
+            // Deselect boat
+            selectedBoats.delete(boatName);
+            element.classList.remove('selected');
+            removeBoatDiagram(boatName);
+        } else {
+            // Select boat
+            selectedBoats.set(boatName, { type: boatType, capacity: boatCapacity });
+            element.classList.add('selected');
+            addBoatDiagram(boatName, boatType, boatCapacity);
+        }
     }
 
-    function renderBoatDiagram(capacity) {
-        const container = document.getElementById('boatDiagram');
-        container.innerHTML = ''; // Clear previous diagram
+    function addBoatDiagram(name, type, capacity) {
+        const container = document.getElementById('selectedBoatsContainer');
 
-        // Main horizontal wrapper: Drop boxes (left) + Boat (right)
-        const mainWrapper = document.createElement('div');
-        mainWrapper.style.display = 'flex';
-        mainWrapper.style.alignItems = 'center';
-        mainWrapper.style.gap = '1rem';
+        // Create container div for this boat
+        const boatDiv = document.createElement('div');
+        boatDiv.className = 'selected-boat';
+        boatDiv.id = `boat-${name.replace(/\s+/g, '_')}`;
 
-        // DROP BOXES: Left column
+        // Boat name
+        const nameDiv = document.createElement('div');
+        nameDiv.className = 'boat-name';
+        nameDiv.innerText = name;
+
+        // Boat type
+        const typeDiv = document.createElement('div');
+        typeDiv.className = 'boat-type';
+        typeDiv.innerText = type;
+
+        // Boat diagram wrapper (drop boxes + boat shell)
+        const diagramWrapper = document.createElement('div');
+        diagramWrapper.className = 'boatDiagramWrapper';
+
+        // Drop box column
         const dropBoxColumn = document.createElement('div');
         dropBoxColumn.style.display = 'flex';
         dropBoxColumn.style.flexDirection = 'column';
         dropBoxColumn.style.gap = '0.5rem';
 
-        // BOAT COLUMN: includes Bow label + boatShell + Stroke label
+        // Boat column (bow label + seats + stroke label)
         const boatColumn = document.createElement('div');
         boatColumn.style.display = 'flex';
         boatColumn.style.flexDirection = 'column';
         boatColumn.style.alignItems = 'center';
         boatColumn.style.gap = '0.5rem';
 
-        // Bow label
         const bowLabel = document.createElement('div');
         bowLabel.innerText = 'Bow';
         bowLabel.style.fontWeight = 'bold';
         bowLabel.style.color = '#444';
 
-        // Boat shell with vertical seats
         const boatShell = document.createElement('div');
         boatShell.style.display = 'flex';
         boatShell.style.flexDirection = 'column';
@@ -298,21 +348,23 @@
         boatShell.style.background = '#f4f4f4';
         boatShell.style.alignItems = 'center';
 
-        // Stroke label
         const strokeLabel = document.createElement('div');
         strokeLabel.innerText = 'Stroke';
         strokeLabel.style.fontWeight = 'bold';
         strokeLabel.style.color = '#444';
 
         for (let i = 0; i < capacity; i++) {
-            // Create drop box
+            // Create drop box with unique ID for reference (boat name + seat)
             const dropBox = document.createElement('div');
             dropBox.className = 'drop-box';
             dropBox.setAttribute('data-seat', i + 1);
+            dropBox.setAttribute('data-boat', name);
             dropBox.innerText = 'Drop rower';
+            dropBox.style.minWidth = '150px';
+            dropBox.style.userSelect = 'none';
             dropBoxColumn.appendChild(dropBox);
 
-            // Create seat
+            // Create seat visual (just for show)
             const seat = document.createElement('div');
             seat.className = 'boat-seat';
             seat.style.width = '30px';
@@ -331,9 +383,37 @@
         boatColumn.appendChild(boatShell);
         boatColumn.appendChild(strokeLabel);
 
-        mainWrapper.appendChild(dropBoxColumn);
-        mainWrapper.appendChild(boatColumn);
-        container.appendChild(mainWrapper);
+        diagramWrapper.appendChild(dropBoxColumn);
+        diagramWrapper.appendChild(boatColumn);
+
+        boatDiv.appendChild(nameDiv);
+        boatDiv.appendChild(typeDiv);
+        boatDiv.appendChild(diagramWrapper);
+
+        container.appendChild(boatDiv);
+    }
+
+    function removeBoatDiagram(name) {
+        const id = `boat-${name.replace(/\s+/g, '_')}`;
+        const boatDiv = document.getElementById(id);
+        if (boatDiv) {
+            // Unassign any rowers assigned to this boat's drop boxes
+            const dropBoxes = boatDiv.querySelectorAll('.drop-box');
+            dropBoxes.forEach(dropBox => {
+                if (dropBox.textContent !== '' && dropBox.textContent !== 'Drop rower') {
+                    // Re-enable dragging on assigned rower
+                    const rowerName = dropBox.textContent;
+                    const rowerBox = Array.from(document.querySelectorAll('.rower-box.assigned')).find(
+                        box => box.textContent === rowerName
+                    );
+                    if (rowerBox) {
+                        rowerBox.classList.remove('assigned');
+                        rowerBox.setAttribute('draggable', 'true');
+                    }
+                }
+            });
+            boatDiv.remove();
+        }
     }
 </script>
 </body>
