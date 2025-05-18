@@ -12,6 +12,7 @@ import com.codeaddi.row_your_boat.controller.util.DateUtil;
 import com.codeaddi.row_your_boat.model.enums.Squad;
 import com.codeaddi.row_your_boat.model.http.UpcomingSessionAvailability;
 import com.codeaddi.row_your_boat.model.http.UpcomingSessionAvailabilityDTO;
+import com.codeaddi.row_your_boat.model.http.enums.resources.EquipmentStatus;
 import com.codeaddi.row_your_boat.model.http.enums.resources.EquipmentType;
 import com.codeaddi.row_your_boat.model.http.inbound.*;
 import com.codeaddi.row_your_boat.model.sessions.RowingSessions;
@@ -118,6 +119,18 @@ public class ViewService {
 
   public List<Blade> getAllBlades() {
     return resourceClient.getAllBlades();
+  }
+
+  public List<Boat> getAllBoatsAvailableAtTime(String from, String to, String date){
+    // todo - format the dates and times
+    List<ResourceUseDTO<Boat>> allBoatAvailability = resourceClient.getBoatsAvailableAtDateTime("01/01/2024", "1800", "2000");
+    List<ResourceUseDTO<Boat>> allBoatsAvailable = allBoatAvailability.stream().filter(resource -> resource.getInUseOnDate().isEmpty()).toList();
+    List<ResourceUseDTO<Boat>> allBoatsAvailableAndWorking = allBoatsAvailable.stream().filter(resource -> resource.getResource().getStatus().equals(EquipmentStatus.WORKING)).toList();
+    List<Boat> workingAndFreeBoats = new ArrayList<>();
+    for(ResourceUseDTO<Boat> resourceUseDTO : allBoatsAvailableAndWorking){
+      workingAndFreeBoats.add(resourceUseDTO.getResource());
+    }
+    return workingAndFreeBoats;
   }
 
   private List<RowingSession> sortSessionsByStartTime(List<RowingSession> sessions) {

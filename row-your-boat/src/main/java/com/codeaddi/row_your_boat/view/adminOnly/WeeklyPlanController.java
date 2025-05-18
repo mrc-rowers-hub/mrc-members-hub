@@ -22,10 +22,6 @@ public class WeeklyPlanController {
   @GetMapping("/make-weekly-plan")
   public String makeNewSessions(Model model) {
     List<String> sessionDates = viewService.getAllPastSessionsDates();
-    List<ResourceInUse> boatsAvailableAtTime = viewService.getResourcesAvailable(EquipmentType.BOAT);
-    List<ResourceInUse> bladesAvailableAtTime = viewService.getResourcesAvailable(EquipmentType.BLADE);
-
-    // a note saying 'think a resource should be a vailable? Check the status of all in PAGE TO BE DONE'
 
     model.addAttribute("list", sessionDates);
     return "adminOnly/make-new-sessions";
@@ -35,6 +31,14 @@ public class WeeklyPlanController {
   public String showSessionAvailability(@RequestParam("date") String date, Model model) {
     List<String> availableRowers = viewService.getAllAvailableRowersForDate(date);
     model.addAttribute("availabilities", availableRowers);
+
+    List<ResourceInUse> boatsAvailableAtTime = viewService.getResourcesAvailable(EquipmentType.BOAT);
+    List<ResourceInUse> bladesAvailableAtTime = viewService.getResourcesAvailable(EquipmentType.BLADE);
+    log.info(viewService.getAllBoatsAvailableAtTime("", "", "").toString());
+
+    // a note saying 'think a resource should be a vailable? Check the status of all in PAGE TO BE DONE'
+
+
     return "adminOnly/session-availability";
   }
 }
