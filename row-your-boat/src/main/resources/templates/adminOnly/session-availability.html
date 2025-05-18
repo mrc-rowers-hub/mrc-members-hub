@@ -41,9 +41,30 @@
 
 
     <h3>Boats Available</h3>
-    <ul th:if="${boatsAvailable != null}" th:each="boat : ${boatsAvailable}">
-        <li th:text="${boat.name}"></li>
-    </ul>
+<!--     todo the above h3 and the blades one should look the same as the date, time and rowers available -->
+    <div class="boats-container" style="display: flex; align-items: flex-start; gap: 2rem;">
+        <!-- Left column: vertical list of boats -->
+        <div style="flex: 1;">
+            <ul id="boatList" style="list-style: none; padding-left: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 0.5rem;"
+                th:if="${boatsAvailable != null}"
+                th:each="boat, iter : ${boatsAvailable}">
+                <li th:id="'boat-' + ${iter.index}"
+                    th:data-name="${boat.name}"
+                    onclick="selectBoat(this)"
+                    style="cursor: pointer; padding: 0.5rem 1rem; border: 1px solid #ccc; border-radius: 4px; width: fit-content; max-width: 100%;">
+                    <span th:text="${boat.name}"></span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Right column: selected boat -->
+        <div id="selectedBoatContainer" style="flex: 2; border-left: 1px solid #ddd; padding-left: 1rem;">
+            <strong>Selected Boat:</strong>
+            <p id="selectedBoat" style="font-weight: bold;"></p>
+        </div>
+    </div>
+
+
 
     <h3>Blades Available</h3>
     <ul th:if="${bladesAvailable != null}" th:each="blade : ${bladesAvailable}">
@@ -86,6 +107,23 @@
             boatsBladesSubmenu.style.display = (boatsBladesSubmenu.style.display === 'block') ? 'none' : 'block';
         });
     });
+
+    function selectBoat(element) {
+        // Reset all list item styles
+        document.querySelectorAll('#boatList li').forEach(li => {
+            li.style.fontWeight = 'normal';
+            li.style.backgroundColor = 'white';
+        });
+
+        // Highlight selected item
+        element.style.fontWeight = 'bold';
+        element.style.backgroundColor = '#eef';
+
+        // Display selected boat name on the right
+        const boatName = element.getAttribute('data-name');
+        document.getElementById('selectedBoat').innerText = boatName;
+    }
+
 </script>
 </body>
 </html>
