@@ -4,6 +4,25 @@
     <title>Home</title>
     <link rel="stylesheet" th:href="@{/styles.css}">
     <link rel="stylesheet" th:href="@{/sidebar.css}">
+    <style>
+        /* NEW: styles for draggable rower boxes */
+        #rowersContainer {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .rower-box {
+            padding: 0.4rem 0.75rem;
+            background-color: #d0e7ff;
+            border: 1px solid #3399ff;
+            border-radius: 4px;
+            cursor: grab;
+            user-select: none;
+        }
+        .rower-box:active {
+            cursor: grabbing;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -31,18 +50,11 @@
                 <p><strong>Time:</strong> <span th:text="${sessionStartTime}"></span> to <span th:text="${sessionEndTime}"></span></p>
             </div>
 
-            <table th:if="${availabilities != null}">
-                <thead>
-                <tr>
-                    <th>Rowers Available</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="rower : ${availabilities}">
-                    <td th:text="${rower}"></td>
-                </tr>
-                </tbody>
-            </table>
+            <!-- REPLACED the rowers table with draggable rower boxes -->
+            <div id="rowersContainer" th:if="${availabilities != null}">
+                <div class="rower-box" draggable="true" th:each="rower : ${availabilities}" th:text="${rower}"></div>
+            </div>
+
         </div>
 
         <!-- Right: Boats Available -->
@@ -112,6 +124,38 @@
         boatsBladesToggle.addEventListener('click', function(e) {
             e.preventDefault(); // Prevent default link behavior
             boatsBladesSubmenu.style.display = (boatsBladesSubmenu.style.display === 'block') ? 'none' : 'block';
+        });
+
+        // NEW: Drag and drop handlers for rower boxes and boat drop boxes
+        const rowers = document.querySelectorAll('.rower-box');
+        rowers.forEach(rower => {
+            rower.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('text/plain', rower.textContent);
+            });
+        });
+
+        const boatDiagram = document.getElementById('boatDiagram');
+
+        boatDiagram.addEventListener('dragover', (e) => {
+            if (e.target.classList.contains('drop-box')) {
+                e.preventDefault(); // Allow drop
+                e.target.style.backgroundColor = '#def'; // Highlight drop box
+            }
+        });
+
+        boatDiagram.addEventListener('dragleave', (e) => {
+            if (e.target.classList.contains('drop-box')) {
+                e.target.style.backgroundColor = '#fff'; // Remove highlight
+            }
+        });
+
+        boatDiagram.addEventListener('drop', (e) => {
+            e.preventDefault();
+            if (e.target.classList.contains('drop-box')) {
+                const rowerName = e.dataTransfer.getData('text/plain');
+                e.target.textContent = rowerName;
+                e.target.style.backgroundColor = '#cfc'; // Mark as filled
+            }
         });
     });
 
