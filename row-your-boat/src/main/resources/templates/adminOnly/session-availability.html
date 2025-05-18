@@ -22,6 +22,30 @@
         .rower-box:active {
             cursor: grabbing;
         }
+
+        .rower-box.assigned {
+            background-color: #ccc !important;
+            color: #666 !important;
+            border-color: #999 !important;
+            cursor: default !important;
+            user-select: none;
+            opacity: 0.6;
+            pointer-events: none; /* Prevent any interaction */
+        }
+
+        /* Drop boxes styling */
+        .drop-box {
+            width: 150px;
+            height: 30px;
+            border: 1px dashed #888;
+            border-radius: 4px;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -126,10 +150,14 @@
             boatsBladesSubmenu.style.display = (boatsBladesSubmenu.style.display === 'block') ? 'none' : 'block';
         });
 
-        // NEW: Drag and drop handlers for rower boxes and boat drop boxes
+        // Drag and drop handlers for rower boxes and boat drop boxes
         const rowers = document.querySelectorAll('.rower-box');
         rowers.forEach(rower => {
             rower.addEventListener('dragstart', (e) => {
+                if (rower.classList.contains('assigned')) {
+                    e.preventDefault(); // Don't allow dragging if assigned
+                    return;
+                }
                 e.dataTransfer.setData('text/plain', rower.textContent);
             });
         });
@@ -152,11 +180,58 @@
         boatDiagram.addEventListener('drop', (e) => {
             e.preventDefault();
             if (e.target.classList.contains('drop-box')) {
+                // Only allow drop if drop-box is empty or contains placeholder text
+                if (e.target.textContent !== '' && e.target.textContent !== 'Drop rower') {
+                    // Already assigned, ignore the drop
+                    return;
+                }
+
                 const rowerName = e.dataTransfer.getData('text/plain');
+
+                // Prevent assigning the same rower twice:
+                const assignedRower = Array.from(document.querySelectorAll('.rower-box.assigned')).find(
+                    box => box.textContent === rowerName
+                );
+                if (assignedRower) {
+                    // Already assigned elsewhere, ignore the drop
+                    return;
+                }
+
+                // Assign rower to drop box
                 e.target.textContent = rowerName;
                 e.target.style.backgroundColor = '#cfc'; // Mark as filled
+
+                // Mark rower as assigned and disable dragging
+                const rowerBox = Array.from(document.querySelectorAll('.rower-box')).find(
+                    box => box.textContent === rowerName && !box.classList.contains('assigned')
+                );
+                if (rowerBox) {
+                    rowerBox.classList.add('assigned');
+                    rowerBox.setAttribute('draggable', 'false');
+                }
             }
         });
+
+        // Allow unassigning rowers by clicking on assigned drop boxes
+        boatDiagram.addEventListener('click', (e) => {
+            if (e.target.classList.contains('drop-box') && e.target.textContent !== 'Drop rower') {
+                const rowerName = e.target.textContent;
+
+                // Clear the drop box
+                e.target.textContent = 'Drop rower';
+                e.target.style.backgroundColor = '#fff';
+
+                // Re-enable dragging on the assigned rower box
+                const rowerBox = Array.from(document.querySelectorAll('.rower-box.assigned')).find(
+                    box => box.textContent === rowerName
+                );
+                if (rowerBox) {
+                    rowerBox.classList.remove('assigned');
+                    rowerBox.setAttribute('draggable', 'true');
+                }
+            }
+        });
+
     });
 
     function selectBoat(element) {
@@ -233,14 +308,6 @@
             // Create drop box
             const dropBox = document.createElement('div');
             dropBox.className = 'drop-box';
-            dropBox.style.width = '150px';
-            dropBox.style.height = '30px';
-            dropBox.style.border = '1px dashed #888';
-            dropBox.style.borderRadius = '4px';
-            dropBox.style.backgroundColor = '#fff';
-            dropBox.style.display = 'flex';
-            dropBox.style.alignItems = 'center';
-            dropBox.style.justifyContent = 'center';
             dropBox.setAttribute('data-seat', i + 1);
             dropBox.innerText = 'Drop rower';
             dropBoxColumn.appendChild(dropBox);
