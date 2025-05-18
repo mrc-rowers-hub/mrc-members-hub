@@ -145,31 +145,32 @@
         const container = document.getElementById('boatDiagram');
         container.innerHTML = ''; // Clear previous diagram
 
-        // Outer wrapper to hold boat + labels vertically aligned
+        // Outer wrapper rotated 90deg to make boat vertical
         const wrapper = document.createElement('div');
         wrapper.style.display = 'flex';
         wrapper.style.alignItems = 'center';
         wrapper.style.justifyContent = 'center';
         wrapper.style.gap = '1rem';
         wrapper.style.position = 'relative';
+        wrapper.style.transform = 'rotate(90deg)'; // rotate whole boat + labels
 
-        // Create Bow label (vertical, rotated) positioned left outside the boat
+        // Bow label - now needs to be horizontal, so rotate back -90deg
         const bowLabel = document.createElement('div');
         bowLabel.innerText = 'Bow';
-        bowLabel.style.writingMode = 'vertical-rl';
-        bowLabel.style.textOrientation = 'mixed';
         bowLabel.style.fontWeight = 'bold';
         bowLabel.style.color = '#444';
         bowLabel.style.userSelect = 'none';
+        bowLabel.style.transform = 'rotate(-90deg)';
+        bowLabel.style.whiteSpace = 'nowrap';  // prevent wrapping
 
-        // Create Stroke label (vertical, rotated) positioned right outside the boat
+        // Stroke label - same as bow label, rotate -90deg
         const strokeLabel = document.createElement('div');
         strokeLabel.innerText = 'Stroke';
-        strokeLabel.style.writingMode = 'vertical-rl';
-        strokeLabel.style.textOrientation = 'mixed';
         strokeLabel.style.fontWeight = 'bold';
         strokeLabel.style.color = '#444';
         strokeLabel.style.userSelect = 'none';
+        strokeLabel.style.transform = 'rotate(-90deg)';
+        strokeLabel.style.whiteSpace = 'nowrap';
 
         // Boat shell outline container (horizontal row of seats)
         const boatShell = document.createElement('div');
@@ -181,7 +182,7 @@
         boatShell.style.border = '2px solid #333';
         boatShell.style.borderRadius = '999px';
         boatShell.style.background = '#f4f4f4';
-        boatShell.style.minWidth = `${capacity * 40}px`; // Ensure enough space
+        boatShell.style.minWidth = `${capacity * 40}px`;
         boatShell.style.maxWidth = '600px';
 
         // Add seats inside boat shell
@@ -196,9 +197,11 @@
             seat.style.justifyContent = 'center';
             seat.style.alignItems = 'center';
             seat.style.userSelect = 'none';
+            seat.style.transform = 'rotate(-90deg)';  // <-- Rotate numbers upright
             seat.innerText = i + 1;
             boatShell.appendChild(seat);
         }
+
 
         // Compose wrapper: bow label + boat shell + stroke label
         wrapper.appendChild(bowLabel);
