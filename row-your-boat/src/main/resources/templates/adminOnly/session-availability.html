@@ -51,6 +51,7 @@
                 <li th:id="'boat-' + ${iter.index}"
                     th:data-name="${boat.name}"
                     th:data-type="${boat.boatType}"
+                    th:data-capacity="${boat.capacity}"
                     onclick="selectBoat(this)"
                     style="cursor: pointer; padding: 0.5rem 1rem; border: 1px solid #ccc; border-radius: 4px; width: fit-content; max-width: 100%;">
                     <span th:text="${boat.name}"></span>
@@ -58,12 +59,13 @@
             </ul>
         </div>
 
-        <!-- Right column: selected boat -->
         <div id="selectedBoatContainer" style="flex: 2; border-left: 1px solid #ddd; padding-left: 1rem;">
             <strong>Selected Boat:</strong>
             <p id="selectedBoatName" style="font-weight: bold;"></p>
             <p id="selectedBoatType" style="color: #666;"></p>
+            <p id="selectedBoatCapacity" style="color: #666;"></p>
         </div>
+
 
     </div>
 
@@ -112,7 +114,7 @@
     });
 
     function selectBoat(element) {
-        // Reset styling for all items
+        // Reset styling
         document.querySelectorAll('#boatList li').forEach(li => {
             li.style.fontWeight = 'normal';
             li.style.backgroundColor = 'white';
@@ -122,13 +124,16 @@
         element.style.fontWeight = 'bold';
         element.style.backgroundColor = '#eef';
 
-        // Extract data attributes
+        // Extract info
         const boatName = element.getAttribute('data-name');
         const boatType = element.getAttribute('data-type');
+        const boatCapacity = element.getAttribute('data-capacity');
 
-        // Populate display section
+        // Populate display
         document.getElementById('selectedBoatName').innerText = boatName;
         document.getElementById('selectedBoatType').innerText = `Type: ${boatType}`;
+        document.getElementById('selectedBoatCapacity').innerText = `Capacity: ${boatCapacity}`;
+
     }
 
 

@@ -17,4 +17,8 @@ public class Boat {
     private RowerLevel minimumRowerLevel;
     private EquipmentStatus status;
     private Long bestBladesId;
+
+    public int getCapacity(){
+        return this.boatType.getCapacity();
+    }
 }
